@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#6EE7B7"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="#0f172a" rx="8"/>
+  <g fill="url(#g)" opacity="0.95">
+    <circle cx="80" cy="225" r="28">
+      <animate attributeName="cx" values="80;720;80" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="120" r="18" fill="#FDE68A">
+      <animate attributeName="cy" values="120;330;120" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <rect x="360" y="150" width="220" height="120" rx="10" fill="#fff" opacity="0.06">
+      <animate attributeName="x" values="360;380;360" dur="4s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <text x="40" y="60" fill="#e6edf3" font-family="Segoe UI, Roboto, Arial" font-size="26">Prototype Demo — Movement</text>
+</svg>
