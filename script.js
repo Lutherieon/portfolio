@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15 // Trigger when 15% of the element is visible
+        threshold: 0.05 // Trigger when 5% of the element is visible (fixes double scroll on tall elements)
     };
 
     const observer = new IntersectionObserver((entries, observer) => {

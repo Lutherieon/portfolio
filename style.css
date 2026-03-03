@@ -8,8 +8,8 @@
     /* Cyan/Teal link accent */
     --accent-glow: rgba(64, 224, 208, 0.4);
     /* Used for edge glows and image shadows */
-    --hero-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-    /* Similar to the soft Alex Heston gradient */
+    --hero-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #ffdde1 50%, #fbd3e9 75%, #a8edea 100%);
+    /* Infused with soft, non-straining red/pink tones for a gentle transition */
 
     --font-headers: 'Montserrat', sans-serif;
     --font-serif: 'Playfair Display', serif;
@@ -24,7 +24,10 @@
     box-sizing: border-box;
 }
 
-html,
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     width: 100%;
     min-height: 100vh;
@@ -32,8 +35,13 @@ body {
     color: var(--text-color-light);
     font-family: var(--font-body);
     overflow-x: hidden;
-    scroll-behavior: smooth;
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 a {
@@ -44,30 +52,6 @@ a {
 
 ul {
     list-style: none;
-}
-
-/* --- AMBIENT EDGE GLOW EFFECT --- */
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 70vh;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 70%);
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-body::before {
-    left: -150px;
-}
-
-body::after {
-    right: -150px;
 }
 
 /* --- NAVIGATION MENU --- */
@@ -132,13 +116,33 @@ body::after {
     width: 100%;
     min-height: 100vh;
     background: var(--hero-gradient);
+    background-size: 400% 400%;
+    /* Make gradient large enough to animate smoothly */
+    animation: gradientShift 15s ease infinite;
+    /* 15 seconds for a very slow, relaxing shift */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    overflow: hidden;
+    overflow: clip;
+    /* clip solves the Chromium 'stuck scroll on load' bug while preventing overflow */
     color: #333;
     /* Dark text on light ambient gradient */
+}
+
+/* Keyframes for the Hero Background Animation */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .hero-content {
@@ -147,10 +151,10 @@ body::after {
 
 .hero h1 {
     font-family: var(--font-headers);
-    font-size: 4rem;
+    font-size: 5.5rem;
     font-weight: 300;
-    letter-spacing: 0.5em;
-    /* Very wide kerning */
+    letter-spacing: 0.25em;
+    /* Medium kerning */
     margin-bottom: 20px;
     line-height: 1.2;
 }
@@ -253,7 +257,6 @@ body::after {
     position: relative;
     z-index: 5;
     background-color: var(--bg-color-dark);
-    padding-top: 100px;
 }
 
 .info-section {
@@ -269,6 +272,11 @@ body::after {
 .info-section.alternate {
     flex-direction: row-reverse;
     /* Z-Pattern alternating direction */
+}
+
+/* Reduce top padding for the first section on the home page to fix double-scroll */
+#background {
+    padding-top: 40px;
 }
 
 @media (max-width: 900px) {
@@ -376,14 +384,50 @@ footer,
     width: 100%;
 }
 
+/* Force footers to stick to the bottom on short pages */
+footer {
+    margin-top: auto;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.social-links a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #1a1a1a;
+    color: #999;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.social-links a:hover {
+    color: #ffffff;
+    background-color: var(--accent-teal);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--accent-glow);
+    border-color: transparent;
+}
+
 /* --- PORTFOLIO PAGE --- */
 .page-portfolio {
     background-color: var(--bg-color-dark);
 }
 
 .portfolio-container {
-    padding-top: calc(var(--nav-height) + 50px);
+    padding-top: var(--nav-height);
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     padding-left: 20px;
     padding-right: 20px;
@@ -399,8 +443,8 @@ footer,
 
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    /* Responsive 3-column max */
+    grid-template-columns: repeat(3, 1fr);
+    /* Strict 3-column layout */
     gap: 40px;
     margin-bottom: 80px;
 }
@@ -429,12 +473,12 @@ footer,
     height: 100%;
     background-size: cover;
     background-position: center;
-    filter: grayscale(100%) brightness(0.4);
+    filter: grayscale(80%) brightness(0.6);
     transition: filter 0.4s ease;
 }
 
 .project-card:hover .card-image {
-    filter: grayscale(0%) brightness(0.8);
+    filter: grayscale(0%) brightness(1);
 }
 
 .card-overlay {
@@ -474,8 +518,9 @@ footer,
 }
 
 .resume-container {
-    padding-top: calc(var(--nav-height) + 50px);
+    padding-top: var(--nav-height);
     max-width: 800px;
+    width: 100%;
     /* Narrower container for text readability */
     margin: 0 auto;
     padding-left: 20px;
@@ -592,8 +637,9 @@ footer,
 }
 
 .featured-container {
-    padding-top: calc(var(--nav-height) + 50px);
+    padding-top: var(--nav-height);
     max-width: 900px;
+    width: 100%;
     margin: 0 auto;
     padding-left: 20px;
     padding-right: 20px;
@@ -770,6 +816,7 @@ footer,
 /* Centralized Container for Content */
 .project-container {
     max-width: 800px;
+    width: 100%;
     margin: 0 auto;
     padding: 60px 20px;
 }
@@ -948,5 +995,133 @@ footer,
     .dot-nav {
         display: none;
         /* Hide dots on smaller screens */
+    }
+}
+
+/* --- MOBILE OPTIMIZATIONS (< 768px) --- */
+@media (max-width: 768px) {
+
+    /* Navbar improvements */
+    #navbar {
+        height: auto;
+        padding: 15px 10px;
+    }
+
+    #navbar ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        /* Allow links to wrap to second line if very narrow */
+        justify-content: center;
+    }
+
+    #navbar a {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    /* Fix body content padding since nav height is now variable */
+    .portfolio-container,
+    .resume-container,
+    .featured-container {
+        padding-top: 100px;
+    }
+
+    /* Spacing Reductions */
+    .info-section {
+        padding: 40px 20px;
+        gap: 30px;
+    }
+
+    #background {
+        padding-top: 20px;
+        /* Even tighter for the first section */
+    }
+
+    .contact-section {
+        padding: 60px 20px 30px;
+    }
+
+    .project-container {
+        padding: 40px 20px;
+    }
+
+    /* Typography Scaling */
+    .page-title,
+    .project-title {
+        font-size: 1.8rem;
+        letter-spacing: 0.1em;
+        margin-bottom: 30px;
+    }
+
+    .section-text h2,
+    .contact-content h2,
+    .resume-header {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .project-metadata,
+    .entry-title,
+    .resume-item .role {
+        font-size: 1rem;
+    }
+
+    .intro-text,
+    .content-block p,
+    .section-text p,
+    .contact-content p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Portfolio Grid - Force Single Column */
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Resume Improvements */
+    .resume-item {
+        margin-bottom: 40px;
+        gap: 15px;
+    }
+
+    .resume-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Featured Content */
+    .featured-list {
+        gap: 60px;
+    }
+
+    /* Hero adjustments */
+    .project-hero {
+        height: 35vh;
+        /* Shorter header image on mobile */
+    }
+}
+
+/* --- EXTRA SMALL MOBILE (< 480px) --- */
+@media (max-width: 480px) {
+    #navbar ul {
+        gap: 10px;
+        padding: 0 5px;
+    }
+
+    #navbar a {
+        font-size: 0.65rem;
+        letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+        letter-spacing: 0.1em;
+    }
+
+    .page-title,
+    .project-title {
+        font-size: 1.5rem;
     }
 }
