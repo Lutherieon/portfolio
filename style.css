@@ -1238,9 +1238,15 @@ footer {
     .intro-text,
     .content-block p,
     .section-text p,
-    .contact-content p {
-        font-size: 0.95rem;
+    .contact-content p,
+    .content-block p.text-block {
+        font-size: 1.05rem;
         line-height: 1.6;
+    }
+
+    .media-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     /* Portfolio Grid - Force Single Column */
@@ -1304,6 +1310,38 @@ footer {
     margin-top: 50px;
     margin-bottom: 50px;
     width: 100%;
+}
+
+.pdf-block {
+    margin: 40px 0;
+    width: 100%;
+    height: 80vh;
+    /* Responsive height for PDFs */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pdf-block embed {
+    width: 100%;
+    height: 100%;
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.media-grid .media-block {
+    margin: 0;
+}
+
+.media-caption {
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .page-btn {

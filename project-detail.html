@@ -90,12 +90,11 @@
                     // const contentArea = document.getElementById('project-content-area'); // This line was removed in the provided diff, but it's not explicitly part of the instruction. Keeping it for now.
 
                     // 2. Handle Banner (Top Background)
-                    const bannerContainer = document.getElementById('hero-banner');
+                    const bannerContainer = document.getElementById('project-banner');
                     if (project.bannerType === 'pdf') {
-                        bannerContainer.className = 'pdf-container';
-                        bannerContainer.id = 'pdf-viewer-container';
+                        // Use PDF container setup
                         bannerContainer.innerHTML = `
-                            <canvas id="pdf-canvas"></canvas>
+                            <div id="pdf-canvas-container" class="pdf-wrapper" data-pdf-url="${project.bannerSrc}"></div>
                             <button id="prev-page" class="pdf-nav-btn prev"><i class="fas fa-chevron-left"></i></button>
                             <button id="next-page" class="pdf-nav-btn next"><i class="fas fa-chevron-right"></i></button>
                             <div id="page-num-display" class="page-indicator">
@@ -103,8 +102,10 @@
                             </div>
                         `;
                         window.PDF_SRC = project.bannerSrc;
-                    } else {
+                    } else if (project.bannerSrc) {
                         bannerContainer.style.backgroundImage = `url('${project.bannerSrc}')`;
+                    } else {
+                        bannerContainer.style.backgroundColor = 'var(--bg-color-dark)';
                     }
 
                     // 3. Helper to render media blocks (Images, Videos, PDFs, Groups)
@@ -155,7 +156,11 @@
                         // Support for new 'blocks' array
                         if (section.blocks) {
                             section.blocks.forEach(block => {
-                                sectionHTML += block.type === 'text' ? `<p class="text-block">${block.value}</p>` : renderMediaBlock(block);
+                                if (block.type === 'text') {
+                                    sectionHTML += `<p class="text-block">${block.value}</p>`;
+                                } else {
+                                    sectionHTML += renderMediaBlock(block);
+                                }
                             });
                         }
                         // Backward compatibility for old 'content' field
