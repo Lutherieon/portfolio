@@ -114,7 +114,9 @@
                         if (media.type === 'image') {
                             return `<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || ''}">${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}</div>`;
                         } else if (media.type === 'video') {
-                            const videoHTML = media.provider === 'youtube' ? `<iframe src="${media.src}" allowfullscreen></iframe>` : `<video controls src="${media.src}"></video>`;
+                            const videoHTML = media.provider === 'youtube' ?
+                                `<iframe src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
+                                `<video controls src="${media.src}"></video>`;
                             return `<div class="media-block video-wrapper fade-in-section">${videoHTML}</div>`;
                         } else if (media.type === 'pdf') {
                             return `<div class="media-block pdf-block fade-in-section"><embed src="${media.src}" type="application/pdf"></div>`;

@@ -28,7 +28,7 @@ const PROJECTS = [
                 title: "ANALYSIS PROCESS",
                 blocks: [
                     { type: "text", value: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points." },
-                    { type: "video", src: "https://www.youtube.com/embed/zw47_q9wbBE", provider: "youtube" }
+                    { type: "video", src: "https://www.youtube.com/embed/QyMsF31NdNc", provider: "youtube" }
                 ]
             }
         ]
