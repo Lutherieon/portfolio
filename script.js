@@ -161,22 +161,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const loadingTask = pdfjsLib.getDocument(url);
             loadingTask.promise.then(pdf => {
-                // For simplicity, just render first page or all pages
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    pdf.getPage(i).then(page => {
+                let currentPage = 1;
+                const pageCountEl = document.getElementById('page-count');
+                const pageNumEl = document.getElementById('page-num');
+                if (pageCountEl) pageCountEl.textContent = pdf.numPages;
+
+                const renderPage = (pageNum) => {
+                    pdf.getPage(pageNum).then(page => {
                         const viewport = page.getViewport({ scale: 1.5 });
                         const canvas = document.createElement('canvas');
                         const context = canvas.getContext('2d');
                         canvas.height = viewport.height;
                         canvas.width = viewport.width;
                         canvas.style.width = "100%";
-                        canvas.style.marginBottom = "20px";
+                        canvas.style.height = "100%";
+                        canvas.style.objectFit = "cover";
+
+                        // Clear existing canvas and append new one
+                        pdfContainer.innerHTML = '';
                         pdfContainer.appendChild(canvas);
 
                         page.render({
                             canvasContext: context,
                             viewport: viewport
                         });
+                    });
+                };
+
+                // Initial render
+                renderPage(currentPage);
+
+                // Button listeners
+                const prevBtn = document.getElementById('prev-page');
+                const nextBtn = document.getElementById('next-page');
+
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        if (currentPage <= 1) return;
+                        currentPage--;
+                        if (pageNumEl) pageNumEl.textContent = currentPage;
+                        renderPage(currentPage);
+                    });
+                }
+
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        if (currentPage >= pdf.numPages) return;
+                        currentPage++;
+                        if (pageNumEl) pageNumEl.textContent = currentPage;
+                        renderPage(currentPage);
                     });
                 }
 
