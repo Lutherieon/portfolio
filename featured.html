@@ -26,63 +26,19 @@
     <main class="featured-container">
         <!-- Dot Navigation Sidebar -->
         <nav class="dot-nav">
-            <ul>
+            <ul id="featured-dots">
                 <li><a href="#featured-title" title="Top"><span class="dot"></span></a></li>
-                <li><a href="#year-2026" title="2026 Engagement"><span class="dot"></span></a></li>
-                <li><a href="#year-2024" title="2024 Engagement"><span class="dot"></span></a></li>
+                <!-- Dynamic dots will be injected here -->
             </ul>
         </nav>
 
         <h1 class="page-title text-center fade-in-section" id="featured-title">FEATURED</h1>
-        <p class="featured-subtitle italic text-center fade-in-section">Speaking Engagements | Publications | Open
-            Source Contributions
+        <p class="featured-subtitle italic text-center fade-in-section" id="featured-subtitle">
+            Speaking Engagements | Publications | Open Source Contributions
         </p>
 
-        <div class="featured-list">
-
-            <!-- Year Group 1 -->
-            <div class="featured-year-group fade-in-section" id="year-2026">
-                <h2 class="year-title">2026</h2>
-
-                <div class="featured-entry">
-                    <p class="entry-title">
-                        <a href="#" target="_blank">"Advanced Architectures in Modern Web Applications"</a>
-                    </p>
-                    <p class="entry-location italic">Global Developer Conference (GDC)</p>
-                    <p class="entry-desc italic">A deep dive into micro-frontends and scalable backend design for
-                        enterprise solutions.</p>
-                </div>
-
-                <div class="featured-entry">
-                    <p class="entry-title">
-                        <a href="#" target="_blank">Medium Publication: "Mastering State Management"</a>
-                    </p>
-                    <p class="entry-location italic">Front-End Focus Journal</p>
-                    <p class="entry-desc italic">A comprehensive guide on when to use Context API versus Redux in large
-                        React codebases.</p>
-                </div>
-
-                <!-- Floating image for this year group (like Alexandria's site) -->
-                <div class="featured-image img-right float-1"></div>
-            </div>
-
-            <!-- Year Group 2 -->
-            <div class="featured-year-group fade-in-section" id="year-2024">
-                <h2 class="year-title">2024</h2>
-
-                <div class="featured-entry">
-                    <p class="entry-title">
-                        <a href="#" target="_blank">Tech Solutions Podcast, "The Future of Full Stack"</a>
-                    </p>
-                    <p class="entry-location italic">Guest Speaker</p>
-                    <p class="entry-desc italic">Discussing the blurring lines between frontend and backend technologies
-                        with the rise of meta-frameworks like Next.js.</p>
-                </div>
-
-                <!-- Floating image for this year group -->
-                <div class="featured-image img-right float-2"></div>
-            </div>
-
+        <div class="featured-list" id="dynamic-featured-list">
+            <!-- Dynamic content from projects-data.js will be injected here -->
         </div>
     </main>
 
@@ -101,7 +57,60 @@
         <p>© 2026 by Yekta Demirci</p>
     </footer>
 
+    <!-- Scripts -->
+    <script src="projects-data.js"></script>
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof FEATURED_DATA !== 'undefined') {
+                // 1. Update Header
+                document.getElementById('featured-title').textContent = FEATURED_DATA.title;
+                document.getElementById('featured-subtitle').textContent = FEATURED_DATA.subtitle;
+
+                // 2. Inject Groups and Dots
+                const container = document.getElementById('dynamic-featured-list');
+                const dotsList = document.getElementById('featured-dots');
+
+                FEATURED_DATA.groups.forEach(group => {
+                    // Create Year Group Element
+                    const groupEl = document.createElement('div');
+                    groupEl.className = 'featured-year-group fade-in-section';
+                    groupEl.id = group.id;
+
+                    let entriesHTML = `<h2 class="year-title">${group.year}</h2>`;
+
+                    group.entries.forEach(entry => {
+                        entriesHTML += `
+                            <div class="featured-entry">
+                                <p class="entry-title">
+                                    <a href="${entry.link}" target="_blank">${entry.title}</a>
+                                </p>
+                                <p class="entry-location italic">${entry.location}</p>
+                                <p class="entry-desc italic">${entry.description}</p>
+                            </div>
+                        `;
+                    });
+
+                    // Add Floating Image
+                    entriesHTML += `<div class="featured-image img-right ${group.floatClass}" style="background-image: url('${group.image}');"></div>`;
+
+                    groupEl.innerHTML = entriesHTML;
+                    container.appendChild(groupEl);
+
+                    // Add Dot for this Year
+                    const dotLi = document.createElement('li');
+                    dotLi.innerHTML = `<a href="#${group.id}" title="${group.year} Engagement"><span class="dot"></span></a>`;
+                    dotsList.appendChild(dotLi);
+                });
+
+                // Re-initialize Dot Nav Highlight from script.js
+                if (window.initDotNav) window.initDotNav();
+                // Force a refresh of visibility for newly added sections
+                window.dispatchEvent(new Event('resize'));
+            }
+        });
+    </script>
 </body>
 
 </html>

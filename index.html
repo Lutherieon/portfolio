@@ -44,53 +44,16 @@
 	<main class="content-sections">
 		<!-- Dot Navigation Sidebar -->
 		<nav class="dot-nav">
-			<ul>
+			<ul id="home-dots">
 				<li><a href="#navbar" title="Top"><span class="dot"></span></a></li>
-				<li><a href="#background" title="Background"><span class="dot"></span></a></li>
-				<li><a href="#philosophy" title="Philosophy"><span class="dot"></span></a></li>
+				<!-- Dynamic dots will be injected here -->
 				<li><a href="#contact" title="Contact"><span class="dot"></span></a></li>
 			</ul>
 		</nav>
 
-		<!-- Section 1: Background -->
-		<section class="info-section alternate fade-in-section" id="background">
-			<div class="section-image" id="bg-image-placeholder">
-				<!-- User can replace with <img src="..."> later -->
-			</div>
-			<div class="section-text">
-				<h2>Background</h2>
-				<p>
-					I have spent the last several years involved in the concept of how software development, digital
-					design, and innovative technologies are combined together. My dive into full-stack development has
-					made me appreciate the vast affordances technology has to offer humankind.
-				</p>
-				<p>
-					As I entered this industry, I slowly but surely realized my real passion was a combination of robust
-					backend architecture and intuitive frontend user interfaces. I find myself drawn recently to
-					creating seamless user experiences and integrating those designs with powerful logic.
-				</p>
-			</div>
-		</section>
-
-		<!-- Section 2: Philosophy -->
-		<section class="info-section fade-in-section" id="philosophy">
-			<div class="section-text">
-				<h2>Philosophy</h2>
-				<p>
-					Humans are multifaceted, intersectional, and complex beings. Our technology should be the same way.
-					Modern web development affords us the opportunity to bridge the gaps of current flat design and
-					create a dynamic environment around us.
-				</p>
-				<p>
-					Conversely, we have the opportunity and the responsibility for that new technology to be flexible,
-					scalable, and accessible by all humankind. Good code is not just about function; it's about building
-					a sustainable foundation for the future.
-				</p>
-			</div>
-			<div class="section-image" id="phil-image-placeholder">
-				<!-- User can replace with <img src="..."> later -->
-			</div>
-		</section>
+		<div id="dynamic-home-sections">
+			<!-- Dynamic sections from projects-data.js will be injected here -->
+		</div>
 
 		<!-- Section 3: Contact -->
 		<section class="contact-section fade-in-section" id="contact">
@@ -120,16 +83,70 @@
 	</footer>
 
 	<!-- Scripts -->
+	<script src="projects-data.js"></script>
 	<script src="script.js"></script>
 
-	<!-- Simple JS to add solid background to nav on scroll -->
+	<!-- Simple JS to add solid background to nav on scroll + Dynamic Sections -->
 	<script>
-		const navbar = document.getElementById('navbar');
-		window.addEventListener('scroll', () => {
-			if (window.scrollY > 50) {
-				navbar.classList.add('scrolled');
-			} else {
-				navbar.classList.remove('scrolled');
+		document.addEventListener("DOMContentLoaded", () => {
+			// 1. Navbar Scroll Logic
+			const navbar = document.getElementById('navbar');
+			window.addEventListener('scroll', () => {
+				if (window.scrollY > 50) {
+					navbar.classList.add('scrolled');
+				} else {
+					navbar.classList.remove('scrolled');
+				}
+			});
+
+			// 2. Dynamic Home Sections Injection
+			if (typeof HOME_SECTIONS !== 'undefined') {
+				const container = document.getElementById('dynamic-home-sections');
+				const dotsList = document.getElementById('home-dots');
+				const contactDot = dotsList.querySelector('li:last-child');
+
+				HOME_SECTIONS.forEach((section, index) => {
+					const isAlternate = index % 2 === 0; // Even indexes get alternate class
+					const sectionEl = document.createElement('section');
+					sectionEl.className = `info-section ${isAlternate ? 'alternate' : ''} fade-in-section`;
+					sectionEl.id = section.id;
+
+					// Generate Paragraphs
+					const paragraphs = section.text.map(p => `<p>${p}</p>`).join('');
+
+					// Construct Section innerHTML (Image + Text)
+					// Logic: If alternate, image is first child in DOM (appears on right due to row-reverse)
+					// If standard, text is first child in DOM (appears on left due to row)
+					if (isAlternate) {
+						sectionEl.innerHTML = `
+                            <div class="section-image" style="background-image: url('${section.image}');"></div>
+                            <div class="section-text">
+                                <h2>${section.title}</h2>
+                                ${paragraphs}
+                            </div>
+                        `;
+					} else {
+						sectionEl.innerHTML = `
+                            <div class="section-text">
+                                <h2>${section.title}</h2>
+                                ${paragraphs}
+                            </div>
+                            <div class="section-image" style="background-image: url('${section.image}');"></div>
+                        `;
+					}
+
+					container.appendChild(sectionEl);
+
+					// Add Dot for this section
+					const dotLi = document.createElement('li');
+					dotLi.innerHTML = `<a href="#${section.id}" title="${section.title}"><span class="dot"></span></a>`;
+					dotsList.insertBefore(dotLi, contactDot);
+				});
+
+				// Re-initialize Dot Nav Highlight and Animations from script.js
+				if (window.initDotNav) window.initDotNav();
+				// Force a refresh of visibility for newly added sections
+				window.dispatchEvent(new Event('resize'));
 			}
 		});
 	</script>

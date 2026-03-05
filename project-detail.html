@@ -43,7 +43,7 @@
         </div>
 
         <!-- Project Header and Metadata -->
-        <div class="project-header text-center fade-in-section">
+        <div class="project-header text-center fade-in-section" id="page-project-title-container">
             <h1 class="project-title" id="page-project-title">Project Title</h1>
             <p class="project-metadata italic" id="page-project-metadata">
                 Metadata
@@ -142,7 +142,7 @@
 
                     // Add Hero and Intro Dots
                     dotsList.innerHTML += `<li><a href="#project-hero" title="Banner"><span class="dot"></span></a></li>`;
-                    dotsList.innerHTML += `<li><a href="#page-project-intro" title="Introduction"><span class="dot"></span></a></li>`;
+                    dotsList.innerHTML += `<li><a href="#page-project-title-container" title="Introduction"><span class="dot"></span></a></li>`;
 
                     project.sections.forEach(section => {
                         // Section Injection

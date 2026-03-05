@@ -1453,3 +1453,19 @@ footer {
         font-size: 1.4rem;
     }
 }
+
+/* --- SCROLL OFFSET REFINEMENT --- */
+/* Accounts for fixed navbar height (80px) + some breathing room */
+.hero,
+.project-intro-container,
+.content-block,
+.next-project-nav,
+.info-section,
+.contact-section,
+.resume-item,
+.featured-year-group,
+.page-title,
+#page-project-title-container,
+#navbar {
+    scroll-margin-top: 100px;
+}

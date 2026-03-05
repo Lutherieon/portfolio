@@ -167,6 +167,100 @@ const PROJECTS = [
     }
 ];
 
+const HOME_SECTIONS = [
+    {
+        id: "background",
+        title: "Background",
+        image: "images/bgPhoto.jpg",
+        text: [
+            "I am a Digital Game Designer who focuses on the balance between creative vision and technical implementation. I approach game design as a holistic process, where compelling mechanics meet optimized technical workflows and a deep understanding of player psychology.",
+            "Currently a student of Digital Game Design, I have spent my academic journey mastering Unreal Engine 5 and exploring the structural foundations of successful game titles. My work ranges from developing VR prototypes and complex enemy AI systems to conducting in-depth UX and cognitive research."
+        ]
+    },
+    {
+        id: "philosophy",
+        title: "Philosophy",
+        image: "images/pic01.jpg",
+        text: [
+            "Humans are multifaceted, intersectional, and complex beings. Our technology should be the same way. Modern web development affords us the opportunity to bridge the gaps of current flat design and create a dynamic environment around us.",
+            "Conversely, we have the opportunity and the responsibility for that new technology to be flexible, scalable, and accessible by all humankind. Good code is not just about function; it's about building a sustainable foundation for the future."
+        ]
+    }
+];
+
+const FEATURED_DATA = {
+    title: "FEATURED",
+    subtitle: "Speaking Engagements | Publications | Open Source Contributions",
+    groups: [
+        {
+            year: "2026",
+            id: "year-2026",
+            image: "images/pic01.jpg",
+            floatClass: "float-1",
+            entries: [
+                {
+                    title: '"Advanced Architectures in Modern Web Applications"',
+                    link: "#",
+                    location: "Global Developer Conference (GDC)",
+                    description: "A deep dive into micro-frontends and scalable backend design for enterprise solutions."
+                },
+                {
+                    title: 'Medium Publication: "Mastering State Management"',
+                    link: "#",
+                    location: "Front-End Focus Journal",
+                    description: "A comprehensive guide on when to use Context API versus Redux in large React codebases."
+                }
+            ]
+        },
+        {
+            year: "2024",
+            id: "year-2024",
+            image: "images/pic02.jpg",
+            floatClass: "float-2",
+            entries: [
+                {
+                    title: 'Tech Solutions Podcast, "The Future of Full Stack"',
+                    link: "#",
+                    location: "Guest Speaker",
+                    description: "Discussing the blurring lines between frontend and backend technologies with the rise of meta-frameworks like Next.js."
+                }
+            ]
+        }
+    ]
+};
+
+const RESUME_DATA = {
+    title: "RESUME",
+    downloadLink: "#",
+    downloadLabel: "RESUME 2026",
+    experience: [
+        {
+            id: "job-1",
+            role: "Software Developer",
+            company: "Tech Innovators Inc.",
+            dates: "August 2023 - Present",
+            description: "I am responsible for designing intuitive APIs, creating robust backend services, and helping with the direction of the core products. I work on both server-side logic and client-side integration to deliver seamless full-stack web applications.",
+            logo: "images/pic01.jpg"
+        },
+        {
+            id: "job-2",
+            role: "Junior Frontend Engineer",
+            company: "Creative Web Solutions",
+            dates: "Jan 2021 - July 2023",
+            description: "I worked as a bridge between the Design and Engineering teams. My role involved creating the UI, UX, and Interaction Design for client-facing applications using modern Javascript frameworks like React and Vue.",
+            logo: "images/pic02.jpg"
+        },
+        {
+            id: "job-3",
+            role: "Web Development Intern",
+            company: "Startup Launchpad",
+            dates: "Summer 2020",
+            description: "I assisted in building MVP web applications for early-stage startups, focusing on responsive HTML/CSS layouts and basic JavaScript interactivity.",
+            logo: "" // Optional
+        }
+    ]
+};
+
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PROJECTS;
+    module.exports = { PROJECTS, HOME_SECTIONS, FEATURED_DATA, RESUME_DATA };
 }
