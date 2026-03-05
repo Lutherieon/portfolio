@@ -131,10 +131,10 @@ window.PROJECTS = [
 ### Projelerde Desteklenen İçerik (Block) Tipleri
 - **Metin (`text`):** `{ type: "text", value: "Paragraf..." }`
 - **Resim (`image`):** `{ type: "image", src: "url", caption: "Alt yazı" }`
-- **YouTube Video (`video`):** `{ type: "video", src: "https://www.youtube.com/watch?v=A" YouTube linki DEĞİL, "https://www.youtube.com/embed/A" şeklinde koyulmalı`, provider: "youtube" }`
+- **YouTube Video (`video`):** `{ type: "video", src: "https://www.youtube.com/embed/A" }` (*YouTube normal linki DEĞİL, "embed" şeklinde koyulmalı*)
 - **Yerel Video (`video`):** `{ type: "video", src: "video.mp4" }`
 - **PDF (`pdf`):** `{ type: "pdf", src: "dosya.pdf" }` (Sayfa içine gömülür)
-- **Yan Yana Medya (`media-group`):** Masaüstünde 2 resim veya videoyu yan yana koymak için:
+- **Yan Yana Medya (`media-group`):** Masaüstünde 2 veya daha fazla resmi/videoyu yan yana grid olarak koymak için:
   ```javascript
   {
       type: "media-group",
@@ -144,6 +144,24 @@ window.PROJECTS = [
       ]
   }
   ```
+
+### Metin, Resim ve Grid'leri Birleştirmek (Interleaving)
+Yukarıdaki veri tiplerini `blocks` listesi (`[ ]`) içine istediğiniz sırayla alt alta ekleyebilirsiniz. Önce bir metin, sonra dev bir fotoğraf, ardından tekrar metin ve son olarak ikili bir fotoğraf ızgarası (grid) eklemek tamamen mümkündür:
+
+```javascript
+blocks: [
+    { type: "text", value: "Buraya detaylı araştırma metni gelir." },
+    { type: "image", src: "images/astronot.jpg", caption: "Karakter konsepti." },
+    { type: "text", value: "Yukarıdaki görselde olduğu gibi bazı değişiklikler yaptık." },
+    {
+        type: "media-group", // 2 fotoğrafı yan yana koyar
+        items: [
+            { type: "image", src: "images/detay-1.jpg", caption: "Detay 1" },
+            { type: "image", src: "images/detay-2.jpg", caption: "Detay 2" }
+        ]
+    }
+]
+```
 
 ---
 

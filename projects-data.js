@@ -142,7 +142,25 @@ window.PROJECTS = [
         bannerSrc: "images/pic01.jpg",
         metadata: "UI Designer (2024)",
         intro: "A conceptual e-commerce interface focusing on smooth transitions.",
-        sections: [{ id: "design", title: "DESIGN", content: "Used Figma for initial prototyping." }]
+        sections: [
+            {
+                id: "design",
+                title: "DESIGN AND PLANNING",
+                blocks: [
+                    { type: "text", value: "This is a demonstration of interleaving text and images. We started by researching modern e-commerce trends and establishing a baseline for the user flow." },
+                    { type: "image", src: "images/pic02.jpg", caption: "Initial Low-Fidelity Wireframes" },
+                    { type: "text", value: "As seen above, the wireframes focused heavily on large imagery and ample breathing room. After user testing, we moved into high-fidelity designs, introducing our core accent colors." },
+                    {
+                        type: "media-group",
+                        items: [
+                            { type: "image", src: "images/pic03.jpg", caption: "Product Grid View" },
+                            { type: "image", src: "images/pic04.jpg", caption: "Checkout Flow" }
+                        ]
+                    },
+                    { type: "text", value: "The grid system allowed us to surface more products simultaneously without overwhelming the cognitive load of our demographic. The project concluded with a seamless handoff via Figma to the developers." }
+                ]
+            }
+        ]
     },
     {
         id: "mock-project-2",
