@@ -122,6 +122,10 @@
                         } else if (media.type === 'pdf') {
                             return `<div class="media-block pdf-block fade-in-section"><embed src="${media.src}" type="application/pdf"></div>`;
                         } else if (media.type === 'media-group') {
+                            // If the group only has 1 item, render it as a standalone block so it spans full width
+                            if (media.items && media.items.length === 1) {
+                                return renderMediaBlock(media.items[0]);
+                            }
                             let groupHTML = `<div class="media-grid fade-in-section">`;
                             media.items.forEach(item => groupHTML += renderMediaBlock(item));
                             groupHTML += `</div>`;

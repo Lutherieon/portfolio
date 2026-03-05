@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pdfContainer) {
         const url = pdfContainer.getAttribute('data-pdf-url');
         if (url && typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
             const loadingTask = pdfjsLib.getDocument(url);
             loadingTask.promise.then(pdf => {
