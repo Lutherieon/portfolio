@@ -4,20 +4,33 @@ const PROJECTS = [
         title: "The Legend of Zelda: Breath of the Wild",
         category: "UX Analysis",
         thumbnail: "images/pic01.jpg",
-        bannerType: "pdf",
+        bannerType: "pdf", // This is the TOP background banner
         bannerSrc: "PschologyFinal.pdf",
         metadata: "Lead UX Researcher & Analyst (2025)",
         intro: "This project explores the intricate UX design patterns of Breath of the Wild, focusing on player immersion and interface minimalism.",
+        mainMedia: { type: "pdf", src: "PschologyFinal.pdf" }, // Modular media under intro
         sections: [
             {
                 id: "research",
                 title: "RESEARCH & PLANNING",
-                content: "Detailed analysis of open-world navigation and player feedback loops was conducted over a six-month period."
+                blocks: [
+                    { type: "text", value: "Detailed analysis of open-world navigation and player feedback loops was conducted over a six-month period." },
+                    {
+                        type: "media-group",
+                        items: [
+                            { type: "image", src: "images/pic01.jpg", caption: "Immersion mapping." },
+                            { type: "image", src: "images/pic02.jpg", caption: "Feedback loops." }
+                        ]
+                    }
+                ]
             },
             {
                 id: "development",
                 title: "ANALYSIS PROCESS",
-                content: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points."
+                blocks: [
+                    { type: "text", value: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points." },
+                    { type: "video", src: "https://www.youtube.com/embed/zw47_q9wbBE", provider: "youtube" }
+                ]
             }
         ]
     },

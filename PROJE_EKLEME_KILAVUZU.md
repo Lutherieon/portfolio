@@ -1,35 +1,44 @@
 # 🚀 Modüler Portfolyo Yönetim Kılavuzu
 
-Bu portfolyo, projelerinizi tek bir dosyadan kolayca yönetebilmeniz için **veri odaklı (data-driven)** bir yapıya dönüştürülmüştür. Yeni bir proje eklemek için HTML kopyalamanıza gerek yoktur.
+Bu portfolyo, projelerinizi tek bir dosyadan kolayca yönetebilmeniz için **veri odaklı (data-driven)** ve **modüler** bir yapıya dönüştürülmüştür.
 
 ---
 
 ## 📂 Temel Dosya Yapısı
 - `projects-data.js`: Tüm projelerinizin bilgilerinin tutulduğu ana dosya. **Düzenleme yapacağınız yer burasıdır.**
-- `portfolio.html`: Proje kartlarını otomatik olarak oluşturur.
-- `project-detail.html`: Tüm projeler için ortak kullanılan dinamik şablon sayfasıdır.
+- `portfolio.html`: Proje kartlarını otomatik olarak oluşturur (sayfa başına 6 proje).
+- `project-detail.html`: Dinamik şablon sayfasıdır. Artık her bölüm için fotoğraf, video veya PDF eklemeyi destekler.
 
 ---
 
 ## ➕ Yeni Proje Nasıl Eklenir?
 
-`projects-data.js` dosyasını açın ve `PROJECTS` dizisinin içine yeni bir obje ekleyin:
+`projects-data.js` dosyasını açın ve `PROJECTS` dizisinin içine yeni bir proje [objesi] ekleyin. İşte en güncel şablon:
 
 ```javascript
 {
     id: "proje-kimligi", // Benzersiz bir isim (boşluksuz)
     title: "Projenin Tam Adı",
-    category: "Kategori (örn: React & Node)",
-    thumbnail: "images/onizleme.jpg", // Ana sayfadaki küçük resim
-    bannerType: "image", // "image" veya "pdf"
-    bannerSrc: "images/buyuk-banner.jpg", // Resim yolu veya PDF adı
-    metadata: "Göreviniz (2026)",
+    category: "Kategori",
+    thumbnail: "images/onizleme.jpg", // Kart resmi
+    bannerType: "image", // "image" veya "pdf" (Sayfa başındaki arka plan)
+    bannerSrc: "images/banner.jpg",
+    metadata: "Göreviniz (2025)",
     intro: "Projenin kısa özeti...",
+    
+    // 📸 GİRİŞİN ALTINDAKİ ANA MEDYA (Opsiyonel)
+    mainMedia: { type: "image", src: "images/ana-gorsel.jpg", caption: "Açıklama" },
+    
     sections: [
         {
             id: "bolum-1",
             title: "BÖLÜM BAŞLIĞI",
-            content: "Bu bölüme gelecek detaylı açıklama metni."
+            blocks: [
+                { type: "text", value: "Buraya metin gelecek." },
+                { type: "image", src: "images/resim1.jpg", caption: "Resim altı yazısı" },
+                { type: "video", src: "https://www.youtube.com/embed/VIDEO_ID", provider: "youtube" },
+                { type: "pdf", src: "dosya.pdf" }
+            ]
         }
     ]
 }
@@ -37,26 +46,34 @@ Bu portfolyo, projelerinizi tek bir dosyadan kolayca yönetebilmeniz için **ver
 
 ---
 
-## 🖼️ Banner Tipleri
+## 🛠️ Modüler Blok Tipleri
 
-### 1. Resim Kullanmak
-Eğer projenin başında sadece bir resim görülsün istiyorsanız:
-- `bannerType: "image"` ayarlayın.
-- `bannerSrc` kısmına resmin yolunu yazın (örn: `images/banner.jpg`).
+Her `sections` içindeki `blocks` dizisinde şu tipleri kullanabilirsiniz:
 
-### 2. PDF Kullanmak (Zelda Projesindeki gibi)
-Eğer projenin başında kaydırılabilir bir PDF dosyası olsun istiyorsanız:
-- `bannerType: "pdf"` ayarlayın.
-- `bannerSrc` kısmına PDF dosyasının adını yazın (örn: `DosyaAdi.pdf`).
-- **Önemli:** PDF dosyasını `portfolio` klasörünün içine atmayı unutmayın.
+1.  **Metin (`text`):** `{ type: "text", value: "Metniniz..." }`
+2.  **Resim (`image`):** `{ type: "image", src: "yol/resim.jpg", caption: "Opsiyonel başlık" }`
+3.  **Video (`video`):**
+    - YouTube: `{ type: "video", src: "https://www.youtube.com/embed/ID", provider: "youtube" }`
+    - Yerel: `{ type: "video", src: "video.mp4" }`
+4.  **PDF (`pdf`):** `{ type: "pdf", src: "dosya.pdf" }`
+5.  **Yan Yana Medya (`media-group`):** Birden fazla resmi yan yana koymak için kullanılır:
+    ```javascript
+    {
+        type: "media-group",
+        items: [
+            { type: "image", src: "resim1.jpg", caption: "Sol" },
+            { type: "image", src: "resim2.jpg", caption: "Sağ" }
+        ]
+    }
+    ```
 
 ---
 
-## 💡 İpuçları
-- **Sıralama:** `PROJECTS` dizisindeki projelerin sırası, ana sayfadaki görünüm sırasını belirler.
-- **Bölümler:** `sections` kısmına istediğiniz kadar blok ekleyebilirsiniz; şablon bunları otomatik olarak alt alta dizecektir.
-- **Görseller:** Resimlerinizi `images/` klasörü altında toplamak düzenli kalmanızı sağlar.
+## 💡 İpucu
+- İstediğiniz sırada ve istediğiniz kadar blok ekleyebilirsiniz.
+- **Yan Yana Resimler:** Eğer `media-group` içine 2 resim eklerseniz, bunlar otomatik olarak yan yana dizilir ve ekrana sığacak şekilde ölçeklenir. Mobil cihazlarda ise otomatik olarak alt alta gelir.
+- Sayfa başındaki `bannerType: "pdf"` ayarı, projenin en üstündeki hero alanını PDF yaparken, `blocks` içindeki PDF'ler sayfanın akışında görünür.
 
 ---
 
-Bu yapı sayesinde artık projeniz sınırsız genişleyebilir! 🌟
+Bu esnek yapı sayesinde projelerinizi dilediğiniz gibi süsleyebilirsiniz! 🌟

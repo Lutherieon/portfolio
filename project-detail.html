@@ -76,8 +76,9 @@
                     document.getElementById('page-project-title').textContent = project.title;
                     document.getElementById('page-project-metadata').textContent = project.metadata;
                     document.getElementById('page-project-intro').textContent = project.intro;
+                    const contentArea = document.getElementById('project-content-area');
 
-                    // 2. Handle Banner (Image vs PDF)
+                    // 2. Handle Banner (Top Background)
                     const bannerContainer = document.getElementById('hero-banner');
                     if (project.bannerType === 'pdf') {
                         bannerContainer.className = 'pdf-container';
@@ -90,26 +91,89 @@
                                 <span id="page-num">1</span> / <span id="page-count">0</span>
                             </div>
                         `;
-                        // Trigger PDF load (logic exists in script.js, we just need to pass the URL)
                         window.PDF_SRC = project.bannerSrc;
                     } else {
                         bannerContainer.style.backgroundImage = `url('${project.bannerSrc}')`;
                     }
 
-                    // 3. Inject Sections
+                    // 3. Helper to render media blocks (Images, Videos, PDFs, Groups)
+                    function renderMediaBlock(media) {
+                        if (!media) return '';
+
+                        if (media.type === 'image') {
+                            return `
+                                <div class="media-block fade-in-section">
+                                    <img src="${media.src}" alt="${media.caption || ''}">
+                                    ${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}
+                                </div>
+                            `;
+                        } else if (media.type === 'video') {
+                            if (media.provider === 'youtube') {
+                                return `
+                                    <div class="media-block video-wrapper fade-in-section">
+                                        <iframe src="${media.src}" allowfullscreen></iframe>
+                                    </div>
+                                `;
+                            } else {
+                                return `
+                                    <div class="media-block video-wrapper fade-in-section">
+                                        <video controls src="${media.src}"></video>
+                                    </div>
+                                `;
+                            }
+                        } else if (media.type === 'pdf') {
+                            return `
+                                <div class="media-block pdf-block fade-in-section">
+                                    <embed src="${media.src}" type="application/pdf">
+                                </div>
+                            `;
+                        } else if (media.type === 'media-group') {
+                            let groupHTML = `<div class="media-grid fade-in-section">`;
+                            media.items.forEach(item => {
+                                groupHTML += renderMediaBlock(item);
+                            });
+                            groupHTML += `</div>`;
+                            return groupHTML;
+                        }
+                        return '';
+                    }
+
+                    // 4. Inject Main Media (under intro)
+                    if (project.mainMedia) {
+                        const mainMediaEl = document.createElement('div');
+                        mainMediaEl.innerHTML = renderMediaBlock(project.mainMedia);
+                        document.getElementById('page-project-intro').after(mainMediaEl);
+                    }
+
+                    // 5. Inject Sections / Blocks
                     const sectionsContainer = document.getElementById('dynamic-sections');
                     project.sections.forEach(section => {
                         const sectionEl = document.createElement('section');
                         sectionEl.className = 'content-block fade-in-section';
                         sectionEl.id = section.id;
-                        sectionEl.innerHTML = `
-                            <h2>${section.title}</h2>
-                            <p>${section.content}</p>
-                        `;
+
+                        let sectionHTML = `<h2>${section.title}</h2>`;
+
+                        // Support for new 'blocks' array
+                        if (section.blocks) {
+                            section.blocks.forEach(block => {
+                                if (block.type === 'text') {
+                                    sectionHTML += `<p class="text-block">${block.value}</p>`;
+                                } else {
+                                    sectionHTML += renderMediaBlock(block);
+                                }
+                            });
+                        }
+                        // Backward compatibility for old 'content' field
+                        else if (section.content) {
+                            sectionHTML += `<p>${section.content}</p>`;
+                        }
+
+                        sectionEl.innerHTML = sectionHTML;
                         sectionsContainer.appendChild(sectionEl);
                     });
 
-                    // 4. Re-initialize Fade Animations for new content
+                    // 6. Re-initialize Fade Animations for new content
                     if (window.initFadeAnimations) {
                         window.initFadeAnimations();
                     }
