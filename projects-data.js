@@ -1,3 +1,13 @@
+window.PORTFOLIO_CATEGORIES = [
+    "All",
+    "UI",
+    "UX",
+    "VIDEO GAMES",
+    "VIDEOS",
+    "VFX",
+    "WEB"
+];
+
 window.PROJECTS = [
     {
         id: "zelda",

@@ -28,6 +28,10 @@
     <main class="portfolio-container">
         <h1 class="page-title text-center">PORTFOLIO</h1>
 
+        <div id="portfolio-filters" class="portfolio-filters">
+            <!-- Filter buttons will be dynamically injected here -->
+        </div>
+
         <div class="portfolio-grid" id="portfolio-grid">
             <!-- Projects will be dynamically injected here -->
         </div>
@@ -40,17 +44,53 @@
             document.addEventListener("DOMContentLoaded", () => {
                 const grid = document.getElementById('portfolio-grid');
                 const pagination = document.getElementById('pagination');
+                const filtersContainer = document.getElementById('portfolio-filters');
                 const itemsPerPage = 6;
                 let currentPage = 1;
+                let currentCategory = 'All';
+                let filteredProjects = [];
 
                 if (grid && typeof PROJECTS !== 'undefined') {
-                    const totalPages = Math.ceil(PROJECTS.length / itemsPerPage);
+
+                    // Filter initialization
+                    const categories = window.PORTFOLIO_CATEGORIES || ['All'];
+
+                    function renderFilters() {
+                        if (filtersContainer && categories.length > 1) {
+                            filtersContainer.innerHTML = '';
+                            categories.forEach(category => {
+                                const btn = document.createElement('button');
+                                btn.className = `filter-btn ${category === currentCategory ? 'active' : ''}`;
+                                btn.innerText = category;
+                                btn.addEventListener('click', () => {
+                                    currentCategory = category;
+                                    currentPage = 1; // Reset to first page
+                                    renderFilters(); // Update active state
+                                    updateFilteredProjects();
+                                });
+                                filtersContainer.appendChild(btn);
+                            });
+                        }
+                    }
+
+                    function updateFilteredProjects() {
+                        if (currentCategory === 'All') {
+                            filteredProjects = PROJECTS;
+                        } else {
+                            // Using includes on toUpperCase for flexible matching
+                            filteredProjects = PROJECTS.filter(p =>
+                                p.category && p.category.toUpperCase().includes(currentCategory.toUpperCase())
+                            );
+                        }
+                        renderProjects(currentPage);
+                        renderPagination();
+                    }
 
                     function renderProjects(page) {
                         grid.innerHTML = '';
                         const start = (page - 1) * itemsPerPage;
                         const end = start + itemsPerPage;
-                        const paginatedItems = PROJECTS.slice(start, end);
+                        const paginatedItems = filteredProjects.slice(start, end);
 
                         paginatedItems.forEach(project => {
                             const card = document.createElement('a');
@@ -67,14 +107,16 @@
                             grid.appendChild(card);
                         });
 
-                        // Scroll to top of grid when page changes
-                        if (page !== 1 || pagination.innerHTML !== '') {
-                            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+                        // Scroll to top of grid when page changes (only if it wasn't the first load)
+                        if (page !== 1 || (pagination.innerHTML !== '' && pagination.children.length > 1)) {
+                            const targetTop = filtersContainer ? filtersContainer.offsetTop - 120 : grid.offsetTop - 100;
+                            window.scrollTo({ top: targetTop, behavior: 'smooth' });
                         }
                     }
 
                     function renderPagination() {
                         pagination.innerHTML = '';
+                        const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
                         if (totalPages <= 1) return;
 
@@ -91,8 +133,8 @@
                         }
                     }
 
-                    renderProjects(currentPage);
-                    renderPagination();
+                    renderFilters();
+                    updateFilteredProjects();
                 }
             });
         </script>

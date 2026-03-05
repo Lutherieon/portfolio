@@ -93,7 +93,23 @@ window.RESUME_DATA = {
 
 ## 4️⃣ Proje (PORTFOLIO) Eklemek
 
-`window.PROJECTS` dizini portfolyonuzun belkemiğidir. Portfolyo sayfanızda (ızgara yapıdaki) sergilenecek her proje bu dizine bir obje olarak eklenir.
+Portfolyo sayfanızda sergilenecek her proje `window.PROJECTS` dizinine bir obje olarak eklenir. Ayrıca, yeni eklediğimiz **Kategori Filtreleme Sistemi** sayesinde projelerinizi ana başlıklara ayırabilirsiniz.
+
+### Kategori (Filtre) Eklemek veya Değiştirmek
+Projelerinizin hangi başlıklar (UI, UX, VIDEO GAMES vb.) altında filtreleneceğini belirlemek için dosyanın en üstündeki `window.PORTFOLIO_CATEGORIES` listesini kullanırsınız. Buraya eklediğiniz her kelime, portfolyo sayfasında bir filtre butonuna dönüşür.
+
+```javascript
+window.PORTFOLIO_CATEGORIES = [
+    "All",
+    "UI",
+    "UX",
+    "VIDEO GAMES",
+    "YENI BIR KATEGORI BOYLE EKLENIR"
+];
+```
+
+### Projeyi Eklemek ve Kategoriye Atamak
+Projenizi listeye eklerken, `category` alanına yukarıdaki filtre listesinde olan bir kelimeyi (büyük/küçük harf fark etmeksizin) yazarsanız, projeniz o filtreye tıklandığında görünür. Veya, sadece ekranda o kategorinin "Alt Başlığı" gibi görünmesini sağlamak için istediğiniz bir metni de yazabilirsiniz. Ancak projenin filtrelenebilmesi için `PORTFOLIO_CATEGORIES` içindeki bir kelimeyi içermesi gerekmektedir.
 
 ```javascript
 window.PROJECTS = [
