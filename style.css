@@ -1282,6 +1282,8 @@ footer {
     /* Hero adjustments */
     .project-hero {
         height: auto;
+        min-height: unset;
+        /* Remove explicit min-height for mobile screens */
         aspect-ratio: 16 / 9;
         /* Matches typical contained poster shapes on phone */
     }
