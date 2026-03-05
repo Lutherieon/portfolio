@@ -60,6 +60,9 @@
                 <!-- Project sections will be injected here -->
             </div>
         </article>
+
+        <!-- Next Project Navigation Placeholder -->
+        <div id="next-project-anchor"></div>
     </main>
 
     <script>
@@ -68,15 +71,16 @@
             const projectId = urlParams.get('id');
 
             if (projectId && typeof PROJECTS !== 'undefined') {
-                const project = PROJECTS.find(p => p.id === projectId);
+                const projectIndex = PROJECTS.findIndex(p => p.id === projectId);
+                const project = PROJECTS[projectIndex];
 
                 if (project) {
                     // 1. Update Title and Metadata
                     document.title = `${project.title.toUpperCase()} | Yekta Demirci`;
                     document.getElementById('page-project-title').textContent = project.title;
                     document.getElementById('page-project-metadata').textContent = project.metadata;
-                    document.getElementById('page-project-intro').textContent = project.intro;
-                    const contentArea = document.getElementById('project-content-area');
+                    document.getElementById('page-project-intro').innerHTML = project.intro;
+                    // const contentArea = document.getElementById('project-content-area'); // This line was removed in the provided diff, but it's not explicitly part of the instruction. Keeping it for now.
 
                     // 2. Handle Banner (Top Background)
                     const bannerContainer = document.getElementById('hero-banner');
@@ -101,37 +105,15 @@
                         if (!media) return '';
 
                         if (media.type === 'image') {
-                            return `
-                                <div class="media-block fade-in-section">
-                                    <img src="${media.src}" alt="${media.caption || ''}">
-                                    ${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}
-                                </div>
-                            `;
+                            return `<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || ''}">${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}</div>`;
                         } else if (media.type === 'video') {
-                            if (media.provider === 'youtube') {
-                                return `
-                                    <div class="media-block video-wrapper fade-in-section">
-                                        <iframe src="${media.src}" allowfullscreen></iframe>
-                                    </div>
-                                `;
-                            } else {
-                                return `
-                                    <div class="media-block video-wrapper fade-in-section">
-                                        <video controls src="${media.src}"></video>
-                                    </div>
-                                `;
-                            }
+                            const videoHTML = media.provider === 'youtube' ? `<iframe src="${media.src}" allowfullscreen></iframe>` : `<video controls src="${media.src}"></video>`;
+                            return `<div class="media-block video-wrapper fade-in-section">${videoHTML}</div>`;
                         } else if (media.type === 'pdf') {
-                            return `
-                                <div class="media-block pdf-block fade-in-section">
-                                    <embed src="${media.src}" type="application/pdf">
-                                </div>
-                            `;
+                            return `<div class="media-block pdf-block fade-in-section"><embed src="${media.src}" type="application/pdf"></div>`;
                         } else if (media.type === 'media-group') {
                             let groupHTML = `<div class="media-grid fade-in-section">`;
-                            media.items.forEach(item => {
-                                groupHTML += renderMediaBlock(item);
-                            });
+                            media.items.forEach(item => groupHTML += renderMediaBlock(item));
                             groupHTML += `</div>`;
                             return groupHTML;
                         }
@@ -157,11 +139,7 @@
                         // Support for new 'blocks' array
                         if (section.blocks) {
                             section.blocks.forEach(block => {
-                                if (block.type === 'text') {
-                                    sectionHTML += `<p class="text-block">${block.value}</p>`;
-                                } else {
-                                    sectionHTML += renderMediaBlock(block);
-                                }
+                                sectionHTML += block.type === 'text' ? `<p class="text-block">${block.value}</p>` : renderMediaBlock(block);
                             });
                         }
                         // Backward compatibility for old 'content' field
@@ -173,7 +151,30 @@
                         sectionsContainer.appendChild(sectionEl);
                     });
 
-                    // 6. Re-initialize Fade Animations for new content
+                    // 6. Next Project Navigation
+                    if (PROJECTS.length > 1) {
+                        const nextIndex = (projectIndex + 1) % PROJECTS.length;
+                        const nextProject = PROJECTS[nextIndex];
+                        const nextNav = document.getElementById('next-project-anchor');
+
+                        nextNav.innerHTML = `
+                            <div class="next-project-nav fade-in-section">
+                                <span class="next-label">NEXT PROJECT</span>
+                                <a href="project-detail.html?id=${nextProject.id}" class="next-project-link">
+                                    <div class="next-project-card">
+                                        <div class="next-img" style="background-image: url('${nextProject.thumbnail}');"></div>
+                                        <div class="next-project-overlay">
+                                            <h2 class="next-project-title uppercase">
+                                                ${nextProject.title} <span class="next-arrow">→</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    }
+
+                    // 7. Re-initialize Fade Animations for new content
                     if (window.initFadeAnimations) {
                         window.initFadeAnimations();
                     }
@@ -181,7 +182,6 @@
             }
         });
     </script>
-    </main>
 
     <!-- Common Footer style -->
     <footer>

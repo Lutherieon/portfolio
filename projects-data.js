@@ -6,9 +6,9 @@ const PROJECTS = [
         thumbnail: "images/pic01.jpg",
         bannerType: "pdf", // This is the TOP background banner
         bannerSrc: "PschologyFinal.pdf",
-        metadata: "Lead UX Researcher & Analyst (2025)",
-        intro: "This project explores the intricate UX design patterns of Breath of the Wild, focusing on player immersion and interface minimalism.",
-        mainMedia: { type: "pdf", src: "Psc" }, // Modular media under intro
+        metadata: "Lead UX Researcher & Analyst (2026)",
+        intro: `Prepared as part of the GAD3024 Psychology for Game Design course led by <b>Asst. Prof. Dr. Çakır Aker</b>, this project presents a User Experience (UX) analysis of <b>The Legend of Zelda: Breath of the Wild</b>. The one-month research process was conducted through regular consultations with the faculty, utilizing the methodology from Celia Hodent’s (2017) <i>"The Gamer’s Brain"</i> to examine player cognitive processes.`,
+        mainMedia: { type: "pdf", src: "PschologyFinal.pdf" }, // Fixed typo from Psc
         sections: [
             {
                 id: "research",
@@ -30,7 +30,7 @@ const PROJECTS = [
                 title: "ANALYSIS PROCESS",
                 blocks: [
                     { type: "text", value: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points." },
-                    { type: "video", src: "...", provider: "youtube" }
+                    { type: "video", src: "https://www.youtube.com/embed/zw47_q9wbBE", provider: "youtube" }
                 ]
             }
         ]

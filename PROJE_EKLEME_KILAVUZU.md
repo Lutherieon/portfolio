@@ -72,6 +72,8 @@ Her `sections` içindeki `blocks` dizisinde şu tipleri kullanabilirsiniz:
 ## 💡 İpucu
 - İstediğiniz sırada ve istediğiniz kadar blok ekleyebilirsiniz.
 - **Yan Yana Resimler:** Eğer `media-group` içine 2 resim eklerseniz, bunlar otomatik olarak yan yana dizilir ve ekrana sığacak şekilde ölçeklenir. Mobil cihazlarda ise otomatik olarak alt alta gelir.
+- **Metin Vurgulama (Bold/İtalik):** `intro` veya `text` bloklarında `<b>vurgulu</b>` veya `<i>italik</i>` gibi HTML etiketleri kullanabilirsiniz.
+- **Kesme İşareti/Tırnak:** Metni tırnak işareti (`" "`) yerine backtick (`` ` ``) içine alırsanız, içindeki tırnak işaretlerini kaçış karakteri kullanmadan rahatça yazabilirsiniz.
 - Sayfa başındaki `bannerType: "pdf"` ayarı, projenin en üstündeki hero alanını PDF yaparken, `blocks` içindeki PDF'ler sayfanın akışında görünür.
 
 ---
