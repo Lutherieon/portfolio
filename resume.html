@@ -69,18 +69,18 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            if (typeof RESUME_DATA !== 'undefined') {
+            if (typeof window.RESUME_DATA !== 'undefined') {
                 // 1. Update Header and Download
-                document.getElementById('resume-title').textContent = RESUME_DATA.title;
+                document.getElementById('resume-title').textContent = window.RESUME_DATA.title;
                 const downloadBtn = document.getElementById('resume-download-btn');
-                downloadBtn.href = RESUME_DATA.downloadLink;
-                downloadBtn.textContent = RESUME_DATA.downloadLabel;
+                downloadBtn.href = window.RESUME_DATA.downloadLink;
+                downloadBtn.textContent = window.RESUME_DATA.downloadLabel;
 
                 // 2. Inject Experience and Dots
                 const container = document.getElementById('dynamic-resume-list');
                 const dotsList = document.getElementById('resume-dots');
 
-                RESUME_DATA.experience.forEach(item => {
+                window.RESUME_DATA.experience.forEach(item => {
                     // Create Item Element
                     const itemEl = document.createElement('div');
                     itemEl.className = 'resume-item fade-in-section';
@@ -108,9 +108,11 @@
                     dotsList.appendChild(dotLi);
                 });
 
-                // Re-initialize Dot Nav Highlight from script.js
+                // Re-initialize animations and nav
+                if (window.initFadeAnimations) window.initFadeAnimations();
                 if (window.initDotNav) window.initDotNav();
-                // Force a refresh of visibility for newly added sections
+
+                // Force a refresh of visibility
                 window.dispatchEvent(new Event('resize'));
             }
         });

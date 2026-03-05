@@ -1,4 +1,4 @@
-const PROJECTS = [
+window.PROJECTS = [
     {
         id: "zelda",
         title: "The Legend of Zelda: Breath of the Wild",
@@ -167,7 +167,7 @@ const PROJECTS = [
     }
 ];
 
-const HOME_SECTIONS = [
+window.HOME_SECTIONS = [
     {
         id: "background",
         title: "Background",
@@ -188,7 +188,7 @@ const HOME_SECTIONS = [
     }
 ];
 
-const FEATURED_DATA = {
+window.FEATURED_DATA = {
     title: "FEATURED",
     subtitle: "Speaking Engagements | Publications | Open Source Contributions",
     groups: [
@@ -229,7 +229,7 @@ const FEATURED_DATA = {
     ]
 };
 
-const RESUME_DATA = {
+window.RESUME_DATA = {
     title: "RESUME",
     downloadLink: "#",
     downloadLabel: "RESUME 2026",

@@ -1,25 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Fade-in on scroll animation
-    const fadeElements = document.querySelectorAll('.fade-in-section');
+    // 1. Fade-on-scroll animation
+    window.initFadeAnimations = () => {
+        const fadeElements = document.querySelectorAll('.fade-in-section:not(.is-visible)');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.05
+        };
 
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.05 // Trigger when 5% of the element is visible (fixes double scroll on tall elements)
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => observer.observe(el));
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target); // Optional: Stop observing once faded in
-            }
-        });
-    }, observerOptions);
-
-    fadeElements.forEach(el => {
-        observer.observe(el);
-    });
+    // Initial call
+    window.initFadeAnimations();
 
     // 2. Dot Navigation Highlight on Scroll
     window.initDotNav = () => {
@@ -58,16 +60,21 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             // Force last dot if at very bottom
-            if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 50)) {
-                const lastHref = navDots[navDots.length - 1].getAttribute('href');
-                if (lastHref && lastHref.startsWith('#')) {
-                    currentSection = lastHref.substring(1);
-                }
+            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+                const lastDot = navDots[navDots.length - 1];
+                const lastHref = lastDot.getAttribute('href');
+                if (lastHref) currentSection = lastHref.substring(1);
+            }
+
+            // Fallback for Hero
+            if (window.scrollY < 200 && navDots.length > 0) {
+                const firstHref = navDots[0].getAttribute('href');
+                if (firstHref) currentSection = firstHref.substring(1);
             }
 
             navDots.forEach(dot => {
                 dot.classList.remove('active');
-                if (currentSection && dot.getAttribute('href').includes(currentSection)) {
+                if (dot.getAttribute('href') === `#${currentSection}`) {
                     dot.classList.add('active');
                 }
             });
@@ -76,105 +83,64 @@ document.addEventListener("DOMContentLoaded", () => {
         window._dotNavScrollHandler = updateActiveDot;
         window._dotNavResizeHandler = checkScrollability;
 
-        window.addEventListener('scroll', window._dotNavScrollHandler);
-        window.addEventListener('resize', window._dotNavResizeHandler);
+        window.addEventListener('scroll', updateActiveDot);
+        window.addEventListener('resize', checkScrollability);
 
-        checkScrollability();
+        // Initial run
         updateActiveDot();
+        checkScrollability();
     };
 
-    // Initial call for static pages
+    // Initial call
     window.initDotNav();
 
-    // 3. Dynamic Content Support (Intersection Observer Re-run)
-    // We export this so project-detail.html can call it after injecting sections.
-    window.initFadeAnimations = () => {
-        const fadeElements = document.querySelectorAll('.fade-in-section:not(.is-visible)');
-        fadeElements.forEach(el => observer.observe(el));
-    };
-
-    // 4. PDF Viewer Carousel (Project Detail Page)
-    const pdfCanvas = document.getElementById('pdf-canvas');
-    if (pdfCanvas) {
-        // Use the global PDF_SRC if available, otherwise fallback
-        const checkPdfSrc = setInterval(() => {
-            if (window.PDF_SRC) {
-                clearInterval(checkPdfSrc);
-                loadPDF(window.PDF_SRC);
-            }
-        }, 100);
-
-        // Also try immediately just in case
-        if (window.PDF_SRC) {
-            clearInterval(checkPdfSrc);
-            loadPDF(window.PDF_SRC);
-        }
-
-        function loadPDF(url) {
-            let pdfDoc = null,
-                pageNum = 1,
-                pageRendering = false,
-                pageNumPending = null,
-                scale = 1.5,
-                ctx = pdfCanvas.getContext('2d');
-
-            function renderPage(num) {
-                pageRendering = true;
-                pdfDoc.getPage(num).then((page) => {
-                    const viewport = page.getViewport({ scale: scale });
-                    pdfCanvas.height = viewport.height;
-                    pdfCanvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: ctx,
-                        viewport: viewport
-                    };
-                    const renderTask = page.render(renderContext);
-
-                    renderTask.promise.then(() => {
-                        pageRendering = false;
-                        if (pageNumPending !== null) {
-                            renderPage(pageNumPending);
-                            pageNumPending = null;
-                        }
-                    });
+    // 3. Smooth scrolling for dot navigation
+    document.querySelectorAll('.dot-nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
                 });
-                document.getElementById('page-num').textContent = num;
             }
+        });
+    });
 
-            function queueRenderPage(num) {
-                if (pageRendering) {
-                    pageNumPending = num;
-                } else {
-                    renderPage(num);
+    // 4. Project Detail PDF Handling
+    const pdfContainer = document.getElementById('pdf-canvas-container');
+    if (pdfContainer) {
+        const url = pdfContainer.getAttribute('data-pdf-url');
+        if (url && typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+            const loadingTask = pdfjsLib.getDocument(url);
+            loadingTask.promise.then(pdf => {
+                // For simplicity, just render first page or all pages
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    pdf.getPage(i).then(page => {
+                        const viewport = page.getViewport({ scale: 1.5 });
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        canvas.style.width = "100%";
+                        canvas.style.marginBottom = "20px";
+                        pdfContainer.appendChild(canvas);
+
+                        page.render({
+                            canvasContext: context,
+                            viewport: viewport
+                        });
+                    });
                 }
-            }
-
-            function onPrevPage() {
-                if (pageNum <= 1) return;
-                pageNum--;
-                queueRenderPage(pageNum);
-            }
-            document.getElementById('prev-page').addEventListener('click', onPrevPage);
-
-            function onNextPage() {
-                if (pageNum >= pdfDoc.numPages) return;
-                pageNum++;
-                queueRenderPage(pageNum);
-            }
-            document.getElementById('next-page').addEventListener('click', onNextPage);
-
-            pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
-                pdfDoc = pdfDoc_;
-                document.getElementById('page-count').textContent = pdfDoc.numPages;
-                renderPage(pageNum);
             }).catch(err => {
-                console.error('Error loading PDF:', err);
-                const container = document.getElementById('pdf-viewer-container');
-                container.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffcc00; margin-bottom: 15px;"></i>
-                    <p>PDF yüklenemedi. Lütfen <b>${url}</b> dosyasının klasörde olduğundan emin olun.</p>
-                </div>`;
+                console.error("PDF error:", err);
+                pdfContainer.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffcc00; margin-bottom: 15px;"></i>
+                        <p>PDF yüklenemedi. Lütfen <b>${url}</b> dosyasının klasörde olduğundan emin olun.</p>
+                    </div>`;
             });
         }
     }

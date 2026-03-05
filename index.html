@@ -100,12 +100,12 @@
 			});
 
 			// 2. Dynamic Home Sections Injection
-			if (typeof HOME_SECTIONS !== 'undefined') {
+			if (typeof window.HOME_SECTIONS !== 'undefined') {
 				const container = document.getElementById('dynamic-home-sections');
 				const dotsList = document.getElementById('home-dots');
 				const contactDot = dotsList.querySelector('li:last-child');
 
-				HOME_SECTIONS.forEach((section, index) => {
+				window.HOME_SECTIONS.forEach((section, index) => {
 					const isAlternate = index % 2 === 0; // Even indexes get alternate class
 					const sectionEl = document.createElement('section');
 					sectionEl.className = `info-section ${isAlternate ? 'alternate' : ''} fade-in-section`;
@@ -115,8 +115,6 @@
 					const paragraphs = section.text.map(p => `<p>${p}</p>`).join('');
 
 					// Construct Section innerHTML (Image + Text)
-					// Logic: If alternate, image is first child in DOM (appears on right due to row-reverse)
-					// If standard, text is first child in DOM (appears on left due to row)
 					if (isAlternate) {
 						sectionEl.innerHTML = `
                             <div class="section-image" style="background-image: url('${section.image}');"></div>
@@ -143,9 +141,11 @@
 					dotsList.insertBefore(dotLi, contactDot);
 				});
 
-				// Re-initialize Dot Nav Highlight and Animations from script.js
+				// Re-initialize animations and nav
+				if (window.initFadeAnimations) window.initFadeAnimations();
 				if (window.initDotNav) window.initDotNav();
-				// Force a refresh of visibility for newly added sections
+
+				// Force a refresh of visibility
 				window.dispatchEvent(new Event('resize'));
 			}
 		});

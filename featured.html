@@ -63,16 +63,16 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            if (typeof FEATURED_DATA !== 'undefined') {
+            if (typeof window.FEATURED_DATA !== 'undefined') {
                 // 1. Update Header
-                document.getElementById('featured-title').textContent = FEATURED_DATA.title;
-                document.getElementById('featured-subtitle').textContent = FEATURED_DATA.subtitle;
+                document.getElementById('featured-title').textContent = window.FEATURED_DATA.title;
+                document.getElementById('featured-subtitle').textContent = window.FEATURED_DATA.subtitle;
 
                 // 2. Inject Groups and Dots
                 const container = document.getElementById('dynamic-featured-list');
                 const dotsList = document.getElementById('featured-dots');
 
-                FEATURED_DATA.groups.forEach(group => {
+                window.FEATURED_DATA.groups.forEach(group => {
                     // Create Year Group Element
                     const groupEl = document.createElement('div');
                     groupEl.className = 'featured-year-group fade-in-section';
@@ -104,9 +104,11 @@
                     dotsList.appendChild(dotLi);
                 });
 
-                // Re-initialize Dot Nav Highlight from script.js
+                // Re-initialize animations and nav
+                if (window.initFadeAnimations) window.initFadeAnimations();
                 if (window.initDotNav) window.initDotNav();
-                // Force a refresh of visibility for newly added sections
+
+                // Force a refresh of visibility
                 window.dispatchEvent(new Event('resize'));
             }
         });
