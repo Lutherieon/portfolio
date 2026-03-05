@@ -1325,6 +1325,19 @@ footer {
     height: 100%;
 }
 
+.media-block {
+    margin: 40px 0;
+    width: 100%;
+}
+
+.media-block img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+
 .media-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
