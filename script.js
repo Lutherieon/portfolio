@@ -59,15 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Force last dot if at very bottom
-            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+            // Force last dot if at very bottom (added Math.ceil and relaxed threshold)
+            if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 20) {
                 const lastDot = navDots[navDots.length - 1];
                 const lastHref = lastDot.getAttribute('href');
                 if (lastHref) currentSection = lastHref.substring(1);
             }
 
-            // Fallback for Hero
-            if (window.scrollY < 200 && navDots.length > 0) {
+            // Fallback for Hero / Top
+            if (window.scrollY < 100 && navDots.length > 0) {
                 const firstHref = navDots[0].getAttribute('href');
                 if (firstHref) currentSection = firstHref.substring(1);
             }
@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window._dotNavScrollHandler = updateActiveDot;
         window._dotNavResizeHandler = checkScrollability;
 
-        window.addEventListener('scroll', updateActiveDot);
-        window.addEventListener('resize', checkScrollability);
+        window.addEventListener('scroll', updateActiveDot, { passive: true });
+        window.addEventListener('resize', checkScrollability, { passive: true });
 
         // Initial run
         updateActiveDot();
@@ -94,18 +94,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initial call
     window.initDotNav();
 
-    // 3. Smooth scrolling for dot navigation
-    document.querySelectorAll('.dot-nav a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+    // 3. Smooth scrolling for dot navigation (using Event Delegation)
+    document.addEventListener('click', function (e) {
+        const anchor = e.target.closest('.dot-nav a');
+        if (anchor) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
+            const targetId = anchor.getAttribute('href');
+
+            // Special handling for scrolling to Top
+            if (targetId === '#navbar' || targetId === '#top') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({
                     behavior: 'smooth'
                 });
             }
-        });
+        }
     });
 
     // 4. Project Detail PDF Handling

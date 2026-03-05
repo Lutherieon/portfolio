@@ -182,8 +182,7 @@ window.HOME_SECTIONS = [
         title: "Philosophy",
         image: "images/pic01.jpg",
         text: [
-            "Humans are multifaceted, intersectional, and complex beings. Our technology should be the same way. Modern web development affords us the opportunity to bridge the gaps of current flat design and create a dynamic environment around us.",
-            "Conversely, we have the opportunity and the responsibility for that new technology to be flexible, scalable, and accessible by all humankind. Good code is not just about function; it's about building a sustainable foundation for the future."
+            "My design philosophy lies at the intersection of technical precision and cognitive psychology. To me, game design is not just about building mechanics; it is about crafting systems that manage player attention, memory, and motivation."
         ]
     }
 ];
