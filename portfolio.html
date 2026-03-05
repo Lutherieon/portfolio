@@ -32,24 +32,67 @@
             <!-- Projects will be dynamically injected here -->
         </div>
 
+        <div id="pagination" class="pagination">
+            <!-- Page numbers will be injected here -->
+        </div>
+
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const grid = document.getElementById('portfolio-grid');
-                if (grid && typeof PROJECTS !== 'undefined') {
-                    PROJECTS.forEach(project => {
-                        const card = document.createElement('a');
-                        card.href = `project-detail.html?id=${project.id}`;
-                        card.className = 'project-card';
+                const pagination = document.getElementById('pagination');
+                const itemsPerPage = 6;
+                let currentPage = 1;
 
-                        card.innerHTML = `
-                            <div class="card-image" style="background-image: url('${project.thumbnail}');"></div>
-                            <div class="card-overlay">
-                                <h3 class="uppercase">${project.title}</h3>
-                                <p class="italic">${project.category}</p>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                    });
+                if (grid && typeof PROJECTS !== 'undefined') {
+                    const totalPages = Math.ceil(PROJECTS.length / itemsPerPage);
+
+                    function renderProjects(page) {
+                        grid.innerHTML = '';
+                        const start = (page - 1) * itemsPerPage;
+                        const end = start + itemsPerPage;
+                        const paginatedItems = PROJECTS.slice(start, end);
+
+                        paginatedItems.forEach(project => {
+                            const card = document.createElement('a');
+                            card.href = `project-detail.html?id=${project.id}`;
+                            card.className = 'project-card';
+
+                            card.innerHTML = `
+                                <div class="card-image" style="background-image: url('${project.thumbnail}');"></div>
+                                <div class="card-overlay">
+                                    <h3 class="uppercase">${project.title}</h3>
+                                    <p class="italic">${project.category}</p>
+                                </div>
+                            `;
+                            grid.appendChild(card);
+                        });
+
+                        // Scroll to top of grid when page changes
+                        if (page !== 1 || pagination.innerHTML !== '') {
+                            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+                        }
+                    }
+
+                    function renderPagination() {
+                        pagination.innerHTML = '';
+
+                        if (totalPages <= 1) return;
+
+                        for (let i = 1; i <= totalPages; i++) {
+                            const btn = document.createElement('button');
+                            btn.innerText = i;
+                            btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                            btn.addEventListener('click', () => {
+                                currentPage = i;
+                                renderProjects(currentPage);
+                                renderPagination();
+                            });
+                            pagination.appendChild(btn);
+                        }
+                    }
+
+                    renderProjects(currentPage);
+                    renderPagination();
                 }
             });
         </script>

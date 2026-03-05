@@ -1190,3 +1190,49 @@ footer {
         font-size: 1.5rem;
     }
 }
+
+/* --- PAGINATION --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.page-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #1a1a1a;
+    color: #999;
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn:hover {
+    border-color: var(--accent-teal);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--accent-glow);
+}
+
+.page-btn.active {
+    background-color: var(--accent-teal);
+    color: #000;
+    border-color: var(--accent-teal);
+    font-weight: 600;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.page-btn.nav-arrow {
+    font-size: 1.2rem;
+}
