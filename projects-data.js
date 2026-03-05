@@ -8,7 +8,7 @@ const PROJECTS = [
         bannerSrc: "PschologyFinal.pdf",
         metadata: "Lead UX Researcher & Analyst (2025)",
         intro: "This project explores the intricate UX design patterns of Breath of the Wild, focusing on player immersion and interface minimalism.",
-        mainMedia: { type: "pdf", src: "PschologyFinal.pdf" }, // Modular media under intro
+        mainMedia: { type: "pdf", src: "Psc" }, // Modular media under intro
         sections: [
             {
                 id: "research",
@@ -30,7 +30,7 @@ const PROJECTS = [
                 title: "ANALYSIS PROCESS",
                 blocks: [
                     { type: "text", value: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points." },
-                    { type: "video", src: "https://www.youtube.com/embed/zw47_q9wbBE", provider: "youtube" }
+                    { type: "video", src: "...", provider: "youtube" }
                 ]
             }
         ]
