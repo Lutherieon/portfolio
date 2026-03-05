@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body class="page-project-detail">
@@ -23,10 +25,23 @@
         </ul>
     </nav>
 
-    <!-- Hero Banner Full Width -->
+    <!-- Hero Banner with PDF Viewer -->
     <header class="project-hero">
-        <div class="hero-image-placeholder" style="background-color: #222;">
-            <!-- User will place their high-res project cover image here -->
+        <div id="pdf-viewer-container" class="pdf-container">
+            <canvas id="pdf-canvas"></canvas>
+
+            <!-- Navigation Arrows -->
+            <button id="prev-page" class="pdf-nav-btn prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="next-page" class="pdf-nav-btn next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Page Indicator (Optional but helpful) -->
+            <div id="page-num-display" class="page-indicator">
+                <span id="page-num">1</span> / <span id="page-count">0</span>
+            </div>
         </div>
     </header>
 
