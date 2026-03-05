@@ -53,106 +53,96 @@ document.addEventListener("DOMContentLoaded", () => {
         updateActiveDot(); // Trigger once on load
     }
 
-    // 3. PDF Viewer Carousel (Project Detail Page)
+    // 3. Dynamic Content Support (Intersection Observer Re-run)
+    // We export this so project-detail.html can call it after injecting sections.
+    window.initFadeAnimations = () => {
+        const fadeElements = document.querySelectorAll('.fade-in-section:not(.is-visible)');
+        fadeElements.forEach(el => observer.observe(el));
+    };
+
+    // 4. PDF Viewer Carousel (Project Detail Page)
     const pdfCanvas = document.getElementById('pdf-canvas');
     if (pdfCanvas) {
-        // Use the specific file provided by the user
-        const url = 'PschologyFinal.pdf';
+        // Use the global PDF_SRC if available, otherwise fallback
+        const checkPdfSrc = setInterval(() => {
+            if (window.PDF_SRC) {
+                clearInterval(checkPdfSrc);
+                loadPDF(window.PDF_SRC);
+            }
+        }, 100);
 
-        let pdfDoc = null,
-            pageNum = 1,
-            pageRendering = false,
-            pageNumPending = null,
-            scale = 1.5,
-            ctx = pdfCanvas.getContext('2d');
+        // Also try immediately just in case
+        if (window.PDF_SRC) {
+            clearInterval(checkPdfSrc);
+            loadPDF(window.PDF_SRC);
+        }
 
-        /**
-         * Get page info from document, resize canvas accordingly, and render page.
-         * @param num Page number.
-         */
-        function renderPage(num) {
-            pageRendering = true;
-            // Using promise to fetch the page
-            pdfDoc.getPage(num).then((page) => {
-                const viewport = page.getViewport({ scale: scale });
-                pdfCanvas.height = viewport.height;
-                pdfCanvas.width = viewport.width;
+        function loadPDF(url) {
+            let pdfDoc = null,
+                pageNum = 1,
+                pageRendering = false,
+                pageNumPending = null,
+                scale = 1.5,
+                ctx = pdfCanvas.getContext('2d');
 
-                // Render PDF page into canvas context
-                const renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-                const renderTask = page.render(renderContext);
+            function renderPage(num) {
+                pageRendering = true;
+                pdfDoc.getPage(num).then((page) => {
+                    const viewport = page.getViewport({ scale: scale });
+                    pdfCanvas.height = viewport.height;
+                    pdfCanvas.width = viewport.width;
 
-                // Wait for rendering to finish
-                renderTask.promise.then(() => {
-                    pageRendering = false;
-                    if (pageNumPending !== null) {
-                        // New page rendering is pending
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+                    const renderTask = page.render(renderContext);
+
+                    renderTask.promise.then(() => {
+                        pageRendering = false;
+                        if (pageNumPending !== null) {
+                            renderPage(pageNumPending);
+                            pageNumPending = null;
+                        }
+                    });
                 });
+                document.getElementById('page-num').textContent = num;
+            }
+
+            function queueRenderPage(num) {
+                if (pageRendering) {
+                    pageNumPending = num;
+                } else {
+                    renderPage(num);
+                }
+            }
+
+            function onPrevPage() {
+                if (pageNum <= 1) return;
+                pageNum--;
+                queueRenderPage(pageNum);
+            }
+            document.getElementById('prev-page').addEventListener('click', onPrevPage);
+
+            function onNextPage() {
+                if (pageNum >= pdfDoc.numPages) return;
+                pageNum++;
+                queueRenderPage(pageNum);
+            }
+            document.getElementById('next-page').addEventListener('click', onNextPage);
+
+            pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
+                pdfDoc = pdfDoc_;
+                document.getElementById('page-count').textContent = pdfDoc.numPages;
+                renderPage(pageNum);
+            }).catch(err => {
+                console.error('Error loading PDF:', err);
+                const container = document.getElementById('pdf-viewer-container');
+                container.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffcc00; margin-bottom: 15px;"></i>
+                    <p>PDF yüklenemedi. Lütfen <b>${url}</b> dosyasının klasörde olduğundan emin olun.</p>
+                </div>`;
             });
-
-            // Update page counters
-            document.getElementById('page-num').textContent = num;
         }
-
-        /**
-         * If another page rendering in progress, waits until the rendering is
-         * finised. Otherwise, executes rendering immediately.
-         */
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
-        }
-
-        /**
-         * Displays previous page.
-         */
-        function onPrevPage() {
-            if (pageNum <= 1) {
-                return;
-            }
-            pageNum--;
-            queueRenderPage(pageNum);
-        }
-        document.getElementById('prev-page').addEventListener('click', onPrevPage);
-
-        /**
-         * Displays next page.
-         */
-        function onNextPage() {
-            if (pageNum >= pdfDoc.numPages) {
-                return;
-            }
-            pageNum++;
-            queueRenderPage(pageNum);
-        }
-        document.getElementById('next-page').addEventListener('click', onNextPage);
-
-        /**
-         * Asynchronously downloads PDF.
-         */
-        pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
-            pdfDoc = pdfDoc_;
-            document.getElementById('page-count').textContent = pdfDoc.numPages;
-
-            // Initial/first page rendering
-            renderPage(pageNum);
-        }).catch(err => {
-            console.error('Error loading PDF:', err);
-            // Show a friendly message on the canvas or container if PDF fails to load
-            const container = document.getElementById('pdf-viewer-container');
-            container.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">
-                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffcc00; margin-bottom: 15px;"></i>
-                <p>PDF yüklenemedi. Lütfen <b>${url}</b> dosyasının <b>/portfolio</b> klasöründe olduğundan emin olun.</p>
-            </div>`;
-        });
     }
 });

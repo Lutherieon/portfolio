@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Projects Data -->
+    <script src="projects-data.js"></script>
 </head>
 
 <body class="page-portfolio">
@@ -26,61 +28,31 @@
     <main class="portfolio-container">
         <h1 class="page-title text-center">PORTFOLIO</h1>
 
-        <div class="portfolio-grid">
-            <!-- Project Card 1 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic01.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">The Legend of Zelda: Breath of the Wild</h3>
-                    <p class="italic">UX Analysis</p>
-                </div>
-            </a>
-
-            <!-- Project Card 2 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic02.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">Task Management App</h3>
-                    <p class="italic">Vue & Firebase</p>
-                </div>
-            </a>
-
-            <!-- Project Card 3 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic03.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">Weather Dashboard</h3>
-                    <p class="italic">Vanilla JS & REST API</p>
-                </div>
-            </a>
-
-            <!-- Project Card 4 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic04.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">Finance Tracker</h3>
-                    <p class="italic">Python Django</p>
-                </div>
-            </a>
-
-            <!-- Project Card 5 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic05.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">Social Media API</h3>
-                    <p class="italic">Express & MongoDB</p>
-                </div>
-            </a>
-
-            <!-- Project Card 6 -->
-            <a href="project-detail" class="project-card">
-                <div class="card-image" style="background-image: url('images/pic06.jpg');"></div>
-                <div class="card-overlay">
-                    <h3 class="uppercase">AI Chatbot Interface</h3>
-                    <p class="italic">React & Tailwind</p>
-                </div>
-            </a>
+        <div class="portfolio-grid" id="portfolio-grid">
+            <!-- Projects will be dynamically injected here -->
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const grid = document.getElementById('portfolio-grid');
+                if (grid && typeof PROJECTS !== 'undefined') {
+                    PROJECTS.forEach(project => {
+                        const card = document.createElement('a');
+                        card.href = `project-detail.html?id=${project.id}`;
+                        card.className = 'project-card';
+
+                        card.innerHTML = `
+                            <div class="card-image" style="background-image: url('${project.thumbnail}');"></div>
+                            <div class="card-overlay">
+                                <h3 class="uppercase">${project.title}</h3>
+                                <p class="italic">${project.category}</p>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
+            });
+        </script>
     </main>
 
     <!-- Common Footer style -->

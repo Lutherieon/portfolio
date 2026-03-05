@@ -804,6 +804,15 @@ footer {
     background-color: #111;
 }
 
+.hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 -50px 100px rgba(0, 0, 0, 0.8);
+    /* Fade into background */
+}
+
 /* PDF Viewer styles */
 .pdf-container {
     position: relative;
