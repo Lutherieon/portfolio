@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         canvas.width = viewport.width;
                         canvas.style.width = "100%";
                         canvas.style.height = "100%";
-                        canvas.style.objectFit = "cover";
+                        canvas.style.objectFit = "contain";
 
                         // Clear existing canvas and append new one
                         pdfContainer.innerHTML = '';
