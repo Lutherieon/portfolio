@@ -177,7 +177,7 @@
                         const nextNav = document.getElementById('next-project-anchor');
 
                         nextNav.innerHTML = `
-                            <div class="next-project-nav fade-in-section">
+                            <div class="next-project-nav fade-in-section" id="next-project-section">
                                 <span class="next-label">NEXT PROJECT</span>
                                 <a href="project-detail.html?id=${nextProject.id}" class="next-project-link">
                                     <div class="next-project-card">
@@ -191,6 +191,9 @@
                                 </a>
                             </div>
                         `;
+
+                        // Add Next Project Dot
+                        dotsList.innerHTML += `<li><a href="#next-project-section" title="Next Project"><span class="dot"></span></a></li>`;
                     }
 
                     // 7. Re-initialize Animations and Nav

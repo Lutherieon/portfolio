@@ -46,6 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
+            // Force last dot if at very bottom
+            if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 50)) {
+                const lastHref = navDots[navDots.length - 1].getAttribute('href');
+                if (lastHref && lastHref.startsWith('#')) {
+                    currentSection = lastHref.substring(1);
+                }
+            }
+
             navDots.forEach(dot => {
                 dot.classList.remove('active');
                 if (currentSection && dot.getAttribute('href').includes(currentSection)) {
