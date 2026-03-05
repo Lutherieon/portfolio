@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const navDots = document.querySelectorAll('.dot-nav a');
         if (navDots.length === 0 || !dotNav) return;
 
-        // Hide dot nav if page is not scrollable
+        // Hide dot nav if page is not scrollable OR on mobile (respecting CSS)
         const checkScrollability = () => {
-            if (document.documentElement.scrollHeight <= window.innerHeight + 10) {
+            if (window.innerWidth <= 1000 || document.documentElement.scrollHeight <= window.innerHeight + 10) {
                 dotNav.style.display = 'none';
             } else {
                 dotNav.style.display = 'block';
