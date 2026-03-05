@@ -63,6 +63,13 @@
 
         <!-- Next Project Navigation Placeholder -->
         <div id="next-project-anchor"></div>
+
+        <!-- Dot Navigation Sidebar (Vertical) -->
+        <nav class="dot-nav" id="sidebar-dots">
+            <ul id="dots-list">
+                <!-- Dynamic dots will be injected here -->
+            </ul>
+        </nav>
     </main>
 
     <script>
@@ -127,9 +134,16 @@
                         document.getElementById('page-project-intro').after(mainMediaEl);
                     }
 
-                    // 5. Inject Sections / Blocks
+                    // 5. Inject Sections and Dots
                     const sectionsContainer = document.getElementById('dynamic-sections');
+                    const dotsList = document.getElementById('dots-list');
+
+                    // Add Hero and Intro Dots
+                    dotsList.innerHTML += `<li><a href="#project-hero" title="Banner"><span class="dot"></span></a></li>`;
+                    dotsList.innerHTML += `<li><a href="#page-project-intro" title="Introduction"><span class="dot"></span></a></li>`;
+
                     project.sections.forEach(section => {
+                        // Section Injection
                         const sectionEl = document.createElement('section');
                         sectionEl.className = 'content-block fade-in-section';
                         sectionEl.id = section.id;
@@ -149,6 +163,11 @@
 
                         sectionEl.innerHTML = sectionHTML;
                         sectionsContainer.appendChild(sectionEl);
+
+                        // Dot Injection
+                        const dotLi = document.createElement('li');
+                        dotLi.innerHTML = `<a href="#${section.id}" title="${section.title}"><span class="dot"></span></a>`;
+                        dotsList.appendChild(dotLi);
                     });
 
                     // 6. Next Project Navigation
@@ -174,10 +193,9 @@
                         `;
                     }
 
-                    // 7. Re-initialize Fade Animations for new content
-                    if (window.initFadeAnimations) {
-                        window.initFadeAnimations();
-                    }
+                    // 7. Re-initialize Animations and Nav
+                    if (window.initFadeAnimations) window.initFadeAnimations();
+                    if (window.initDotNav) window.initDotNav();
                 }
             }
         });

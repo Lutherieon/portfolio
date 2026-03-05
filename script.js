@@ -22,19 +22,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 2. Dot Navigation Highlight on Scroll
-    const navDots = document.querySelectorAll('.dot-nav a');
+    window.initDotNav = () => {
+        const navDots = document.querySelectorAll('.dot-nav a');
+        if (navDots.length === 0) return;
 
-    if (navDots.length > 0) {
+        // Remove old listener if re-initializing
+        if (window._dotNavScrollHandler) {
+            window.removeEventListener('scroll', window._dotNavScrollHandler);
+        }
 
         const updateActiveDot = () => {
             let currentSection = '';
-
             navDots.forEach(dot => {
-                const targetId = dot.getAttribute('href').substring(1);
+                const href = dot.getAttribute('href');
+                if (!href || !href.startsWith('#')) return;
+                const targetId = href.substring(1);
                 const section = document.getElementById(targetId);
                 if (section) {
                     const rect = section.getBoundingClientRect();
-                    // If the section's top has crossed the middle of the viewport
                     if (rect.top <= window.innerHeight / 2 + 100) {
                         currentSection = targetId;
                     }
@@ -49,9 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         };
 
-        window.addEventListener('scroll', updateActiveDot);
-        updateActiveDot(); // Trigger once on load
-    }
+        window._dotNavScrollHandler = updateActiveDot;
+        window.addEventListener('scroll', window._dotNavScrollHandler);
+        updateActiveDot();
+    };
+
+    // Initial call for static pages
+    window.initDotNav();
 
     // 3. Dynamic Content Support (Intersection Observer Re-run)
     // We export this so project-detail.html can call it after injecting sections.

@@ -18,9 +18,7 @@ const PROJECTS = [
                     {
                         type: "media-group",
                         items: [
-                            { type: "image", src: "images/pic01.jpg", caption: "Immersion mapping." },
-                            { type: "image", src: "images/pic02.jpg", caption: "Feedback loops." },
-                            { type: "image", src: "images/pic03.jpg", caption: "Feedback loops." }
+                            { type: "image", src: "images/pic01.jpg", caption: "Immersion mapping." }
                         ]
                     }
                 ]
