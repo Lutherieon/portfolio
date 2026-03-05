@@ -23,12 +23,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Dot Navigation Highlight on Scroll
     window.initDotNav = () => {
+        const dotNav = document.querySelector('.dot-nav');
         const navDots = document.querySelectorAll('.dot-nav a');
-        if (navDots.length === 0) return;
+        if (navDots.length === 0 || !dotNav) return;
+
+        // Hide dot nav if page is not scrollable
+        const checkScrollability = () => {
+            if (document.documentElement.scrollHeight <= window.innerHeight + 10) {
+                dotNav.style.display = 'none';
+            } else {
+                dotNav.style.display = 'block';
+            }
+        };
 
         // Remove old listener if re-initializing
         if (window._dotNavScrollHandler) {
             window.removeEventListener('scroll', window._dotNavScrollHandler);
+            window.removeEventListener('resize', window._dotNavResizeHandler);
         }
 
         const updateActiveDot = () => {
@@ -63,7 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         window._dotNavScrollHandler = updateActiveDot;
+        window._dotNavResizeHandler = checkScrollability;
+
         window.addEventListener('scroll', window._dotNavScrollHandler);
+        window.addEventListener('resize', window._dotNavResizeHandler);
+
+        checkScrollability();
         updateActiveDot();
     };
 
