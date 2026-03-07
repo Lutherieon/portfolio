@@ -40,12 +40,13 @@ window.PROJECTS = [
         ]
     },
     {
-        id: "task-management",
-        title: "Task Management App",
-        category: "Vue & Firebase",
-        thumbnail: "images/pic02.jpg",
-        bannerType: "image",
-        bannerSrc: "images/pic02.jpg",
+        id: "No-Prayer-in-Seaside",
+        title: "No Prayer in Seaside",
+        category: "Game Developer & Technical Artis",
+        thumbnail: "images/NoPrayerInSeasideThumbnail.png",
+        bannerType: "video",
+        bannerSrc: "https://www.youtube.com/embed/Scq4HqBrQ3w?si=zWmdKJ5pz1OW1WdN", // IMPORTANT: Must be /embed/ format
+
         metadata: "Frontend Developer (2024)",
         intro: "A real-time task management solution built with Vue.js and Firebase for seamless collaboration.",
         sections: [

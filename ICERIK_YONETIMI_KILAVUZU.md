@@ -120,8 +120,8 @@ window.PROJECTS = [
         thumbnail: "images/kart-resmi.jpg", // Liste (grid) sayfasındaki küçük kare resim
         
         // --- PROJE DETAY SAYFASI ---
-        bannerType: "image", // Veya "pdf" - Proje içine girince çıkan en tepe görsel
-        bannerSrc: "images/banner.jpg",
+        bannerType: "image", // Veya "pdf", "video" (YouTube için) - Proje içine girince çıkan en tepe görsel
+        bannerSrc: "images/banner.jpg", // Eğer "video" seçtiyseniz buraya YouTube "embed" linkini koyun (https://www.youtube.com/embed/...)
         metadata: "10 Hafta | Lider Tasarımcı | 2024",
         intro: "Projenin kısa özeti ve genel amacı...",
         
