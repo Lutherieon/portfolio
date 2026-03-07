@@ -117,6 +117,7 @@ window.PROJECTS = [
         id: "projemin-adi",                 // URL'de görünecek id (ör: ?id=projemin-adi)
         title: "Oyunun/Projenin Tam Adı",
         category: "Kategori (Sistem Tasarımı vs.)",
+        thumbnailSubtitle: "Kapak Alt Başlığı (Opsiyonel)", // Eğer bunu yazarsanız, kapakta "Kategori" yerine bu yazar
         thumbnail: "images/kart-resmi.jpg", // Liste (grid) sayfasındaki küçük kare resim
         
         // --- PROJE DETAY SAYFASI ---

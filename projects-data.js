@@ -42,13 +42,14 @@ window.PROJECTS = [
     {
         id: "No-Prayer-in-Seaside",
         title: "No Prayer in Seaside",
-        category: "Game Developer & Technical Artis",
+        category: "Video Games",
         thumbnail: "images/NoPrayerInSeasideThumbnail.png",
+        thumbnailSubtitle: "PC - Unreal Engine 5 <br> Game Developer & Technical Artist",
         bannerType: "video",
         bannerSrc: "https://www.youtube.com/embed/Scq4HqBrQ3w?si=zWmdKJ5pz1OW1WdN", // IMPORTANT: Must be /embed/ format
 
-        metadata: "Frontend Developer (2024)",
-        intro: "A real-time task management solution built with Vue.js and Firebase for seamless collaboration.",
+        metadata: "Game Developer & Technical Artist (2026)",
+        intro: "<b>No Prayer in Seaside</b> is an action-adventure project developed as the final for the GAD 2003 <b>Advanced Game Development II</b> course. Collaborating with <b><a href='https://www.linkedin.com/in/kaan-guzeloglu/' target='_blank'>Kaan Güzeloğlu</a></b>, we completed the game within a rigorous one-month development cycle using <b>Unreal Engine 5</b>. As a Digital Game Design student, my primary roles involved <b>Gameplay Programming</b> and <b>Technical Art</b>, where I focused on bridging core mechanics with seamless visual implementation.",
         sections: [
             {
                 id: "development",

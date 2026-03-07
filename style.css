@@ -544,7 +544,7 @@ footer {
 
 .card-overlay h3 {
     font-family: var(--font-headers);
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 400;
     letter-spacing: 0.1em;
     margin-bottom: 10px;
@@ -552,7 +552,8 @@ footer {
 }
 
 .card-overlay p {
-    font-family: var(--font-serif);
+    font-family: var(--font-body);
+    font-style: italic;
     font-size: 1.1rem;
     color: #ffffff;
 }
@@ -1118,6 +1119,22 @@ footer {
 
 .content-block p {
     margin-bottom: 30px;
+}
+
+/* Style for inline links within text blocks */
+.intro-text a,
+.content-block p a,
+.text-block a {
+    color: var(--accent-teal);
+    text-decoration: underline;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.intro-text a:hover,
+.content-block p a:hover,
+.text-block a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-teal);
 }
 
 .content-visual-placeholder {
