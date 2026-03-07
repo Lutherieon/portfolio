@@ -259,32 +259,32 @@ window.FEATURED_DATA = {
 
 window.RESUME_DATA = {
     title: "RESUME",
-    downloadLink: "#",
+    downloadLink: "https://drive.google.com/file/d/1-2jL3Sj7bj4fki3bDNA3SpRg598oh3Fk/view?usp=drive_link",
     downloadLabel: "RESUME 2026",
     experience: [
         {
-            id: "job-1",
+            /*id: "job-1",
             role: "Software Developer",
             company: "Tech Innovators Inc.",
             dates: "August 2023 - Present",
             description: "I am responsible for designing intuitive APIs, creating robust backend services, and helping with the direction of the core products. I work on both server-side logic and client-side integration to deliver seamless full-stack web applications.",
-            logo: "images/pic01.jpg"
+            logo: "images/pic01.jpg"*/
         },
         {
-            id: "job-2",
+            /*id: "job-2",
             role: "Junior Frontend Engineer",
             company: "Creative Web Solutions",
             dates: "Jan 2021 - July 2023",
             description: "I worked as a bridge between the Design and Engineering teams. My role involved creating the UI, UX, and Interaction Design for client-facing applications using modern Javascript frameworks like React and Vue.",
-            logo: "images/pic02.jpg"
+            logo: "images/pic02.jpg"*/
         },
         {
-            id: "job-3",
+            /*id: "job-3",
             role: "Web Development Intern",
             company: "Startup Launchpad",
             dates: "Summer 2020",
             description: "I assisted in building MVP web applications for early-stage startups, focusing on responsive HTML/CSS layouts and basic JavaScript interactivity.",
-            logo: "" // Optional
+            logo: "" // Optional*/
         }
     ]
 };
