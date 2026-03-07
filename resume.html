@@ -80,33 +80,43 @@
                 const container = document.getElementById('dynamic-resume-list');
                 const dotsList = document.getElementById('resume-dots');
 
-                window.RESUME_DATA.experience.forEach(item => {
-                    // Create Item Element
-                    const itemEl = document.createElement('div');
-                    itemEl.className = 'resume-item fade-in-section';
-                    itemEl.id = item.id;
+                const experienceList = window.RESUME_DATA.experience || [];
+                const validExperiences = experienceList.filter(item => item && Object.keys(item).length > 0 && item.role);
 
-                    let itemHTML = `
-                        <div class="resume-content">
-                            <h3 class="role">${item.role}</h3>
-                            <h4 class="company">${item.company}</h4>
-                            <p class="dates">(${item.dates})</p>
-                            <p class="description italic">${item.description}</p>
-                        </div>
-                    `;
-
-                    if (item.logo) {
-                        itemHTML += `<div class="resume-logo" style="background-image: url('${item.logo}');"></div>`;
+                if (validExperiences.length === 0) {
+                    const resumeSection = document.querySelector('.resume-section');
+                    if (resumeSection) {
+                        resumeSection.style.display = 'none';
                     }
+                } else {
+                    validExperiences.forEach(item => {
+                        // Create Item Element
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'resume-item fade-in-section';
+                        itemEl.id = item.id;
 
-                    itemEl.innerHTML = itemHTML;
-                    container.appendChild(itemEl);
+                        let itemHTML = `
+                            <div class="resume-content">
+                                <h3 class="role">${item.role}</h3>
+                                <h4 class="company">${item.company}</h4>
+                                <p class="dates">(${item.dates})</p>
+                                <p class="description italic">${item.description}</p>
+                            </div>
+                        `;
 
-                    // Add Dot for this job
-                    const dotLi = document.createElement('li');
-                    dotLi.innerHTML = `<a href="#${item.id}" title="${item.role}"><span class="dot"></span></a>`;
-                    dotsList.appendChild(dotLi);
-                });
+                        if (item.logo) {
+                            itemHTML += `<div class="resume-logo" style="background-image: url('${item.logo}');"></div>`;
+                        }
+
+                        itemEl.innerHTML = itemHTML;
+                        container.appendChild(itemEl);
+
+                        // Add Dot for this job
+                        const dotLi = document.createElement('li');
+                        dotLi.innerHTML = `<a href="#${item.id}" title="${item.role}"><span class="dot"></span></a>`;
+                        dotsList.appendChild(dotLi);
+                    });
+                }
 
                 // Re-initialize animations and nav
                 if (window.initFadeAnimations) window.initFadeAnimations();
