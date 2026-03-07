@@ -103,17 +103,14 @@
                         `;
                         window.PDF_SRC = project.bannerSrc;
                     } else if (project.bannerType === 'video') {
-                        const heroSection = document.getElementById('project-hero');
-                        heroSection.style.height = 'auto';
-                        heroSection.style.minHeight = 'unset';
-                        heroSection.style.aspectRatio = '16 / 9';
-
                         bannerContainer.innerHTML = `
-                            <iframe src="${project.bannerSrc}" 
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                            </iframe>
+                            <div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: var(--bg-color-dark);">
+                                <iframe src="${project.bannerSrc}" 
+                                    style="aspect-ratio: 16 / 9; height: 100%; max-width: 100%; border: none;" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
                         `;
                         bannerContainer.style.backgroundColor = 'var(--bg-color-dark)';
                     } else if (project.bannerSrc) {
