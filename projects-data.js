@@ -22,24 +22,19 @@ window.PROJECTS = [
         sections: [
             {
                 id: "research",
-                title: "RESEARCH & PLANNING",
+                title: "RESEARCH METHODOLOGY",
                 blocks: [
-                    { type: "text", value: "Detailed analysis of open-world navigation and player feedback loops was conducted over a six-month period." },
-                    {
-                        type: "media-group",
-                        items: [
-                            { type: "image", src: "images/pic01.jpg", caption: "Immersion mapping." },
-                            { type: "image", src: "images/pic02.jpg", caption: "Immersion mapping." }
-                        ]
-                    }
+                    { type: "text", value: "This case study utilizes <b>Celia Hodent’s Game UX Framework</b> to evaluate the player experience of <b>The Legend of Zelda: Breath of the Wild</b>. This methodology bridges cognitive science with game design, focusing on the brain's capabilities and limitations regarding perception, attention, and memory.\n\nThe analysis is structured around two primary pillars: <b>Usability</b> and <b>Engage-ability</b>." },
+                    { type: "text", value: "*The goal of this research was to identify where the systemic freedom of BotW conflicts with traditional UX heuristics, particularly in workload management." },
+                    { type: "image", src: "images/ZBotWResearchPic1.png", caption: "Usability & Engage-ability" },
+                    { type: "text", value: "<b>1. Heuristic Evaluation (Usability)</b><br>The usability of the game was assessed using seven core pillars to ensure the interface and systems do not hinder the player's intentions:<br><br><b>Signs & Feedback:</b> Analyzing visual and auditory cues, such as weapon durability warnings, that guide player actions.<br><br><b>Clarity:</b> Evaluating the legibility of UI elements and icons to minimize cognitive load.<br><br><b>Form Follows Function:</b> Examining if the visual design of objects (e.g., elemental elixirs or interactive logs) accurately conveys their mechanical purpose.<br><br><b>Consistency:</b> Identifying systemic continuity or contradictions, such as elemental weapon interactions with different environmental materials.<br><br><b>Minimum Workload:</b> Assessing the cognitive and physical effort required for repetitive tasks, specifically within the cooking and inventory management systems.<br><br><b>Error Prevention & Recovery:</b> Critiquing the save system and equipment UI for their ability to prevent or mitigate accidental player errors.<br><br><b>Flexibility:</b> Observing HUD modes and customization options that allow players to tailor the experience to their preferences.<br><br><b>2. Engage-ability Analysis</b><br>Beyond ease of use, the game’s ability to remain immersive and motivating was analyzed through three lenses:<br><br><b>Motivation:</b> Evaluated through <b>Self-Determination Theory (SDT)</b>, focusing on how the game satisfies the needs for Competence (traversal progression), Autonomy (freedom of exploration), and Relatedness (NPC interactions).<br><br><b>Emotion & Game Feel:</b> Analyzing how camera dynamics, responsive controls, and physical presence (motion sensors) create an emotional connection with the world.<br><br><b>Game Flow:</b> Reviewing the difficulty curve, pacing, and the \"Guided Discovery\" approach used in the Great Plateau tutorial to maintain the player's state of flow." },
                 ]
             },
             {
                 id: "development",
                 title: "ANALYSIS PROCESS",
                 blocks: [
-                    { type: "text", value: "We mapped out the player journey from the Great Plateau to Ganon's Castle, identifying key friction points." },
-                    { type: "video", src: "https://www.youtube.com/embed/QyMsF31NdNc", provider: "youtube" }
+                    { type: "text", value: "The findings are based on a qualitative analysis of specific gameplay interactions . Every observation was cross-referenced with cognitive psychology principles to determine its impact on the overall player experience." },
                 ]
             }
         ]
