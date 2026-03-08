@@ -13,6 +13,14 @@ window.PROJECTS = [
         id: "zelda",
         title: "The Legend of Zelda: Breath of the Wild",
         category: "UX Analysis",
+        thumbnailSubtitle: "Switch & WiiU <br> Nintendo",
+        thumbnailDescription: "A deep dive into the usability and emotional design of Zelda.",
+        tags: ["ux", "research"],
+        contributions: [
+            "Heuristic Evaluation",
+            "Player Journey Mapping",
+            "Cognitive Load Analysis"
+        ],
         thumbnail: "images/pic01.jpg",
         bannerType: "pdf", // This is the TOP background banner
         bannerSrc: "PschologyFinal.pdf",
@@ -45,6 +53,14 @@ window.PROJECTS = [
         category: "Video Games",
         thumbnail: "images/NoPrayerInSeasideThumbnail.png",
         thumbnailSubtitle: "PC - Unreal Engine 5 <br> Game Developer & Technical Artist",
+        thumbnailDescription: "A fast-paced top-down action shooter.",
+        tags: ["ue4", "C++", "gamedev", "university"],
+        contributions: [
+            "Gameplay Programming",
+            "Technical Art",
+            "Blueprint logic structure",
+            "Shader development"
+        ],
         bannerType: "video",
         bannerSrc: "https://www.youtube.com/embed/Scq4HqBrQ3w?si=zWmdKJ5pz1OW1WdN", // IMPORTANT: Must be /embed/ format
 
@@ -53,7 +69,7 @@ window.PROJECTS = [
         sections: [
             {
                 id: "development",
-                title: "DEVELOPMENT",
+                title: "GAMEDEVELOPMENT",
                 content: "Implemented reactive data binding and real-time updates using Firestore listeners."
             }
         ]
@@ -62,6 +78,13 @@ window.PROJECTS = [
         id: "weather-dashboard",
         title: "Weather Dashboard",
         category: "Vanilla JS & REST API",
+        thumbnailSubtitle: "Web App <br> OpenWeatherMap",
+        thumbnailDescription: "Real-time weather tracking application with interactive maps.",
+        tags: ["javascript", "api", "web"],
+        contributions: [
+            "API Integration",
+            "Responsive Layout"
+        ],
         thumbnail: "images/pic03.jpg",
         bannerType: "image",
         bannerSrc: "images/pic03.jpg",
@@ -79,6 +102,13 @@ window.PROJECTS = [
         id: "finance-tracker",
         title: "Finance Tracker",
         category: "Python Django",
+        thumbnailSubtitle: "Backend Development <br> Financial App",
+        thumbnailDescription: "Personal finance management tool with data visualization.",
+        tags: ["python", "django", "database"],
+        contributions: [
+            "Database Schema Design",
+            "Backend Architecture"
+        ],
         thumbnail: "images/pic04.jpg",
         bannerType: "image",
         bannerSrc: "images/pic04.jpg",
@@ -96,6 +126,14 @@ window.PROJECTS = [
         id: "social-media-api",
         title: "Social Media API",
         category: "Express & MongoDB",
+        thumbnailSubtitle: "Backend - NodeJS <br> Backend Developer",
+        thumbnailDescription: "Scalable RESTful API for handling high-traffic social media data.",
+        tags: ["express", "mongodb", "api"],
+        contributions: [
+            "Database Schema Design",
+            "JWT Authentication",
+            "Query Optimization"
+        ],
         thumbnail: "images/pic05.jpg",
         bannerType: "image",
         bannerSrc: "images/pic05.jpg",
@@ -113,6 +151,14 @@ window.PROJECTS = [
         id: "ai-chatbot",
         title: "AI Chatbot Interface",
         category: "React & Tailwind",
+        thumbnailSubtitle: "Web - OpenAI API <br> Frontend Architect",
+        thumbnailDescription: "Modern conversational interface designed for AI interactions.",
+        tags: ["react", "tailwind", "ai"],
+        contributions: [
+            "UI Component Library",
+            "WebSocket Integration",
+            "Animation Polish"
+        ],
         thumbnail: "images/pic06.jpg",
         bannerType: "image",
         bannerSrc: "images/pic06.jpg",
@@ -131,6 +177,13 @@ window.PROJECTS = [
         id: "yeni-proje",
         title: "Proje Başlığı",
         category: "Kategori",
+        thumbnailSubtitle: "Platform - Firma <br> Rolünüz",
+        thumbnailDescription: "Bu projenizin portfolyo listesinde görünecek kısa ve can alıcı açıklaması.",
+        tags: ["tasarim", "kodlama", "oyun"],
+        contributions: [
+            "Birinci katkınız",
+            "İkinci önemli başarım"
+        ],
         thumbnail: "images/onizleme.jpg",
         bannerType: "image", // veya "pdf"
         bannerSrc: "images/banner.jpg",
@@ -144,6 +197,14 @@ window.PROJECTS = [
         id: "mock-project-1",
         title: "E-Commerce Concept",
         category: "UI Design",
+        thumbnailSubtitle: "Web App - Concept <br> Lead UI Designer",
+        thumbnailDescription: "A conceptual e-commerce interface focusing on smooth transitions.",
+        tags: ["ui", "design", "figma"],
+        contributions: [
+            "Low-Fidelity Wireframes",
+            "High-Fidelity Prototyping",
+            "Developer Handoff"
+        ],
         thumbnail: "images/pic01.jpg",
         bannerType: "image",
         bannerSrc: "images/pic01.jpg",
@@ -173,6 +234,14 @@ window.PROJECTS = [
         id: "mock-project-2",
         title: "Mobile Game UI",
         category: "Game Design",
+        thumbnailSubtitle: "Mobile - iOS/Android <br> Lead Game Designer",
+        thumbnailDescription: "Intuitive and immersive interface design for an upcoming mobile RPG.",
+        tags: ["gamedev", "mobile", "ui"],
+        contributions: [
+            "Menu Flow Architecture",
+            "Iconography & Assets",
+            "User Testing"
+        ],
         thumbnail: "images/pic02.jpg",
         bannerType: "image",
         bannerSrc: "images/pic02.jpg",
@@ -184,6 +253,14 @@ window.PROJECTS = [
         id: "mock-project-3",
         title: "Inventory System",
         category: "Full Stack",
+        thumbnailSubtitle: "Internal Tool - Business <br> Senior Developer",
+        thumbnailDescription: "A robust scalable inventory management system for small businesses.",
+        tags: ["nodejs", "sql", "dashboard"],
+        contributions: [
+            "Database Modeling",
+            "REST API Development",
+            "Dashboard UI"
+        ],
         thumbnail: "images/pic03.jpg",
         bannerType: "image",
         bannerSrc: "images/pic03.jpg",

@@ -117,8 +117,11 @@ window.PROJECTS = [
         id: "projemin-adi",                 // URL'de görünecek id (ör: ?id=projemin-adi)
         title: "Oyunun/Projenin Tam Adı",
         category: "Kategori (Sistem Tasarımı vs.)",
-        thumbnailSubtitle: "Kapak Alt Başlığı (Opsiyonel)", // Eğer bunu yazarsanız, kapakta "Kategori" yerine bu yazar
-        thumbnail: "images/kart-resmi.jpg", // Liste (grid) sayfasındaki küçük kare resim
+        thumbnailSubtitle: "Kapak Alt Başlığı (Opsiyonel)", // Özel alt metin (Hala Destekleniyor, Resim dışında kalabilir)
+        thumbnailDescription: "Projenin kısa 1-2 cümlelik kapağa eklenecek yazısı.", // Yeni: Kartın ortasındaki açıklama
+        tags: ["ue4", "c++", "gamedev", "university"],      // Yeni: Kullanılan diller veya özellikler (renkli etiketler)
+        contributions: ["UI Programming", "Level Design"],  // Yeni: "My contributions" altındaki onay işaretli maddeler
+        thumbnail: "images/kart-resmi.jpg", // Liste (grid) sayfasındaki büyük yatay dikdörtgen/kare resim
         
         // --- PROJE DETAY SAYFASI ---
         bannerType: "image", // Veya "pdf", "video" (YouTube için) - Proje içine girince çıkan en tepe görsel
