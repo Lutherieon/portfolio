@@ -117,7 +117,6 @@ window.PROJECTS = [
         id: "projemin-adi",                 // URL'de görünecek id (ör: ?id=projemin-adi)
         title: "Oyunun/Projenin Tam Adı",
         category: "Kategori (Sistem Tasarımı vs.)",
-        thumbnailSubtitle: "Kapak Alt Başlığı (Opsiyonel)", // Özel alt metin (Hala Destekleniyor, Resim dışında kalabilir)
         thumbnailDescription: "Projenin kısa 1-2 cümlelik kapağa eklenecek yazısı.", // Yeni: Kartın ortasındaki açıklama
         tags: ["ue4", "c++", "gamedev", "university"],      // Yeni: Kullanılan diller veya özellikler (renkli etiketler)
         contributions: ["UI Programming", "Level Design"],  // Yeni: "My contributions" altındaki onay işaretli maddeler
@@ -146,6 +145,17 @@ window.PROJECTS = [
         ]
     }
 ];
+```
+
+### Etiket (Tag) Renklerini Ayarlamak
+`tags` dizisine yazdığınız kelimeler (`["ue4", "C++"]`), otomatik olarak dönüştürülüp `style.css` içerisinde renk arar. Sistem, yazdığınız kelimedeki harfleri küçültüp sembolleri atarak sınıf adını bulur.
+
+**Örnek:** `"C++"` yazdığınızda tagin rengi `.tag-c` CSS sınıfından okunur. `"Game Dev"` için `.tag-gamedev` sınıfı kullanılır.
+Koyu gri (`#333`) olan standart renk yerine kendi renginizi eklemek için `style.css` dosyasına şunu yazmanız yeterlidir:
+
+```css
+/* Yeni bir etiket rengi atamak: Tasarım */
+.tag-tasarim { background-color: #ff9900; }
 ```
 
 ### Projelerde Desteklenen İçerik (Block) Tipleri
