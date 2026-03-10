@@ -256,9 +256,9 @@ ul {
 /* --- SHOWCASE SECTION --- */
 .showcase-section {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 120px;
+    /* Alttan 120px dış boşluk! */
     padding: 100px 20px 80px;
-    /* Increased bottom padding to 80px */
 }
 
 .showcase-header {
