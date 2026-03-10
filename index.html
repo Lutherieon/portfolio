@@ -46,10 +46,22 @@
 		<nav class="dot-nav">
 			<ul id="home-dots">
 				<li><a href="#top" title="Top"><span class="dot"></span></a></li>
+				<li><a href="#showcase" title="Highlighted Project"><span class="dot"></span></a></li>
 				<!-- Dynamic dots will be injected here -->
 				<li><a href="#contact" title="Contact"><span class="dot"></span></a></li>
 			</ul>
 		</nav>
+
+		<!-- Showcase Section -->
+		<section class="showcase-section fade-in-section" id="showcase">
+			<div class="showcase-header text-center">
+				<h2>Highlighted Project</h2>
+				<p>Selected Works</p>
+			</div>
+			<div id="showcase-grid" class="showcase-grid">
+				<!-- Showcase cards will be injected here -->
+			</div>
+		</section>
 
 		<div id="dynamic-home-sections">
 			<!-- Dynamic sections from projects-data.js will be injected here -->
@@ -98,6 +110,27 @@
 					navbar.classList.remove('scrolled');
 				}
 			});
+
+			// 1.5 Showcase Injection
+			if (typeof window.PROJECTS !== 'undefined') {
+				const showcaseGrid = document.getElementById('showcase-grid');
+				if (showcaseGrid) {
+					const topProjects = window.PROJECTS.filter(p => p.showcase);
+					topProjects.forEach(project => {
+						const card = document.createElement('a');
+						card.href = `project.html?id=${project.id}`;
+						card.className = "showcase-card";
+						card.innerHTML = `
+							<div class="showcase-image" style="background-image: url('${project.thumbnail}')"></div>
+							<div class="showcase-content">
+								<h3>${project.title}</h3>
+								<p class="showcase-category">${project.category}</p>
+							</div>
+						`;
+						showcaseGrid.appendChild(card);
+					});
+				}
+			}
 
 			// 2. Dynamic Home Sections Injection
 			if (typeof window.HOME_SECTIONS !== 'undefined') {

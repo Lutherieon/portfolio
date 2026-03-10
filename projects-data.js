@@ -13,6 +13,7 @@ window.PROJECTS = [
         id: "zelda",
         title: "The Legend of Zelda: Breath of the Wild",
         category: "UX Analysis",
+        showcase: true,
 
         thumbnailDescription: "A deep dive into the usability and emotional design of Zelda.",
         tags: ["ux", "research"],
@@ -51,6 +52,7 @@ window.PROJECTS = [
         id: "No-Prayer-in-Seaside",
         title: "No Prayer in Seaside",
         category: "Video Games",
+        showcase: true,
         thumbnail: "images/NoPrayerInSeasideThumbnail.png",
 
         thumbnailDescription: "A fast-paced top-down action shooter.",
@@ -154,7 +156,7 @@ window.PROJECTS = [
         id: "ai-chatbot",
         title: "AI Chatbot Interface",
         category: "React & Tailwind",
-
+        showcase: true,
         thumbnailDescription: "Modern conversational interface designed for AI interactions.",
         tags: ["react", "tailwind", "ai"],
         contributions: [

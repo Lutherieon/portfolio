@@ -8,8 +8,8 @@
     /* Cyan/Teal link accent */
     --accent-glow: rgba(64, 224, 208, 0.4);
     /* Used for edge glows and image shadows */
-    --hero-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #ffdde1 50%, #fbd3e9 75%, #a8edea 100%);
-    /* Infused with soft, non-straining red/pink tones for a gentle transition */
+    --hero-gradient: linear-gradient(135deg, #000000 0%, #0a1922 25%, #050a0f 50%, #0a1922 75%, #000000 100%);
+    /* Infused with smooth space-like dark teal tones for a premium gaming transition */
 
     --font-headers: 'Montserrat', sans-serif;
     --font-serif: 'Playfair Display', serif;
@@ -126,8 +126,8 @@ ul {
     text-align: center;
     overflow: clip;
     /* clip solves the Chromium 'stuck scroll on load' bug while preventing overflow */
-    color: #333;
-    /* Dark text on light ambient gradient */
+    color: var(--text-color-light);
+    /* Light text on dark ambient gradient */
 }
 
 /* Keyframes for the Hero Background Animation */
@@ -170,10 +170,11 @@ ul {
 .floating-img {
     position: absolute;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
-    /* Placeholder frosty glass look */
+    background-color: rgba(255, 255, 255, 0.05);
+    /* Premium dark glass look */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(64, 224, 208, 0.1);
     background-size: cover;
     background-position: center;
     transition: transform 0.4s ease;
@@ -250,6 +251,104 @@ ul {
         display: none;
         /* Hide on mobile to keep it clean, or scale down */
     }
+}
+
+/* --- SHOWCASE SECTION --- */
+.showcase-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 80px;
+    /* Increased bottom padding to 80px */
+}
+
+.showcase-header {
+    margin-bottom: 50px;
+}
+
+.showcase-header h2 {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+    color: var(--text-color-light);
+}
+
+.showcase-header p {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.showcase-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.showcase-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(64, 224, 208, 0.2);
+    border-color: rgba(64, 224, 208, 0.3);
+}
+
+.showcase-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease;
+}
+
+.showcase-card:hover .showcase-image {
+    transform: scale(1.05);
+}
+
+.showcase-content {
+    padding: 25px 20px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
+    margin-top: -80px;
+    /* Overlap image slightly */
+    height: auto;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.showcase-content h3 {
+    font-family: var(--font-headers);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.showcase-category {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--accent-teal);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* --- MAIN CONTENT & SECTIONS (Dark Mode) --- */
