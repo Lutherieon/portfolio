@@ -114,9 +114,9 @@ window.PROJECTS = [
             "Database Schema Design",
             "Backend Architecture"
         ],
-        thumbnail: "images/pic04.jpg",
+        thumbnail: "images/pic01.jpg",
         bannerType: "image",
-        bannerSrc: "images/pic04.jpg",
+        bannerSrc: "images/pic01.jpg",
         metadata: "Backend Developer (2023)",
         intro: "A robust personal finance tracker built with Django, featuring automated expense categorization.",
         sections: [
@@ -139,9 +139,9 @@ window.PROJECTS = [
             "JWT Authentication",
             "Query Optimization"
         ],
-        thumbnail: "images/pic05.jpg",
+        thumbnail: "images/pic02.jpg",
         bannerType: "image",
-        bannerSrc: "images/pic05.jpg",
+        bannerSrc: "images/pic02.jpg",
         metadata: "Full-Stack Developer (2023)",
         intro: "A scalable RESTful API for a social media platform, supporting likes, comments, and following.",
         sections: [
@@ -164,9 +164,9 @@ window.PROJECTS = [
             "WebSocket Integration",
             "Animation Polish"
         ],
-        thumbnail: "images/pic06.jpg",
+        thumbnail: "images/pic03.jpg",
         bannerType: "image",
-        bannerSrc: "images/pic06.jpg",
+        bannerSrc: "images/pic03.jpg",
         metadata: "Frontend Architect (2025)",
         intro: "A modern, responsive chat interface designed for AI interactions with a focus on conversational flow.",
         sections: [
@@ -178,6 +178,7 @@ window.PROJECTS = [
         ]
     }
     ,
+    /*
     {
         id: "yeni-proje",
         title: "Proje Başlığı",
@@ -198,6 +199,7 @@ window.PROJECTS = [
             { id: "bolum1", title: "BÖLÜM 1", content: "İçerik..." }
         ]
     },
+    */
     {
         id: "mock-project-1",
         title: "E-Commerce Concept",
