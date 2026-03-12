@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Projects Data -->
     <script src="projects-data.js"></script>
+    <link rel="canonical" href="https://www.yektademirci.com/portfolio.html">
 </head>
 
 <body class="page-portfolio">
@@ -17,11 +18,11 @@
     <!-- Navigation -->
     <nav id="navbar" class="dark-bg">
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio" class="active">PORTFOLIO</a></li>
-            <li><a href="resume">RESUME</a></li>
-            <li><a href="featured">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html" class="active">PORTFOLIO</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="featured.html">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
@@ -94,7 +95,7 @@
 
                         paginatedItems.forEach(project => {
                             const card = document.createElement('a');
-                            card.href = `project-detail?id=${project.id}`;
+                            card.href = `project-detail.html?id=${project.id}`;
                             card.className = 'project-card';
 
                             card.innerHTML = `

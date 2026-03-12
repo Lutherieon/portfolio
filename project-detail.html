@@ -12,6 +12,7 @@
     <script src="projects-data.js"></script>
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="canonical" href="https://www.yektademirci.com/project-detail.html">
 </head>
 
 <body class="page-project-detail">
@@ -19,11 +20,11 @@
     <!-- Navigation -->
     <nav id="navbar" class="dark-bg">
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio" class="active">PORTFOLIO</a></li>
-            <li><a href="resume">RESUME</a></li>
-            <li><a href="featured">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html" class="active">PORTFOLIO</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="featured.html">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
@@ -37,7 +38,7 @@
     <main class="project-container">
         <!-- Return Link -->
         <div class="return-nav fade-in-section">
-            <a href="portfolio" class="return-link">
+            <a href="portfolio.html" class="return-link">
                 <span class="arrow">&lt;</span> RETURN
             </a>
         </div>
@@ -201,7 +202,7 @@
                         nextNav.innerHTML = `
                             <div class="next-project-nav fade-in-section" id="next-project-section">
                                 <span class="next-label">NEXT PROJECT</span>
-                                <a href="project-detail?id=${nextProject.id}" class="next-project-link">
+                                <a href="project-detail.html?id=${nextProject.id}" class="next-project-link">
                                     <div class="next-project-card">
                                         <div class="next-img" style="background-image: url('${nextProject.thumbnail}');"></div>
                                         <div class="next-project-overlay">
