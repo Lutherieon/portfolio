@@ -266,4 +266,34 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
+
+    // 5. Email Masking
+    const emailLink = document.querySelector('.email-link');
+    if (emailLink) {
+        const user = "business";
+        const domain = "yektademirci.com";
+        const fullEmail = `${user}@${domain}`;
+
+        emailLink.addEventListener('click', (e) => {
+            if (emailLink.getAttribute('href') === '#') {
+                e.preventDefault();
+                emailLink.setAttribute('href', `mailto:${fullEmail}`);
+                emailLink.textContent = fullEmail;
+                window.location.href = `mailto:${fullEmail}`;
+            }
+        });
+
+        emailLink.addEventListener('mouseover', () => {
+            if (emailLink.getAttribute('href') === '#') {
+                emailLink.textContent = "Click to reveal email";
+                emailLink.style.cursor = 'pointer';
+            }
+        });
+        
+        emailLink.addEventListener('mouseout', () => {
+            if (emailLink.getAttribute('href') === '#') {
+                emailLink.textContent = "business [at] yektademirci.com";
+            }
+        });
+    }
 });
