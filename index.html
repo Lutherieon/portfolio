@@ -145,7 +145,7 @@
 					const topProjects = window.PROJECTS.filter(p => p.showcase);
 					topProjects.forEach(project => {
 						const card = document.createElement('a');
-						card.href = `project-detail.html?id=${project.id}`;
+						card.href = `project-detail?id=${project.id}`;
 						card.className = "showcase-card";
 						card.innerHTML = `
 							<div class="showcase-image" style="background-image: url('${project.thumbnail}')"></div>
