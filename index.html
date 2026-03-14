@@ -152,6 +152,9 @@
 							<div class="showcase-content">
 								<h3>${project.title}</h3>
 								<p class="showcase-category">${project.category}</p>
+								${project.contributions && project.contributions.length > 0 ? `
+									<p class="showcase-roles">${project.contributions.slice(0, 3).join(' | ')}</p>
+								` : ''}
 							</div>
 						`;
 						showcaseGrid.appendChild(card);

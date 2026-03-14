@@ -1,22 +1,20 @@
 window.PORTFOLIO_CATEGORIES = [
     "All",
-    "UI",
-    "UX",
-    "VIDEO GAMES",
-    "VIDEOS",
-    "VFX",
-    "WEB"
+    "Design & Analysis",
+    "Games & Tools",
+    "Personal Projects",
+    "Business & Finance"
 ];
 
 window.PROJECTS = [
     {
         id: "zelda",
         title: "The Legend of Zelda: Breath of the Wild",
-        category: "UX Analysis",
+        category: "Design & Analysis",
         showcase: true,
 
         thumbnailDescription: "A deep dive into the usability and emotional design of Zelda.",
-        tags: ["ux", "research"],
+        tags: ["UX Analysis", "Usability & Engage-ability", "Cognitive Psychology", "University"],
         contributions: [
             "Heuristic Evaluation",
             "Player Journey Mapping",
@@ -51,12 +49,12 @@ window.PROJECTS = [
     {
         id: "No-Prayer-in-Seaside",
         title: "No Prayer in Seaside",
-        category: "Video Games",
+        category: "Games & Tools",
         showcase: true,
         thumbnail: "images/NoPrayerInSeasideThumbnail.png",
 
         thumbnailDescription: "A fast-paced top-down action shooter.",
-        tags: ["ue4", "C++", "gamedev", "university"],
+        tags: ["UE5", "Blueprint", "Animation BP", "System Design", "University"],
         contributions: [
             "Gameplay Programming",
             "Technical Art",
@@ -80,19 +78,19 @@ window.PROJECTS = [
         ]
     },
     {
-        id: "weather-dashboard",
-        title: "Weather Dashboard",
-        category: "Vanilla JS & REST API",
+        id: "Burden-of-Greed",
+        title: "Burden of Greed",
+        category: "Games & Tools",
 
-        thumbnailDescription: "Real-time weather tracking application with interactive maps.",
-        tags: ["javascript", "api", "web"],
+        thumbnailDescription: " ",
+        tags: ["javascript", "api", "gamejam"],
         contributions: [
             "API Integration",
             "Responsive Layout"
         ],
-        thumbnail: "images/pic03.jpg",
+        thumbnail: "images/Burden-Of-Greed-Thumbnail-Pic.png",
         bannerType: "image",
-        bannerSrc: "images/pic03.jpg",
+        bannerSrc: "images/Burden-Of-Greed-Thumbnail-Pic.png",
         metadata: "JavaScript Developer (2024)",
         intro: "A sleek weather dashboard providing real-time forecasts using OpenWeatherMap API.",
         sections: [
@@ -104,9 +102,9 @@ window.PROJECTS = [
         ]
     },
     {
-        id: "finance-tracker",
-        title: "Finance Tracker",
-        category: "Python Django",
+        id: "Indie-Studio-Business-Plan-Financial-Roadmap",
+        title: "Indie Studio Business Plan & Financial Roadmap",
+        category: "Business & Finance",
 
         thumbnailDescription: "Personal finance management tool with data visualization.",
         tags: ["python", "django", "database"],
@@ -128,9 +126,9 @@ window.PROJECTS = [
         ]
     },
     {
-        id: "social-media-api",
-        title: "Social Media API",
-        category: "Express & MongoDB",
+        id: "Initialize-Who",
+        title: "Initialize: Who",
+        category: "Games & Tools",
 
         thumbnailDescription: "Scalable RESTful API for handling high-traffic social media data.",
         tags: ["express", "mongodb", "api"],
@@ -153,9 +151,9 @@ window.PROJECTS = [
         ]
     },
     {
-        id: "ai-chatbot",
-        title: "AI Chatbot Interface",
-        category: "React & Tailwind",
+        id: "Leviathan-Axe",
+        title: "Leviathan Axe",
+        category: "Games & Tools",
         showcase: true,
         thumbnailDescription: "Modern conversational interface designed for AI interactions.",
         tags: ["react", "tailwind", "ai"],

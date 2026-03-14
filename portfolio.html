@@ -7,10 +7,13 @@
     <title>PORTFOLIO | Yekta Demirci</title>
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome for Social Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Projects Data -->
     <script src="projects-data.js"></script>
-    <meta name="description" content="Portfolio of Yekta Demirci - A collection of game development, UI/UX design, and creative projects.">
+    <meta name="description"
+        content="Portfolio of Yekta Demirci - A collection of game development, UI/UX design, and creative projects.">
     <link rel="canonical" href="https://www.yektademirci.com/portfolio">
 
     <!-- Open Graph / Facebook -->
@@ -30,10 +33,10 @@
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VWEYCCFRG"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4VWEYCCFRG');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4VWEYCCFRG');
     </script>
 </head>
 
@@ -127,6 +130,9 @@
                                     <div class="card-image" style="background-image: url('${project.thumbnail}');"></div>
                                     <div class="card-title-overlay">
                                         <h3>${project.title}</h3>
+                                        ${project.contributions && project.contributions.length > 0 ? `
+                                            <p class="card-roles">${project.contributions.slice(0, 3).join(' | ')}</p>
+                                        ` : ''}
                                     </div>
                                 </div>
                                 <div class="card-content">
@@ -185,14 +191,14 @@
     <!-- Common Footer style -->
     <footer>
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/yekta-demirci" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i
-                    class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.linkedin.com/in/yekta-demirci" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
             <a href="https://yekta-demirci.itch.io/" target="_blank" rel="noopener noreferrer" aria-label="Itch.io"><i
                     class="fa-brands fa-itch-io"></i></a>
             <a href="https://github.com/Lutherieon" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i
                     class="fa-brands fa-github"></i></a>
-            <a href="https://www.artstation.com/devletsanatcisi" target="_blank" rel="noopener noreferrer" aria-label="ArtStation"><i
-                    class="fa-brands fa-artstation"></i></a>
+            <a href="https://www.artstation.com/devletsanatcisi" target="_blank" rel="noopener noreferrer"
+                aria-label="ArtStation"><i class="fa-brands fa-artstation"></i></a>
         </div>
         <p>© 2026 by Yekta Demirci</p>
     </footer>
