@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         emailLink.addEventListener('mouseout', () => {
             if (emailLink.getAttribute('href') === '#') {
-                emailLink.textContent = "business [at] yektademirci.com";
+                emailLink.textContent = "business@yektademirci.com";
             }
         });
     }
