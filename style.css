@@ -108,15 +108,20 @@ ul {
     height: 50px;
     width: auto;
     transition: transform 0.3s ease;
-    /* Anti-aliasing and pixelation fixes */
-    image-rendering: -webkit-optimize-contrast;
-    transform: translateZ(0); /* Force hardware acceleration */
+    
+    /* Using scale(1.01) and perspective(1px) to force high-quality sub-pixel rendering */
+    transform: perspective(1px) translateZ(0) scale(1.01);
+    -webkit-transform: perspective(1px) translateZ(0) scale(1.01);
+    
+    /* Ensure hardware acceleration */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    will-change: transform, filter;
     
-    /* Force logo lines to be white and add a glow */
-    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+    /* Simplify filters - removed drop-shadow from img to avoid harsh edges */
+    filter: brightness(0) invert(1);
+    
+    /* Standard image rendering for logos */
+    image-rendering: auto;
 }
 
 .nav-logo a:hover img {
