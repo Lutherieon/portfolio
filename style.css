@@ -62,11 +62,11 @@ ul {
     width: 100%;
     height: var(--nav-height);
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center the links */
     align-items: center;
+    padding: 0 5%;
     z-index: 100;
     background: transparent;
-    /* Assuming hero gradient starts here, we can make it solid black later if needed via JS or specific classes */
     transition: background-color 0.3s ease;
 }
 
@@ -77,9 +77,66 @@ ul {
     backdrop-filter: blur(5px);
 }
 
+.nav-logo {
+    position: absolute;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    z-index: 101;
+}
+
+/* Stylized teal glow/background behind logo */
+.nav-logo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; /* Use fixed square dimensions for perfect circle */
+    height: 100px;
+    border-radius: 50%; /* Force circular shape */
+    /* Use solid teal at the center for maximum intensity */
+    background: radial-gradient(circle, var(--accent-teal) 0%, var(--accent-glow) 40%, transparent 75%);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 1;
+    filter: blur(5px); /* Smooth out the edges for a more natural glow */
+}
+
+.nav-logo img {
+    height: 40px; /* Slightly smaller to fit decoration */
+    width: auto;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+
+.nav-logo a:hover img {
+    transform: scale(1.05);
+}
+
 #navbar ul {
     display: flex;
     gap: 40px;
+}
+
+/* Responsive adjustment for navbar */
+@media (max-width: 768px) {
+    #navbar {
+        justify-content: flex-end; /* Links to the right on mobile if logo is fixed */
+    }
+    .nav-logo {
+        left: 20px;
+    }
+    .nav-logo img {
+        height: 30px;
+    }
+    #navbar ul {
+        gap: 15px;
+    }
+    #navbar a {
+        font-size: 0.75rem;
+    }
 }
 
 #navbar a {
