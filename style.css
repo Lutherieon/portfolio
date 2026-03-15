@@ -86,29 +86,30 @@ ul {
     z-index: 101;
 }
 
-/* Stylized teal glow/background behind logo */
+/* Stylized white radial glow behind logo */
 .nav-logo::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100px; /* Use fixed square dimensions for perfect circle */
-    height: 100px;
-    border-radius: 50%; /* Force circular shape */
-    /* Use solid teal at the center for maximum intensity */
-    background: radial-gradient(circle, var(--accent-teal) 0%, var(--accent-glow) 40%, transparent 75%);
+    width: 120px; /* Increased from 100px */
+    height: 120px;
+    border-radius: 50%;
+    /* Switched to white/neutral glow for maximum visibility */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 75%);
     z-index: -1;
     pointer-events: none;
-    opacity: 1;
-    filter: blur(5px); /* Smooth out the edges for a more natural glow */
+    opacity: 0.8;
+    filter: blur(8px);
 }
 
 .nav-logo img {
-    height: 40px; /* Slightly smaller to fit decoration */
+    height: 50px; /* Increased from 40px */
     width: auto;
     transition: transform 0.3s ease;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    /* Force logo lines to be white and add a glow */
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
 }
 
 .nav-logo a:hover img {
@@ -129,7 +130,11 @@ ul {
         left: 20px;
     }
     .nav-logo img {
-        height: 30px;
+        height: 35px; /* Increased from 30px */
+    }
+    .nav-logo::before {
+        width: 70px; /* Increased from 60px */
+        height: 70px;
     }
     #navbar ul {
         gap: 15px;
@@ -590,7 +595,7 @@ footer {
 }
 
 .portfolio-container {
-    padding-top: var(--nav-height);
+    padding-top: calc(var(--nav-height) + 60px); /* Increased padding for better spacing from navbar */
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
@@ -603,7 +608,7 @@ footer {
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 0.2em;
-    margin-bottom: 40px;
+    margin-bottom: 60px; /* Increased margin */
 }
 
 /* Portfolio Filters */
@@ -612,7 +617,7 @@ footer {
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 50px;
+    margin-bottom: 60px; /* Increased margin before the grid */
 }
 
 .filter-btn {
