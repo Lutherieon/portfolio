@@ -136,20 +136,30 @@ ul {
 /* Responsive adjustment for navbar */
 @media (max-width: 768px) {
     #navbar {
-        justify-content: flex-end; /* Links to the right on mobile if logo is fixed */
+        flex-direction: column;
+        height: auto;
+        padding: 20px 0;
+        justify-content: center;
     }
     .nav-logo {
-        left: 20px;
+        position: relative;
+        left: auto;
+        margin-bottom: 20px;
+        justify-content: center;
     }
     .nav-logo img {
-        height: 35px; /* Increased from 30px */
+        height: 35px;
     }
     .nav-logo::before {
-        width: 70px; /* Increased from 60px */
+        width: 70px;
         height: 70px;
     }
     #navbar ul {
+        flex-direction: row;
+        justify-content: center;
         gap: 15px;
+        width: 100%;
+        padding: 0 10px;
     }
     #navbar a {
         font-size: 0.75rem;
