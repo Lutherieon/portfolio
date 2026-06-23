@@ -338,7 +338,7 @@ window.FEATURED_DATA = {
 
 window.RESUME_DATA = {
     title: "RESUME",
-    downloadLink: "https://drive.google.com/file/d/1-2jL3Sj7bj4fki3bDNA3SpRg598oh3Fk/view?usp=drive_link",
+    downloadLink: "DEMIRCIYEKTA_CV_2026_June.pdf",
     downloadLabel: "RESUME 2026",
     experience: [
         {
