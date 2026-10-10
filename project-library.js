@@ -603,24 +603,33 @@ window.PROJECT_LIBRARY = [
             }
         ],
         "metadata": "Technical Artist - 2026",
-        "thumbnailDescription": "Garage atlas ve bahcesehir universitesinin ortak dersi olan",
+        "thumbnailDescription": "A cinematic adaptation of Chapter 50 from The Name of the Wind, developed in collaboration with Garage Atlas and Bahçeşehir University.",
         "thumbnailAlt": "",
-        "bannerType": "image",
+        "bannerType": "video",
         "thumbnail": "images/Kingkiller_Kapak.png",
-        "bannerSrc": "",
+        "bannerSrc": "https://www.youtube.com/embed/rRQ9-88ZNbA",
         "published": true,
         "showcase": true,
         "tags": [
             "Unreal Engine 5",
             "Houdini",
+            "Marvelous Designer",
             "Adobe  Premiere"
         ],
         "contributions": [
-            "Technical Artist | Animator | Kurgu |"
+            "Character Wrapping & Retopology",
+            "MetaHuman Animation & Motion Capture",
+            "Garment Creation & Cloth Simulation",
+            "Cinematic Editing & Sequencer"
         ],
         "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Kingkiller Chronicle, created as part of a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>Throughout the project, I worked on different stages of cinematic production, including character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5.",
         "facts": [],
-        "links": [],
-        "updatedAt": "2026-10-10T15:18:55.973Z"
+        "links": [
+            {
+                "label": "Video",
+                "href": "https://www.youtube.com/watch?v=rRQ9-88ZNbA"
+            }
+        ],
+        "updatedAt": "2026-10-10T15:25:53.836Z"
     }
 ];
