@@ -412,7 +412,7 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": "I collected references in PureRef to guide me whenever I felt unsure during texturing, grooming, look-development, and lighting. Here are some of the reference images I used throughout the project."
+                        "value": "I collected references in PureRef to guide me whenever I felt unsure during texturing, grooming, look-development, and lighting. Having everything in one place helped me maintain a consistent visual direction throughout the project."
                     },
                     {
                         "type": "image",
@@ -434,7 +434,7 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": ""
+                        "value": "I used Houdini to wrap the MetaHuman base topology onto the AI-generated Kvothe mesh. The goal was to preserve the character&#39;s facial features and proportions while maintaining a topology compatible with MetaHuman&#39;s animation system.<br><br>This workflow allowed me to adapt the existing character mesh without having to manually rebuild its topology from scratch."
                     },
                     {
                         "type": "media-board",
@@ -477,7 +477,7 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": ""
+                        "value": "I created the outfits for Kvothe and Devi in Marvelous Designer, starting with 2D sewing patterns and adjusting them to fit each character.<br><br>For Kvothe, I worked with multiple layers, including a tunic, trousers, and cloak, while Devi&#39;s outfit consisted of a long dress. I focused on getting the proportions and overall silhouette right before moving on to the cloth simulations."
                     },
                     {
                         "type": "media-group",
@@ -518,7 +518,7 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": "bunu sunu bunu"
+                        "value": "For the character performances, I recorded my own reference footage and used MetaHuman Animator&#39;s markerless motion capture workflow to generate 15 character animations.<br><br>After generating the animations, I brought them into Unreal Engine and used Control Rig to refine poses and movements where needed. This gave me more control over the performances before assembling the final sequences."
                     },
                     {
                         "type": "video",
@@ -535,7 +535,7 @@ window.PROJECT_LIBRARY = [
                     },
                     {
                         "type": "text",
-                        "value": "adsadasd",
+                        "value": "in scene below",
                         "src": "",
                         "caption": ""
                     },
@@ -560,7 +560,20 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": ""
+                        "value": "Once the outfits and character animations were ready, I used Marvelous Designer to simulate the clothing in motion.<br><br>My main focus was getting the garments to follow the characters&#39; movements naturally while avoiding intersections between the fabric and the body. I also had to consider how the different clothing layers would interact during animation."
+                    },
+                    {
+                        "type": "video",
+                        "value": "",
+                        "src": "images/Kingkiller_Cloth_Kvothe_Sim.mp4",
+                        "caption": "",
+                        "layout": {
+                            "width": 100,
+                            "x": 0,
+                            "top": 0,
+                            "ratio": 1.7777777777777777
+                        },
+                        "provider": "native"
                     }
                 ],
                 "id": "section-5"
@@ -570,7 +583,20 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": ""
+                        "value": "I assembled the cinematic shots in Unreal Engine 5 using Sequencer, combining the character animations, simulated clothing, cameras, and scene objects.<br><br>I used keyframe animation to control scene objects and Control Rig to make additional character adjustments. I also worked on camera placement, shot composition, and timing to make the transitions between shots feel natural and support the dialogue between Kvothe and Devi."
+                    },
+                    {
+                        "type": "video",
+                        "value": "",
+                        "src": "images/project-1d34b96a-47fd-4f45-82e3-0f04826132ed.mp4",
+                        "caption": "",
+                        "layout": {
+                            "width": 100,
+                            "x": 0,
+                            "top": 0,
+                            "ratio": 1.7777777777777777
+                        },
+                        "provider": "native"
                     }
                 ],
                 "id": "section-6"
@@ -592,9 +618,9 @@ window.PROJECT_LIBRARY = [
         "contributions": [
             "Technical Artist | Animator | Kurgu |"
         ],
-        "intro": "asdsad",
+        "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Kingkiller Chronicle, created as part of a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>Throughout the project, I worked on different stages of cinematic production, including character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5.",
         "facts": [],
         "links": [],
-        "updatedAt": "2026-10-10T14:54:37.455Z"
+        "updatedAt": "2026-10-10T15:18:55.973Z"
     }
 ];
