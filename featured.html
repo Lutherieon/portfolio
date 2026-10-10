@@ -9,7 +9,7 @@
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <meta name="description" content="Featured achievements, publications, and talks by Yekta Demirci.">
-    <link rel="canonical" href="https://www.yektademirci.com/featured">
+    <link rel="canonical" href="https://www.yektademirci.com/featured.html">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VWEYCCFRG"></script>
@@ -24,23 +24,24 @@
     <link rel="icon" type="image/png" href="images/LOGO.png">
 </head>
 
-<body class="page-featured">
+<body id="top" class="page-featured">
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Navigation -->
-    <nav id="navbar" class="dark-bg">
+    <nav aria-label="Main navigation" id="navbar" class="dark-bg">
         <div class="nav-logo">
-            <a href="/"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
+            <a href="index.html"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
         </div>
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio">PORTFOLIO</a></li>
-            <li><a href="resume">RESUME</a></li>
-            <li><a href="featured" class="active">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html">PORTFOLIO</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="featured.html" class="active" aria-current="page">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
-    <main class="featured-container">
+    <main id="main-content" class="featured-container">
         <!-- Dot Navigation Sidebar -->
         <nav class="dot-nav">
             <ul id="featured-dots">
@@ -75,6 +76,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="project-library.js"></script>
     <script src="projects-data.js"></script>
     <script src="script.js"></script>
 
@@ -89,6 +91,12 @@
                 const container = document.getElementById('dynamic-featured-list');
                 const dotsList = document.getElementById('featured-dots');
 
+                if (!window.FEATURED_DATA.groups.length) {
+                    const message = document.createElement('p');
+                    message.className = 'text-center featured-empty';
+                    message.innerHTML = 'Publications and talks will appear here when available.<br><a href="portfolio.html">Explore my current projects</a>.';
+                    container.appendChild(message);
+                }
                 window.FEATURED_DATA.groups.forEach(group => {
                     // Create Year Group Element
                     const groupEl = document.createElement('div');
@@ -101,7 +109,7 @@
                         entriesHTML += `
                             <div class="featured-entry">
                                 <p class="entry-title">
-                                    <a href="${entry.link}" target="_blank">${entry.title}</a>
+                                    <a href="${entry.link}" target="_blank" rel="noopener noreferrer">${entry.title}</a>
                                 </p>
                                 <p class="entry-location italic">${entry.location}</p>
                                 <p class="entry-desc italic">${entry.description}</p>

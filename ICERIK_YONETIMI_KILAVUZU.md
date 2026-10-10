@@ -1,6 +1,19 @@
 # 🚀 Kapsamlı İçerik Yönetim Kılavuzu
 
-Sitenin tamamı artık **modüler ve veri odaklı** çalışmaktadır. Yani HTML veya CSS kodlarına hiç dokunmadan, sadece `projects-data.js` dosyasını düzenleyerek tüm siteyi güncelleyebilirsiniz!
+## Güncel işlevler
+
+Özgün görsel tasarım ve sayfa yerleşimleri korunmaktadır. Düzeltmeler içerik, bağlantı, erişilebilirlik ve mobil taşma alanlarıyla sınırlıdır.
+
+- `drafts-data.js` eksik proje ve örnek Featured kayıtlarının arşividir; sayfalarda yüklenmez.
+- Tüm projeler `project-library.js` içinde tutulur. `window.PROJECTS` bu kaynaktan yalnızca `published: true` olan kayıtları alır. Kategori filtreleri görünür projelerden otomatik türetilir.
+- `featured.html` özgün Featured düzenini kullanır. Gerçek yayın/konuşma kaydı eklenene kadar portfolyoya yönlendiren bir açıklama gösterir.
+- Resume sayfasında yalnızca `window.RESUME_DATA.experience` içindeki iş deneyimi gösterilir. Güncel CV PDF indirme bağlantısından erişilebilir.
+- Projeleri bilgisayarında düzenlemek için `EDITORU_AC.cmd` dosyasını aç. `admin.html` editörü seçtiğin site klasöründeki `project-library.js` dosyasına doğrudan kayıt yapar. Kullanım: [ADMIN_KURULUM.md](ADMIN_KURULUM.md). Home, Resume ve Featured bilgileri `projects-data.js` içinde kalır. Aşağıdaki eski proje veri örnekleri alanları tanımak içindir.
+- PDF proje bannerı, sayfa okları ve noktalı gezinme korunur. Ana sayfadaki Background bölümü yalnızca metin içerir; Philosophy bölümü kaldırılmıştır. PDF önizlemesi yüklenmezse doğrudan belge bağlantısı sunulur.
+- Sayfa bağlantıları yerel önizleme ve statik barındırma için `.html` uzantısı kullanır. Proje adresi: `project-detail.html?id=proje-kimligi`.
+
+
+Site içerikleri veri dosyalarından okunur. Projeleri yerel editörde, Home / Resume / Featured içeriklerini `projects-data.js` içinde düzenleyebilirsiniz.
 
 Bu kılavuz, sitedeki farklı bölümlerin içeriklerini nasıl değiştireceğinizi adım adım anlatır.
 
@@ -8,11 +21,12 @@ Bu kılavuz, sitedeki farklı bölümlerin içeriklerini nasıl değiştireceği
 
 ## 📂 Dosya Yapısı ve Mantığı
 
-- `projects-data.js`: **BÜTÜN İÇERİĞİN** bulunduğu yer burasıdır. Tüm düzenlemelerinizi buradan yapacaksınız.
+- `project-library.js`: Görünür ve gizli projelerin kaynağıdır. Yerel editör bu dosyaya kayıt yapar.
+- `projects-data.js`: Home, Resume ve Featured içerikleri ile görünür proje listesini oluşturur.
 - `index.html`, `featured.html`, `resume.html`, `project-detail.html`: Sadece verileri okuyup ekrana çizen "motor" (şablon) dosyalarıdır. Dokunmanıza gerek yoktur.
 - `script.js`: Sayfaların düzgün kaymasını (scroll) ve animasyonlarını yönetir.
 
-Bütün düzenlemeleriniz için sadece **`projects-data.js`** dosyasını açmanız yeterlidir.
+Proje düzenlemek için **`EDITORU_AC.cmd`** dosyasını açın. Diğer sayfa içerikleri için aşağıdaki veri örneklerini kullanabilirsiniz.
 
 ---
 
@@ -25,7 +39,7 @@ window.HOME_SECTIONS = [
     {
         id: "yeni-bolum",           // Sayfadaki link (ör: #yeni-bolum). Türkçe karakter ve boşluk kullanmayın!
         title: "Bölüm Başlığı",     // Ekranda görünen büyük başlık
-        image: "images/resim1.jpg", // Yan taraftaki fotoğraf
+        image: "images/resim1.jpg", // İsteğe bağlı; görselsiz bölüm için bu alanı kaldırın.
         text: [
             "İlk paragraf metni buraya gelecek.",
             "İkinci paragraf metni buraya gelecek. İlk paragraftan sonra virgül koymayı unutmayın."
@@ -93,28 +107,24 @@ window.RESUME_DATA = {
 
 ## 4️⃣ Proje (PORTFOLIO) Eklemek
 
-Portfolyo sayfanızda sergilenecek her proje `window.PROJECTS` dizinine bir obje olarak eklenir. Ayrıca, yeni eklediğimiz **Kategori Filtreleme Sistemi** sayesinde projelerinizi ana başlıklara ayırabilirsiniz.
+Yerel editörde **+ Yeni** ile proje oluşturun, bilgilerini doldurun ve **Kaydet** düğmesine basın. Proje `project-library.js` dosyasına eklenir. **Portfolyoda göster** seçiliyse portfolyoda, **Ana sayfada öne çıkar** da seçiliyse Home'da görünür.
 
 ### Kategori (Filtre) Eklemek veya Değiştirmek
-Projelerinizin hangi başlıklar (UI, UX, VIDEO GAMES vb.) altında filtreleneceğini belirlemek için dosyanın en üstündeki `window.PORTFOLIO_CATEGORIES` listesini kullanırsınız. Buraya eklediğiniz her kelime, portfolyo sayfasında bir filtre butonuna dönüşür.
+Editörde **Kategori** alanına istediğiniz başlığı yazın. Portfolyo filtreleri görünür projelerin kategorilerinden otomatik oluşur; ayrı bir liste düzenlemeniz gerekmez.
 
 ```javascript
-window.PORTFOLIO_CATEGORIES = [
-    "All",
-    "UI",
-    "UX",
-    "VIDEO GAMES",
-    "YENI BIR KATEGORI BOYLE EKLENIR"
-];
+window.PORTFOLIO_CATEGORIES = ["All", ...new Set(window.PROJECTS.map(project => project.category))];
 ```
 
 ### Projeyi Eklemek ve Kategoriye Atamak
-Projenizi listeye eklerken, `category` alanına yukarıdaki filtre listesinde olan bir kelimeyi (büyük/küçük harf fark etmeksizin) yazarsanız, projeniz o filtreye tıklandığında görünür. Veya, sadece ekranda o kategorinin "Alt Başlığı" gibi görünmesini sağlamak için istediğiniz bir metni de yazabilirsiniz. Ancak projenin filtrelenebilmesi için `PORTFOLIO_CATEGORIES` içindeki bir kelimeyi içermesi gerekmektedir.
+Kategori adları tam eşleşir. Aynı kategoride görmek istediğiniz projelere aynı adı yazın. Aşağıdaki örnek, alanları anlatmak içindir; kayıt için editörü kullanın. `project-library.js` yalnızca JSON biçimindeki verileri kabul eder; bu açıklamalı JavaScript örneğini doğrudan dosyaya yapıştırmayın.
 
 ```javascript
-window.PROJECTS = [
+window.PROJECT_LIBRARY = [
     {
         id: "projemin-adi",                 // URL'de görünecek id (ör: ?id=projemin-adi)
+        published: true,                   // Portfolyoda göster
+        showcase: false,                   // Ana sayfada öne çıkar
         title: "Oyunun/Projenin Tam Adı",
         category: "Kategori (Sistem Tasarımı vs.)",
         thumbnailDescription: "Projenin kısa 1-2 cümlelik kapağa eklenecek yazısı.", // Yeni: Kartın ortasındaki açıklama

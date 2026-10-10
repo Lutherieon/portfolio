@@ -9,7 +9,9 @@
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Projects Data -->
+    <script src="project-library.js"></script>
     <script src="projects-data.js"></script>
+    <script src="portfolio-store.js"></script>
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta name="description" content="Project details and case study for Yekta Demirci's game design work.">
@@ -33,19 +35,20 @@
     <link rel="icon" type="image/png" href="images/LOGO.png">
 </head>
 
-<body class="page-project-detail">
+<body id="top" class="page-project-detail">
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Navigation -->
-    <nav id="navbar" class="dark-bg">
+    <nav aria-label="Main navigation" id="navbar" class="dark-bg">
         <div class="nav-logo">
-            <a href="/"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
+            <a href="index.html"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
         </div>
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio" class="active">PORTFOLIO</a></li>
-            <li><a href="resume">RESUME</a></li>
-            <li><a href="featured">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html" class="active" aria-current="page">PORTFOLIO</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="featured.html">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
@@ -56,10 +59,10 @@
         </div>
     </header>
 
-    <main class="project-container">
+    <main id="main-content" class="project-container">
         <!-- Return Link -->
         <div class="return-nav fade-in-section">
-            <a href="portfolio" class="return-link">
+            <a href="portfolio.html" class="return-link">
                 <span class="arrow">&lt;</span> RETURN
             </a>
         </div>
@@ -95,12 +98,14 @@
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", async () => {
+                await window.portfolioReady;
+                const escapeHTML = window.PortfolioStore.escape;
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
 
             if (projectId && typeof PROJECTS !== 'undefined') {
-                const projectIndex = PROJECTS.findIndex(p => p.id === projectId);
+                const projectIndex = PROJECTS.findIndex(p => p.id === projectId && p.published !== false);
                 const project = PROJECTS[projectIndex];
 
                 if (project) {
@@ -109,16 +114,44 @@
                     document.getElementById('page-project-title').textContent = project.title;
                     document.getElementById('page-project-metadata').textContent = project.metadata;
                     document.getElementById('page-project-intro').innerHTML = project.intro;
+                    if (project.facts && project.facts.length) {
+                        const facts = document.createElement('p');
+                        facts.className = 'intro-text project-facts';
+                        project.facts.forEach((item, index) => {
+                            if (index) facts.appendChild(document.createElement('br'));
+                            const label = document.createElement('strong'); label.textContent = `${item.label}: `;
+                            facts.append(label, document.createTextNode(item.value));
+                        });
+                        document.getElementById('page-project-intro').after(facts);
+                    }
                     // const contentArea = document.getElementById('project-content-area'); // This line was removed in the provided diff, but it's not explicitly part of the instruction. Keeping it for now.
 
+                    const canonical = document.querySelector('link[rel="canonical"]');
+                    canonical.href = `https://www.yektademirci.com/project-detail.html?id=${encodeURIComponent(project.id)}`;
+                    document.querySelector('meta[name="description"]').content = project.thumbnailDescription || project.title;
+                    document.querySelector('meta[property="og:title"]').content = project.title;
+                    document.querySelector('meta[property="og:description"]').content = project.thumbnailDescription || project.title;
+                    if (project.links && project.links.length) {
+                        const links = document.createElement('p');
+                        links.className = 'intro-text project-resource-links';
+                        project.links.forEach((item, index) => {
+                            if (index) links.appendChild(document.createTextNode(' · '));
+                            const link = document.createElement('a');
+                            link.href = item.href;
+                            link.textContent = item.label;
+                            if (item.href.startsWith('https://')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+                            links.appendChild(link);
+                        });
+                        document.getElementById('page-project-intro').after(links);
+                    }
                     // 2. Handle Banner (Top Background)
                     const bannerContainer = document.getElementById('hero-banner');
                     if (project.bannerType === 'pdf') {
                         // Use PDF container setup
                         bannerContainer.innerHTML = `
                             <div id="pdf-canvas-container" class="pdf-wrapper" data-pdf-url="${project.bannerSrc}"></div>
-                            <button id="prev-page" class="pdf-nav-btn prev"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-page" class="pdf-nav-btn next"><i class="fas fa-chevron-right"></i></button>
+                            <button type="button" aria-label="Previous PDF page" id="prev-page" class="pdf-nav-btn prev"><i class="fas fa-chevron-left"></i></button>
+                            <button type="button" aria-label="Next PDF page" id="next-page" class="pdf-nav-btn next"><i class="fas fa-chevron-right"></i></button>
                             <div id="page-num-display" class="page-indicator">
                                 <span id="page-num">1</span> / <span id="page-count">0</span>
                             </div>
@@ -127,9 +160,9 @@
                     } else if (project.bannerType === 'video') {
                         bannerContainer.innerHTML = `
                             <div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: var(--bg-color-dark);">
-                                <iframe src="${project.bannerSrc}" 
-                                    style="aspect-ratio: 16 / 9; height: 100%; max-width: 100%; border: none;" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                <iframe title="${escapeHTML(project.title)} gameplay video" referrerpolicy="strict-origin-when-cross-origin" src="${project.bannerSrc}"
+                                    style="aspect-ratio: 16 / 9; height: 100%; max-width: 100%; border: none;"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen>
                                 </iframe>
                             </div>
@@ -146,10 +179,10 @@
                         if (!media) return '';
 
                         if (media.type === 'image') {
-                            return `<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || ''}">${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}</div>`;
+                            return `<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || project.title}" loading="lazy" decoding="async">${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}</div>`;
                         } else if (media.type === 'video') {
                             const videoHTML = media.provider === 'youtube' ?
-                                `<iframe src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
+                                `<iframe title="${media.caption || project.title} video" src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
                                 `<video controls src="${media.src}"></video>`;
                             return `<div class="media-block video-wrapper fade-in-section">${videoHTML}</div>`;
                         } else if (media.type === 'pdf') {
@@ -216,20 +249,19 @@
 
                     // 6. Next Project Navigation
                     if (PROJECTS.length > 1) {
-                        const nextIndex = (projectIndex + 1) % PROJECTS.length;
-                        const nextProject = PROJECTS[nextIndex];
+                        const visibleProjects = PROJECTS.filter(item => item.published !== false);
+                        const nextIndex = (visibleProjects.indexOf(project) + 1) % visibleProjects.length;
+                        const nextProject = visibleProjects[nextIndex];
                         const nextNav = document.getElementById('next-project-anchor');
 
                         nextNav.innerHTML = `
                             <div class="next-project-nav fade-in-section" id="next-project-section">
                                 <span class="next-label">NEXT PROJECT</span>
-                                <a href="project-detail?id=${nextProject.id}" class="next-project-link">
+                                <a href="project-detail.html?id=${encodeURIComponent(nextProject.id)}" class="next-project-link">
                                     <div class="next-project-card">
                                         <div class="next-img" style="background-image: url('${nextProject.thumbnail}');"></div>
                                         <div class="next-project-overlay">
-                                            <h2 class="next-project-title uppercase">
-                                                ${nextProject.title} <span class="next-arrow">→</span>
-                                            </h2>
+                                            <h2 class="next-project-title uppercase">${escapeHTML(nextProject.title)} <span class="next-arrow">→</span></h2>
                                         </div>
                                     </div>
                                 </a>
@@ -244,6 +276,19 @@
                     if (window.initFadeAnimations) window.initFadeAnimations();
                     if (window.initDotNav) window.initDotNav();
                 }
+            }
+            if (!projectId || !window.PROJECTS || !window.PROJECTS.some(item => item.id === projectId && item.published !== false)) {
+                document.querySelector('.project-hero').hidden = true;
+                document.getElementById('sidebar-dots').hidden = true;
+                document.getElementById('page-project-title').textContent = projectId ? 'Project unavailable' : 'Choose a project';
+                document.getElementById('page-project-metadata').textContent = '';
+                document.getElementById('page-project-intro').textContent = 'Explore the current portfolio for published projects and work samples.';
+                document.title = 'Portfolio | Yekta Demirci';
+                const robots = document.createElement('meta');
+                robots.name = 'robots';
+                robots.content = 'noindex, follow';
+                document.head.appendChild(robots);
+                document.querySelector('link[rel="canonical"]').remove();
             }
         });
     </script>

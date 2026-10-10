@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <meta name="description" content="Resume of Yekta Demirci - Experience in Digital Game Design and Technical Art.">
-    <link rel="canonical" href="https://www.yektademirci.com/resume">
+    <meta name="description" content="Yekta Demirci's work experience as a Technical Artist & Designer Intern at Garage Atlas.">
+    <link rel="canonical" href="https://www.yektademirci.com/resume.html">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VWEYCCFRG"></script>
@@ -24,23 +24,24 @@
     <link rel="icon" type="image/png" href="images/LOGO.png">
 </head>
 
-<body class="page-resume">
+<body id="top" class="page-resume">
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Navigation -->
-    <nav id="navbar" class="dark-bg">
+    <nav aria-label="Main navigation" id="navbar" class="dark-bg">
         <div class="nav-logo">
-            <a href="/"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
+            <a href="index.html"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
         </div>
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio">PORTFOLIO</a></li>
-            <li><a href="resume" class="active">RESUME</a></li>
-            <li><a href="featured">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html">PORTFOLIO</a></li>
+            <li><a href="resume.html" class="active" aria-current="page">RESUME</a></li>
+            <li><a href="featured.html">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
-    <main class="resume-container">
+    <main id="main-content" class="resume-container">
         <!-- Dot Navigation Sidebar -->
         <nav class="dot-nav">
             <ul id="resume-dots">
@@ -53,16 +54,17 @@
 
         <div class="pdf-download text-center fade-in-section">
             <p class="italic">PDF Download</p>
-            <a href="#" class="btn-download uppercase" id="resume-download-btn">RESUME 2026</a>
+            <a href="DEMIRCIYEKTA_CV_2026_October.pdf" download class="btn-download uppercase" id="resume-download-btn">RESUME 2026</a>
         </div>
 
-        <div class="resume-section">
+        <div class="resume-section" id="experience">
             <h2 class="resume-header italic text-center fade-in-section">Work Experience</h2>
 
             <div id="dynamic-resume-list">
                 <!-- Dynamic content from projects-data.js will be injected here -->
             </div>
         </div>
+        <noscript><p class="text-center">Download the PDF above for the full resume.</p></noscript>
     </main>
 
     <!-- Common Footer style -->
@@ -81,6 +83,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="project-library.js"></script>
     <script src="projects-data.js"></script>
     <script src="script.js"></script>
 
@@ -96,7 +99,6 @@
                 // 2. Inject Experience and Dots
                 const container = document.getElementById('dynamic-resume-list');
                 const dotsList = document.getElementById('resume-dots');
-
                 const experienceList = window.RESUME_DATA.experience || [];
                 const validExperiences = experienceList.filter(item => item && Object.keys(item).length > 0 && item.role);
 
@@ -117,7 +119,8 @@
                                 <h3 class="role">${item.role}</h3>
                                 <h4 class="company">${item.company}</h4>
                                 <p class="dates">(${item.dates})</p>
-                                <p class="description italic">${item.description}</p>
+                                ${item.description ? `<p class="description italic">${item.description}</p>` : ''}
+                                ${item.bullets && item.bullets.length ? `<ul class="resume-bullets">${item.bullets.map(bullet => `<li>${bullet}</li>`).join('')}</ul>` : ''}
                             </div>
                         `;
 

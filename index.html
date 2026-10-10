@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 	<meta name="description" content="Yekta Demirci - Digital Game Designer portfolio. Showcase of games, UX analysis, and game design projects.">
 	<meta name="keywords" content="Yekta Demirci, Game Design, Portfolio, Digital Game Designer, Unreal Engine, UX Research">
-	
+
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.yektademirci.com/">
@@ -41,36 +41,36 @@
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
 	<!-- Navigation -->
-	<nav id="navbar">
+	<nav aria-label="Main navigation" id="navbar">
 		<div class="nav-logo">
-			<a href="/"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
+			<a href="index.html"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
 		</div>
 		<ul>
-			<li><a href="/" class="active">HOME</a></li>
-			<li><a href="portfolio">PORTFOLIO</a></li>
-			<li><a href="resume">RESUME</a></li>
-			<li><a href="featured">FEATURED</a></li>
+			<li><a href="index.html" class="active" aria-current="page">HOME</a></li>
+			<li><a href="portfolio.html">PORTFOLIO</a></li>
+			<li><a href="resume.html">RESUME</a></li>
+			<li><a href="featured.html">FEATURED</a></li>
 			<li><a href="#contact">CONTACT</a></li>
 		</ul>
 	</nav>
 
 	<!-- Hero Section -->
-	<header class="hero">
+	<header class="hero" id="top">
 		<div class="hero-content">
 			<h1>Y E K T A<br>D E M I R C I</h1>
-			<p class="subtitle">G A M E &nbsp; D E S I G N E R</p>
 		</div>
 	</header>
 
 	<!-- Main Content Background -->
-	<main class="content-sections">
+	<main id="main-content" class="content-sections">
 		<!-- Dot Navigation Sidebar -->
 		<nav class="dot-nav">
 			<ul id="home-dots">
 				<li><a href="#top" title="Top"><span class="dot"></span></a></li>
-				<li><a href="#showcase" title="Highlighted Project"><span class="dot"></span></a></li>
+				<li><a href="#showcase" title="Highlighted Projects"><span class="dot"></span></a></li>
 				<!-- Dynamic dots will be injected here -->
 				<li><a href="#contact" title="Contact"><span class="dot"></span></a></li>
 			</ul>
@@ -79,7 +79,7 @@
 		<!-- Showcase Section -->
 		<section class="showcase-section fade-in-section" id="showcase">
 			<div class="showcase-header text-center">
-				<h2>Highlighted Project</h2>
+				<h2>Highlighted Projects</h2>
 				<p>Selected Works</p>
 			</div>
 			<div id="showcase-grid" class="showcase-grid">
@@ -99,7 +99,7 @@
 					I hope you enjoy what you find here! All views are my own. If you’d like to contact me further
 					regarding my availability or work you may email me at:
 				</p>
-				<a href="#" class="email-link">business@yektademirci.com</a>
+				<a href="mailto:business@yektademirci.com" class="email-link">business@yektademirci.com</a>
 			</div>
 		</section>
 	</main>
@@ -119,12 +119,16 @@
 	</footer>
 
 	<!-- Scripts -->
-	<script src="projects-data.js"></script>
+	<script src="project-library.js"></script>
+    <script src="projects-data.js"></script>
+    <script src="portfolio-store.js"></script>
 	<script src="script.js"></script>
 
 	<!-- Simple JS to add solid background to nav on scroll + Dynamic Sections -->
 	<script>
-		document.addEventListener("DOMContentLoaded", () => {
+		document.addEventListener("DOMContentLoaded", async () => {
+                await window.portfolioReady;
+                const escapeHTML = window.PortfolioStore.escape;
 			// 1. Navbar Scroll Logic
 			const navbar = document.getElementById('navbar');
 			window.addEventListener('scroll', () => {
@@ -139,18 +143,18 @@
 			if (typeof window.PROJECTS !== 'undefined') {
 				const showcaseGrid = document.getElementById('showcase-grid');
 				if (showcaseGrid) {
-					const topProjects = window.PROJECTS.filter(p => p.showcase);
+					const topProjects = window.PROJECTS.filter(p => p.showcase && p.published !== false);
 					topProjects.forEach(project => {
 						const card = document.createElement('a');
-						card.href = `project-detail?id=${project.id}`;
+						card.href = `project-detail.html?id=${encodeURIComponent(project.id)}`;
 						card.className = "showcase-card";
 						card.innerHTML = `
 							<div class="showcase-image" style="background-image: url('${project.thumbnail}')"></div>
 							<div class="showcase-content">
-								<h3>${project.title}</h3>
-								<p class="showcase-category">${project.category}</p>
+								<h3>${escapeHTML(project.title)}</h3>
+								<p class="showcase-category">${escapeHTML(project.category)}</p>
 								${project.contributions && project.contributions.length > 0 ? `
-									<p class="showcase-roles">${project.contributions.slice(0, 3).join(' | ')}</p>
+									<p class="showcase-roles">${project.contributions.slice(0, 3).map(escapeHTML).join(' | ')}</p>
 								` : ''}
 							</div>
 						`;
@@ -174,8 +178,15 @@
 					// Generate Paragraphs
 					const paragraphs = section.text.map(p => `<p>${p}</p>`).join('');
 
-					// Construct Section innerHTML (Image + Text)
-					if (isAlternate) {
+					// Images are optional; text-only sections have no empty image placeholder.
+					if (!section.image) {
+						sectionEl.innerHTML = `
+                            <div class="section-text">
+                                <h2>${section.title}</h2>
+                                ${paragraphs}
+                            </div>
+                        `;
+					} else if (isAlternate) {
 						sectionEl.innerHTML = `
                             <div class="section-image" style="background-image: url('${section.image}');"></div>
                             <div class="section-text">

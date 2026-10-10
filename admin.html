@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Proje yönetimi | Yekta Demirci</title>
+    <link rel="icon" href="images/LOGO.png">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-topbar">
+        <a class="brand" href="index.html"><img src="images/LOGO.png" alt="">YEKTA DEMIRCI <span>Proje yönetimi</span></a>
+        <div class="top-actions"><span id="folder-name" class="hint"></span><a href="portfolio.html" target="_blank" rel="noopener">Siteyi aç ↗</a><button id="change-folder" hidden>Klasörü değiştir</button></div>
+    </header>
+    <main>
+        <section id="login-panel" class="login-panel">
+            <p class="eyebrow">BİLGİSAYARINDA DÜZENLE</p>
+            <h1>Projelerin için tek bir yer.</h1>
+            <p>Site klasörünü seç; projelerini kod yazmadan düzenle. Kaydettiğinde değişiklikler doğrudan bilgisayarındaki site dosyasına yazılır.</p>
+            <button id="connect-folder" class="primary" type="button">Site klasörünü seç</button>
+            <p class="hint">Portfolio_site klasörünü seç ve tarayıcının klasöre yazma iznini onayla. Chrome veya Edge kullan.</p>
+            <a href="ADMIN_KURULUM.md">Kullanım adımları ↗</a>
+            <p id="login-status" role="status" aria-live="polite"></p>
+        </section>
+        <div id="workspace" class="workspace" hidden>
+            <aside class="sidebar" aria-label="Proje listesi">
+                <div class="sidebar-heading"><h2>Projeler</h2><button id="new-project" class="primary" type="button">+ Yeni</button></div>
+                <label class="search-label">Proje ara<input id="project-search" type="search" placeholder="Başlık veya kategori"></label>
+                <div class="list-filters" aria-label="Görünürlük filtresi">
+                    <button type="button" data-filter="all" aria-pressed="true">Hepsi</button>
+                    <button type="button" data-filter="published" aria-pressed="false">Görünen</button>
+                    <button type="button" data-filter="hidden" aria-pressed="false">Gizli</button>
+                </div>
+                <p id="project-total" class="hint"></p>
+                <nav id="project-list" aria-label="Düzenlenecek projeyi seç"></nav>
+                <p class="sidebar-note">Gizli projeler portfolyoda görünmez. Göstermek için sağdaki görünürlük ayarını değiştir.</p>
+            </aside>
+            <section class="editor-area" aria-label="Proje düzenleyici">
+                <div class="notice">Yerel editör · Kaydet, site dosyasını günceller. Her kayıttan önce otomatik yedek alınır.</div>
+                <form id="project-form">
+                    <div class="editor-header">
+                        <div><p class="eyebrow">PROJE DÜZENLE</p><h1 id="editor-title">Proje seç</h1><p id="save-status" role="status" aria-live="polite"></p></div>
+                        <div class="editor-actions"><button id="preview-project" type="button">Önizle ↗</button><button id="save-project" class="primary" type="submit">Kaydet</button></div>
+                    </div>
+                    <fieldset class="form-card"><legend>Proje bilgileri</legend>
+                        <div class="field-grid">
+                            <label>Başlık<textarea name="title" required maxlength="180" rows="2" placeholder="Proje adı"></textarea><span class="hint">Enter ile alt satıra geçebilirsin; sitede de aynı yerden bölünür.</span></label>
+                            <label>Proje adresi (ID)<input name="id" required pattern="[a-zA-Z0-9_-]+" maxlength="100" placeholder="proje-adi"><span class="hint">Mevcut projelerin adresi korunur.</span></label>
+                            <label>Kategori<input name="category" required list="category-options" placeholder="Games & Tools"><datalist id="category-options"></datalist></label>
+                            <label>Rol ve tarih<input name="metadata" placeholder="Technical Artist · 2026"></label>
+                            <label class="wide">Kart açıklaması<textarea name="thumbnailDescription" rows="3" placeholder="Projenin kısa özeti"></textarea></label>
+                            <label>Katkıların<textarea name="contributions" rows="3" placeholder="Her satıra bir katkı"></textarea></label>
+                            <label>Etiketler<input name="tags" placeholder="Unreal Engine 5, Technical Art"></label>
+                        </div>
+                        <div class="visibility-options"><label><input name="published" type="checkbox"> Portfolyoda göster</label><label><input name="showcase" type="checkbox"> Ana sayfada öne çıkar</label></div>
+                        <p class="hint">Göster kapalıysa proje gizli kalır; ana sayfada da gösterilmez.</p>
+                    </fieldset>
+                    <fieldset class="form-card"><legend>Kapak ve üst görsel</legend>
+                        <div class="field-grid">
+                            <label class="wide">Kart görseli<div class="upload-field"><input name="thumbnail" placeholder="images/proje.jpg veya https://…"><button type="button" data-upload-target="thumbnail">Yükle</button></div></label>
+                            <label>Görsel açıklaması<input name="thumbnailAlt" placeholder="Görseli tarif et"></label>
+                            <label>Üst alan türü<select name="bannerType"><option value="image">Görsel</option><option value="video">YouTube / Vimeo videosu</option><option value="pdf">PDF</option><option value="none">Boş alan</option></select></label>
+                            <label class="wide">Üst alan kaynağı<div class="upload-field"><input name="bannerSrc" placeholder="Dosya yolu veya video bağlantısı"><button type="button" data-upload-target="bannerSrc">Yükle</button></div></label>
+                        </div>
+                        <img id="cover-preview" class="cover-preview" alt="Kart görseli önizlemesi" hidden>
+                    </fieldset>
+                    <fieldset class="form-card"><legend>Projenin hikâyesi</legend>
+                        <label>Giriş metni<textarea name="intro" rows="6" placeholder="Proje neydi, neyi amaçladın ve sen neler yaptın?"></textarea></label>
+                        <p class="hint">Metinleri normal şekilde yazabilirsin. Mevcut metinlerin biçimlendirmesi korunur.</p>
+                        <div class="subheading"><h2>Kısa bilgiler</h2><button id="add-fact" type="button">+ Bilgi</button></div>
+                        <div id="facts-editor"></div>
+                        <div class="subheading"><h2>Bağlantılar</h2><button id="add-link" type="button">+ Bağlantı</button></div>
+                        <div id="links-editor"></div>
+                    </fieldset>
+                    <section class="form-card sections-card">
+                        <div class="subheading"><div><h2>Detay sayfası bölümleri</h2><p class="hint">Amaç, core loop, mekanikler, görsel stil veya geliştirme süreci: ihtiyacına göre bölüm ekle.</p></div><button id="add-section" type="button">+ Bölüm</button></div>
+                        <div id="sections-editor"></div>
+                    </section>
+                    <div class="editor-footer"><p class="hint">Kaydettiğinde bilgisayarındaki site güncellenir. Canlı site için dosyaları ayrıca yayınlaman gerekir.</p><button class="primary" type="submit">Kaydet</button></div>
+                </form>
+                <button id="reload-projects" type="button">Dosyadan yeniden yükle</button>
+            </section>
+        </div>
+    </main>
+    <dialog id="unsaved-dialog"><h2>Kaydedilmemiş değişiklikler var</h2><p>Bu projede yaptığın değişiklikleri kaydetmeden ayrılmak üzeresin.</p><div class="dialog-actions"><button id="keep-editing" type="button">Düzenlemeye dön</button><button id="discard-changes" type="button">Değişikliklerden vazgeç</button></div></dialog>
+    <input type="file" id="asset-input" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden>
+    <script src="project-library.js"></script>
+    <script src="projects-data.js"></script>
+    <script src="portfolio-store.js"></script>
+    <script src="local-project-files.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

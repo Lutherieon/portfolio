@@ -1,7 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    await window.portfolioReady;
+    document.documentElement.classList.add('js');
+    const navbar = document.getElementById('navbar');
+    const updateNavHeight = () => document.documentElement.style.setProperty('--nav-height', `${Math.ceil(navbar.getBoundingClientRect().height)}px`);
+    updateNavHeight();
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(updateNavHeight).observe(navbar);
+    window.addEventListener('resize', updateNavHeight, { passive: true });
+    const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     // 1. Fade-on-scroll animation
     window.initFadeAnimations = () => {
         const fadeElements = document.querySelectorAll('.fade-in-section:not(.is-visible)');
+        if (typeof IntersectionObserver === 'undefined') {
+            fadeElements.forEach(element => element.classList.add('is-visible'));
+            return;
+        }
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -139,14 +151,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Special handling for scrolling to Top
             if (targetId === '#navbar' || targetId === '#top') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: scrollBehavior() });
                 return;
             }
 
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: scrollBehavior()
                 });
             }
         }
@@ -156,6 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const pdfContainer = document.getElementById('pdf-canvas-container');
     if (pdfContainer) {
         const url = pdfContainer.getAttribute('data-pdf-url');
+        const showPdfFallback = () => {
+            const message = document.createElement('p');
+            message.textContent = 'The preview is unavailable. ';
+            const link = document.createElement('a');
+            link.href = url;
+            link.textContent = 'Open the analysis (PDF)';
+            link.style.color = 'var(--accent-teal)';
+            message.appendChild(link);
+            pdfContainer.replaceChildren(message);
+            document.querySelectorAll('.pdf-nav-btn').forEach(button => button.disabled = true);
+        };
+        if (url && typeof pdfjsLib === 'undefined') showPdfFallback();
         if (url && typeof pdfjsLib !== 'undefined') {
             pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
@@ -166,8 +190,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 const pageNumEl = document.getElementById('page-num');
                 if (pageCountEl) pageCountEl.textContent = pdf.numPages;
 
+                let renderQueue = Promise.resolve();
+                let renderVersion = 0;
                 const renderPage = (pageNum) => {
-                    pdf.getPage(pageNum).then(page => {
+                    const version = ++renderVersion;
+                    const previous = document.getElementById('prev-page');
+                    const next = document.getElementById('next-page');
+                    if (previous) previous.disabled = currentPage <= 1;
+                    if (next) next.disabled = currentPage >= pdf.numPages;
+                    renderQueue = renderQueue.catch(() => {}).then(async () => {
+                        if (version !== renderVersion) return;
+                        const page = await pdf.getPage(pageNum);
                         const viewport = page.getViewport({ scale: 1.5 });
                         const canvas = document.createElement('canvas');
                         const context = canvas.getContext('2d');
@@ -177,15 +210,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         canvas.style.height = "100%";
                         canvas.style.objectFit = "contain";
 
-                        // Clear existing canvas and append new one
-                        pdfContainer.innerHTML = '';
-                        pdfContainer.appendChild(canvas);
-
-                        page.render({
+                        await page.render({
                             canvasContext: context,
                             viewport: viewport
-                        });
+                        }).promise;
+                        if (version === renderVersion) pdfContainer.replaceChildren(canvas);
                     });
+                    renderQueue.catch(showPdfFallback);
                 };
 
                 // Initial render
@@ -259,41 +290,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }).catch(err => {
                 console.error("PDF error:", err);
-                pdfContainer.innerHTML = `<div style="color: white; text-align: center; padding: 20px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #ffcc00; margin-bottom: 15px;"></i>
-                        <p>PDF could not be loaded. Please ensure the file <b>${url}</b> is placed in the correct directory.</p>
-                    </div>`;
+                showPdfFallback();
             });
         }
     }
 
-    // 5. Email Masking
-    const emailLink = document.querySelector('.email-link');
-    if (emailLink) {
-        const user = "business";
-        const domain = "yektademirci.com";
-        const fullEmail = `${user}@${domain}`;
-
-        emailLink.addEventListener('click', (e) => {
-            if (emailLink.getAttribute('href') === '#') {
-                e.preventDefault();
-                emailLink.setAttribute('href', `mailto:${fullEmail}`);
-                emailLink.textContent = fullEmail;
-                window.location.href = `mailto:${fullEmail}`;
-            }
-        });
-
-        emailLink.addEventListener('mouseover', () => {
-            if (emailLink.getAttribute('href') === '#') {
-                emailLink.textContent = "Click to reveal email";
-                emailLink.style.cursor = 'pointer';
-            }
-        });
-        
-        emailLink.addEventListener('mouseout', () => {
-            if (emailLink.getAttribute('href') === '#') {
-                emailLink.textContent = "business@yektademirci.com";
-            }
-        });
-    }
+    // 5. Email links use their mailto href directly.
 });

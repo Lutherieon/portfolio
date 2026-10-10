@@ -108,18 +108,18 @@ ul {
     height: 50px;
     width: auto;
     transition: transform 0.3s ease;
-    
+
     /* Using scale(1.01) and perspective(1px) to force high-quality sub-pixel rendering */
     transform: perspective(1px) translateZ(0) scale(1.01);
     -webkit-transform: perspective(1px) translateZ(0) scale(1.01);
-    
+
     /* Ensure hardware acceleration */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    
+
     /* Simplify filters - removed drop-shadow from img to avoid harsh edges */
     filter: brightness(0) invert(1);
-    
+
     /* Standard image rendering for logos */
     image-rendering: auto;
 }
@@ -1801,4 +1801,43 @@ footer {
 #page-project-title-container,
 #navbar {
     scroll-margin-top: 100px;
+}
+
+/* CV bullet support from the user's original local changes. */
+.resume-bullets { list-style: none; padding: 0; margin: 15px 0 0; display: flex; flex-direction: column; gap: 12px; }
+.resume-bullets li { position: relative; padding-left: 22px; font-family: var(--font-body); font-size: .98rem; line-height: 1.7; color: #ccc; }
+.resume-bullets li::before { content: "•"; position: absolute; left: 4px; top: 0; color: var(--accent-teal); font-size: 1.2rem; line-height: 1.5; }
+.resume-bullets b, .resume-bullets strong { color: #fff; font-weight: 600; }
+.resume-bullets u { text-underline-offset: 3px; color: #e6e6e6; }
+.resume-bullets code { background: rgba(64,224,208,.1); border: 1px solid rgba(64,224,208,.25); padding: 2px 7px; border-radius: 4px; font-size: .88rem; color: var(--accent-teal); }
+
+/* Small functional fixes; original typography, colors and layout stay in place. */
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-teal); outline-offset: 4px; }
+[hidden] { display: none !important; }
+.skip-link { position: fixed; top: 10px; left: 10px; z-index: 200; padding: 10px 18px; background: var(--bg-color-dark); color: var(--accent-teal); transform: translateY(-180%); }
+.skip-link:focus { transform: translateY(0); }
+.fade-in-section { opacity: 1; transform: none; }
+.js .fade-in-section:not(.is-visible) { opacity: 0; transform: translateY(30px); }
+.resume-summary, .project-count, .featured-empty { color: #ccc; line-height: 1.8; margin-bottom: 30px; }
+.resume-summary { max-width: 650px; margin-inline: auto; }
+.resume-skill-group { margin-bottom: 30px; }
+.project-resource-links a, .featured-empty a { color: var(--accent-teal); text-decoration: underline; text-underline-offset: 4px; }
+.content-block .text-block { white-space: pre-line; }
+.project-title, .card-title-overlay h3, .showcase-content h3,
+.next-project-title, .card-description { white-space: pre-line; }
+.pdf-wrapper canvas { max-width: 100%; max-height: 100%; object-fit: contain; }
+@media (max-width: 768px) {
+    :root { --nav-height: 150px; }
+    #navbar a { font-size: .75rem; }
+    #navbar ul a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; }
+    .portfolio-container, .resume-container, .featured-container { padding-top: calc(var(--nav-height) + 30px); }
+    .project-hero { margin-top: var(--nav-height); }
+    .section-image { max-width: 100%; }
+    .showcase-grid { grid-template-columns: minmax(0, 1fr); }
+    .hero h1, .project-title, .content-block h2 { overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .fade-in-section:not(.is-visible) { opacity: 1; transform: none; }
 }

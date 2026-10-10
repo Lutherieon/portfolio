@@ -11,21 +11,23 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Projects Data -->
+    <script src="project-library.js"></script>
     <script src="projects-data.js"></script>
+    <script src="portfolio-store.js"></script>
     <meta name="description"
         content="Portfolio of Yekta Demirci - A collection of game development, UI/UX design, and creative projects.">
-    <link rel="canonical" href="https://www.yektademirci.com/portfolio">
+    <link rel="canonical" href="https://www.yektademirci.com/portfolio.html">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yektademirci.com/portfolio">
+    <meta property="og:url" content="https://www.yektademirci.com/portfolio.html">
     <meta property="og:title" content="Portfolio | Yekta Demirci">
     <meta property="og:description" content="Explore my latest projects in game design and development.">
     <meta property="og:image" content="https://www.yektademirci.com/images/NoPrayerInSeasideThumbnail.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yektademirci.com/portfolio">
+    <meta property="twitter:url" content="https://www.yektademirci.com/portfolio.html">
     <meta property="twitter:title" content="Portfolio | Yekta Demirci">
     <meta property="twitter:description" content="Explore my latest projects in game design and development.">
     <meta property="twitter:image" content="https://www.yektademirci.com/images/NoPrayerInSeasideThumbnail.png">
@@ -43,26 +45,27 @@
     <link rel="icon" type="image/png" href="images/LOGO.png">
 </head>
 
-<body class="page-portfolio">
+<body id="top" class="page-portfolio">
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
     <!-- Navigation -->
-    <nav id="navbar" class="dark-bg">
+    <nav aria-label="Main navigation" id="navbar" class="dark-bg">
         <div class="nav-logo">
-            <a href="/"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
+            <a href="index.html"><img src="images/LOGO.png" alt="Yekta Demirci Logo"></a>
         </div>
         <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="portfolio" class="active">PORTFOLIO</a></li>
-            <li><a href="resume">RESUME</a></li>
-            <li><a href="featured">FEATURED</a></li>
-            <li><a href="/#contact">CONTACT</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="portfolio.html" class="active" aria-current="page">PORTFOLIO</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="featured.html">FEATURED</a></li>
+            <li><a href="index.html#contact">CONTACT</a></li>
         </ul>
     </nav>
 
-    <main class="portfolio-container">
+    <main id="main-content" class="portfolio-container">
         <h1 class="page-title text-center">PORTFOLIO</h1>
 
-        <div id="portfolio-filters" class="portfolio-filters">
+        <div id="portfolio-filters" class="portfolio-filters" role="group" aria-label="Filter projects by category">
             <!-- Filter buttons will be dynamically injected here -->
         </div>
 
@@ -75,7 +78,9 @@
         </div>
 
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", async () => {
+                await window.portfolioReady;
+                const escapeHTML = window.PortfolioStore.escape;
                 const grid = document.getElementById('portfolio-grid');
                 const pagination = document.getElementById('pagination');
                 const filtersContainer = document.getElementById('portfolio-filters');
@@ -84,10 +89,13 @@
                 let currentCategory = 'All';
                 let filteredProjects = [];
 
+                const visibleProjects = (window.PROJECTS || []).filter(project => project.published !== false);
                 if (grid && typeof PROJECTS !== 'undefined') {
 
                     // Filter initialization
-                    const categories = window.PORTFOLIO_CATEGORIES || ['All'];
+                    const categories = ['All', ...new Set(visibleProjects.map(project => project.category).filter(Boolean))];
+                    const requestedCategory = new URLSearchParams(location.search).get('category');
+                    if (categories.includes(requestedCategory)) currentCategory = requestedCategory;
 
                     function renderFilters() {
                         if (filtersContainer && categories.length > 1) {
@@ -96,10 +104,21 @@
                                 const btn = document.createElement('button');
                                 btn.className = `filter-btn ${category === currentCategory ? 'active' : ''}`;
                                 btn.innerText = category;
+                                btn.type = 'button';
+                                btn.dataset.category = category;
+                                btn.setAttribute('aria-pressed', String(category === currentCategory));
                                 btn.addEventListener('click', () => {
                                     currentCategory = category;
                                     currentPage = 1; // Reset to first page
-                                    renderFilters(); // Update active state
+                                    filtersContainer.querySelectorAll('button').forEach(button => {
+                                        const active = button.dataset.category === currentCategory;
+                                        button.classList.toggle('active', active);
+                                        button.setAttribute('aria-pressed', String(active));
+                                    });
+                                    const url = new URL(location.href);
+                                    if (currentCategory === 'All') url.searchParams.delete('category');
+                                    else url.searchParams.set('category', currentCategory);
+                                    try { history.pushState(null, '', url); } catch (_) {}
                                     updateFilteredProjects();
                                 });
                                 filtersContainer.appendChild(btn);
@@ -109,11 +128,11 @@
 
                     function updateFilteredProjects() {
                         if (currentCategory === 'All') {
-                            filteredProjects = PROJECTS;
+                            filteredProjects = visibleProjects;
                         } else {
                             // Using includes on toUpperCase for flexible matching
-                            filteredProjects = PROJECTS.filter(p =>
-                                p.category && p.category.toUpperCase().includes(currentCategory.toUpperCase())
+                            filteredProjects = visibleProjects.filter(p =>
+                                p.category === currentCategory
                             );
                         }
                         renderProjects(currentPage);
@@ -128,31 +147,31 @@
 
                         paginatedItems.forEach(project => {
                             const card = document.createElement('a');
-                            card.href = `project-detail?id=${project.id}`;
+                            card.href = `project-detail.html?id=${encodeURIComponent(project.id)}`;
                             card.className = 'project-card';
 
                             card.innerHTML = `
                                 <div class="card-image-wrapper">
                                     <div class="card-image" style="background-image: url('${project.thumbnail}');"></div>
                                     <div class="card-title-overlay">
-                                        <h3>${project.title}</h3>
+                                        <h3>${escapeHTML(project.title)}</h3>
                                         ${project.contributions && project.contributions.length > 0 ? `
-                                            <p class="card-roles">${project.contributions.slice(0, 3).join(' | ')}</p>
+                                            <p class="card-roles">${project.contributions.slice(0, 3).map(escapeHTML).join(' | ')}</p>
                                         ` : ''}
                                     </div>
                                 </div>
                                 <div class="card-content">
                                     ${project.tags && project.tags.length > 0 ? `
                                         <div class="card-tags">
-                                            ${project.tags.map(tag => `<span class="tag tag-${tag.toLowerCase().replace(/[^a-z0-9]/g, '')}">${tag}</span>`).join('')}
+                                            ${project.tags.map(tag => `<span class="tag tag-${tag.toLowerCase().replace(/[^a-z0-9]/g, '')}">${escapeHTML(tag)}</span>`).join('')}
                                         </div>
                                     ` : ''}
-                                    ${project.thumbnailDescription ? `<p class="card-description">${project.thumbnailDescription}</p>` : ''}
+                                    ${project.thumbnailDescription ? `<p class="card-description">${escapeHTML(project.thumbnailDescription)}</p>` : ''}
                                     ${project.contributions && project.contributions.length > 0 ? `
                                         <div class="card-contributions">
                                             <h4 class="contributions-title">My contributions:</h4>
                                             <ul class="contributions-list">
-                                                ${project.contributions.map(c => `<li><i class="fas fa-check"></i> ${c}</li>`).join('')}
+                                                ${[...new Set(project.contributions)].map(c => `<li><i class="fas fa-check"></i> ${escapeHTML(c)}</li>`).join('')}
                                             </ul>
                                         </div>
                                     ` : ''}
@@ -161,6 +180,22 @@
                             grid.appendChild(card);
                         });
 
+                        let status = document.getElementById('project-count');
+                        if (!status) {
+                            status = document.createElement('p');
+                            status.id = 'project-count';
+                            status.className = 'text-center project-count';
+                            status.setAttribute('role', 'status');
+                            status.setAttribute('aria-live', 'polite');
+                            filtersContainer.after(status);
+                        }
+                        status.textContent = `${filteredProjects.length} ${filteredProjects.length === 1 ? 'project' : 'projects'}`;
+                        if (!filteredProjects.length) {
+                            const message = document.createElement('p');
+                            message.className = 'text-center';
+                            message.textContent = 'No projects in this category. Choose All to browse the portfolio.';
+                            grid.appendChild(message);
+                        }
                         // Scroll to top of grid when page changes (only if it wasn't the first load)
                         if (page !== 1 || (pagination.innerHTML !== '' && pagination.children.length > 1)) {
                             const targetTop = filtersContainer ? filtersContainer.offsetTop - 120 : grid.offsetTop - 100;
@@ -187,6 +222,17 @@
                         }
                     }
 
+                    window.addEventListener('popstate', () => {
+                        const category = new URLSearchParams(location.search).get('category') || 'All';
+                        currentCategory = categories.includes(category) ? category : 'All';
+                        currentPage = 1;
+                        filtersContainer.querySelectorAll('button').forEach(button => {
+                            const active = button.dataset.category === currentCategory;
+                            button.classList.toggle('active', active);
+                            button.setAttribute('aria-pressed', String(active));
+                        });
+                        updateFilteredProjects();
+                    });
                     renderFilters();
                     updateFilteredProjects();
                 }
@@ -208,6 +254,7 @@
         </div>
         <p>© 2026 by Yekta Demirci</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>
