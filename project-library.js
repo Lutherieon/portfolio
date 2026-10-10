@@ -404,21 +404,21 @@ window.PROJECT_LIBRARY = [
     },
     {
         "id": "the-kingkiller-chronicle-chapter-50-negotiation",
-        "title": "The Kingkiller Chronicle\n Chapter 50: Negotiation",
+        "title": "The Kingkiller Chronicle\nChapter 50: Negotiation",
         "category": "Video Production",
         "sections": [
             {
-                "title": "Making of Kvothe and Devi",
+                "title": "The Making of Kvothe and Devi",
                 "blocks": [
                     {
                         "type": "text",
-                        "value": "I collected references in PureRef to guide me whenever I felt unsure during texturing, grooming, look-development, and lighting. Having everything in one place helped me maintain a consistent visual direction throughout the project."
+                        "value": "I collected references in PureRef to guide me whenever I felt unsure during texturing, grooming, look development, and lighting. Having everything in one place helped me maintain a consistent visual direction throughout the project."
                     },
                     {
                         "type": "image",
                         "value": "",
                         "src": "images/Kingkiller_Reference_Image.png",
-                        "caption": "Kvothe - Devi Reference",
+                        "caption": "Kvothe and Devi References",
                         "layout": {
                             "width": 100,
                             "x": 0,
@@ -430,7 +430,7 @@ window.PROJECT_LIBRARY = [
                 "id": "section-1"
             },
             {
-                "title": "Wrapping AI Mesh to Metahuman Base in Houdini",
+                "title": "Wrapping the MetaHuman Base onto an AI Mesh in Houdini",
                 "blocks": [
                     {
                         "type": "text",
@@ -457,7 +457,7 @@ window.PROJECT_LIBRARY = [
                                 "id": "ee221c56-9e0b-462f-baf7-6552e10f3b53",
                                 "type": "gif",
                                 "src": "images/Kingkiller_kvothe_retopology.gif",
-                                "caption": "Metahuman Base Top - AI Kvothe",
+                                "caption": "MetaHuman Base Topology – AI Kvothe",
                                 "value": "",
                                 "provider": "native",
                                 "frame": {
@@ -473,11 +473,11 @@ window.PROJECT_LIBRARY = [
                 "id": "section-2"
             },
             {
-                "title": "Cloths with Marvelous Designer",
+                "title": "Garment Creation in Marvelous Designer",
                 "blocks": [
                     {
                         "type": "text",
-                        "value": "I created the outfits for Kvothe and Devi in Marvelous Designer, starting with 2D sewing patterns and adjusting them to fit each character.<br><br>For Kvothe, I worked with multiple layers, including a tunic, trousers, and cloak, while Devi&#39;s outfit consisted of a long dress. I focused on getting the proportions and overall silhouette right before moving on to the cloth simulations."
+                        "value": "I created the outfits for Kvothe and Devi in Marvelous Designer, starting with 2D sewing patterns and adjusting them to fit each character.<br><br>For Kvothe, I worked with multiple layers, including a tunic, trousers, and a cloak, while Devi&#39;s outfit consisted of a long dress. I focused on getting the proportions and overall silhouette right before moving on to the cloth simulations."
                     },
                     {
                         "type": "media-group",
@@ -514,7 +514,7 @@ window.PROJECT_LIBRARY = [
                 "id": "section-3"
             },
             {
-                "title": "Metahuman Character Animations",
+                "title": "MetaHuman Character Animations",
                 "blocks": [
                     {
                         "type": "text",
@@ -535,7 +535,7 @@ window.PROJECT_LIBRARY = [
                     },
                     {
                         "type": "text",
-                        "value": "in scene below",
+                        "value": "See the animation in the scene below.",
                         "src": "",
                         "caption": ""
                     },
@@ -602,7 +602,7 @@ window.PROJECT_LIBRARY = [
                 "id": "section-6"
             }
         ],
-        "metadata": "Technical Artist - 2026",
+        "metadata": "Technical Artist – 2026",
         "thumbnailDescription": "A cinematic adaptation of Chapter 50 from The Name of the Wind, developed in collaboration with Garage Atlas and Bahçeşehir University.",
         "thumbnailAlt": "",
         "bannerType": "video",
@@ -614,7 +614,7 @@ window.PROJECT_LIBRARY = [
             "Unreal Engine 5",
             "Houdini",
             "Marvelous Designer",
-            "Adobe  Premiere"
+            "Adobe Premiere"
         ],
         "contributions": [
             "Character Wrapping & Retopology",
@@ -622,7 +622,7 @@ window.PROJECT_LIBRARY = [
             "Garment Creation & Cloth Simulation",
             "Cinematic Editing & Sequencer"
         ],
-        "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Kingkiller Chronicle, created as part of a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>Throughout the project, I worked on different stages of cinematic production, including character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5.",
+        "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Name of the Wind, part of The Kingkiller Chronicle series. It was created through a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>Throughout the project, I worked on different stages of cinematic production, including character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5.",
         "facts": [],
         "links": [
             {
