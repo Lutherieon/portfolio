@@ -622,7 +622,7 @@ window.PROJECT_LIBRARY = [
             "Garment Creation & Cloth Simulation",
             "Cinematic Editing & Sequencer"
         ],
-        "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Name of the Wind, part of The Kingkiller Chronicle series. It was created through a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>Throughout the project, I worked on different stages of cinematic production, including character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5.",
+        "intro": "This project is a cinematic interpretation of Chapter 50 from Patrick Rothfuss&#39;s The Name of the Wind, part of The Kingkiller Chronicle series. It was created through a university–industry collaboration between Bahçeşehir University and Garage Atlas.<br><br>I worked on character animation, motion capture, cloth simulation, and scene assembly in Unreal Engine 5, with environment art by Ege Diskaya and lighting by Yiğit Ali Tütüncüler.",
         "facts": [],
         "links": [
             {
