@@ -11,6 +11,7 @@
     <!-- Projects Data -->
     <script src="project-library.js"></script>
     <script src="projects-data.js"></script>
+    <script src="canvas-board.js"></script>
     <script src="portfolio-store.js"></script>
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -177,23 +178,30 @@
                     // 3. Helper to render media blocks (Images, Videos, PDFs, Groups)
                     function renderMediaBlock(media) {
                         if (!media) return '';
-
-                        if (media.type === 'image') {
-                            return `<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || project.title}" loading="lazy" decoding="async">${media.caption ? `<p class="media-caption">${media.caption}</p>` : ''}</div>`;
+                        if (media.type === 'media-board') return window.CanvasBoard.render(media);
+                        const place = html => {
+                            if (!media.layout) return html;
+                            const layout = window.PortfolioStore.mediaLayout(media.layout);
+                            return `<div class="media-placement" style="padding-top:${layout.top}px"><div class="media-layout${layout.ratio ? ' has-ratio' : ''}" style="width:${layout.width}%;margin-left:${layout.x}%;${layout.ratio ? `--media-ratio:${layout.ratio};` : ''}">${html}</div></div>`;
+                        };
+                        const caption = media.caption ? `<p class="media-caption">${media.caption}</p>` : '';
+                        if (media.type === 'image' || media.type === 'gif') {
+                            return place(`<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || escapeHTML(project.title)}" loading="lazy" decoding="async">${caption}</div>`);
                         } else if (media.type === 'video') {
                             const videoHTML = media.provider === 'youtube' ?
-                                `<iframe title="${media.caption || project.title} video" src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
-                                `<video controls src="${media.src}"></video>`;
-                            return `<div class="media-block video-wrapper fade-in-section">${videoHTML}</div>`;
+                                `<iframe title="${media.caption || escapeHTML(project.title)} video" src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
+                                `<video controls playsinline preload="metadata" src="${media.src}"></video>`;
+                            return place(`<div class="media-block fade-in-section"><div class="video-wrapper">${videoHTML}</div>${caption}</div>`);
                         } else if (media.type === 'pdf') {
-                            return `<div class="media-block pdf-block fade-in-section"><embed src="${media.src}" type="application/pdf"></div>`;
+                            return place(`<div class="media-block pdf-block fade-in-section"><embed src="${media.src}" type="application/pdf"></div>`);
                         } else if (media.type === 'media-group') {
                             // If the group only has 1 item, render it as a standalone block so it spans full width
                             if (media.items && media.items.length === 1) {
                                 return renderMediaBlock(media.items[0]);
                             }
-                            let groupHTML = `<div class="media-grid fade-in-section">`;
-                            media.items.forEach(item => groupHTML += renderMediaBlock(item));
+                            const columns = Number(media.columns) === 3 ? 3 : 2;
+                            let groupHTML = `<div class="media-grid fade-in-section" style="--media-columns:${columns}">`;
+                            (media.items || []).forEach(item => groupHTML += renderMediaBlock(item));
                             groupHTML += `</div>`;
                             return groupHTML;
                         }

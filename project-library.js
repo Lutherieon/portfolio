@@ -412,17 +412,175 @@ window.PROJECT_LIBRARY = [
                 "blocks": [
                     {
                         "type": "text",
-                        "value": ""
+                        "value": "I collected references in PureRef to guide me whenever I felt unsure during texturing, grooming, look-development, and lighting. Here are some of the reference images I used throughout the project."
+                    },
+                    {
+                        "type": "image",
+                        "value": "",
+                        "src": "images/Kingkiller_Reference_Image.png",
+                        "caption": "Kvothe - Devi Reference",
+                        "layout": {
+                            "width": 100,
+                            "x": 0,
+                            "top": 0,
+                            "ratio": null
+                        }
                     }
                 ],
                 "id": "section-1"
+            },
+            {
+                "title": "Wrapping AI Mesh to Metahuman Base in Houdini",
+                "blocks": [
+                    {
+                        "type": "text",
+                        "value": ""
+                    },
+                    {
+                        "type": "media-board",
+                        "items": [
+                            {
+                                "id": "3b446632-250e-427d-9dc3-6d0c0ab3cc8c",
+                                "type": "image",
+                                "src": "images/Kingkiller_Kvothe_and_Metahuman_Base.png",
+                                "caption": "",
+                                "value": "",
+                                "provider": "native",
+                                "frame": {
+                                    "x": -87.1484936013546,
+                                    "y": 166.64385774664603,
+                                    "width": 611.9150153367128,
+                                    "height": 401.13618407055066
+                                }
+                            },
+                            {
+                                "id": "ee221c56-9e0b-462f-baf7-6552e10f3b53",
+                                "type": "gif",
+                                "src": "images/Kingkiller_kvothe_retopology.gif",
+                                "caption": "Metahuman Base Top - AI Kvothe",
+                                "value": "",
+                                "provider": "native",
+                                "frame": {
+                                    "x": 528.2604845256297,
+                                    "y": 171.20156694436417,
+                                    "width": 704.0125506801378,
+                                    "height": 396.00705975757757
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "id": "section-2"
+            },
+            {
+                "title": "Cloths with Marvelous Designer",
+                "blocks": [
+                    {
+                        "type": "text",
+                        "value": ""
+                    },
+                    {
+                        "type": "media-group",
+                        "value": "",
+                        "src": "",
+                        "caption": "",
+                        "columns": 2,
+                        "items": [
+                            {
+                                "type": "image",
+                                "src": "images/Kingkiller_Devi_Outfit.png",
+                                "caption": "",
+                                "layout": {
+                                    "width": 100,
+                                    "x": 0,
+                                    "top": 0,
+                                    "ratio": null
+                                }
+                            },
+                            {
+                                "type": "image",
+                                "src": "images/Kingkiller_Kvothe_Outfit.png",
+                                "caption": "",
+                                "layout": {
+                                    "width": 100,
+                                    "x": 0,
+                                    "top": 0,
+                                    "ratio": null
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "id": "section-3"
+            },
+            {
+                "title": "Metahuman Character Animations",
+                "blocks": [
+                    {
+                        "type": "text",
+                        "value": "bunu sunu bunu"
+                    },
+                    {
+                        "type": "video",
+                        "value": "",
+                        "src": "images/video_insan_CAPTUREDATA.mp4",
+                        "caption": "",
+                        "layout": {
+                            "width": 75,
+                            "x": 12.5,
+                            "top": 0,
+                            "ratio": 1.7777777777777777
+                        },
+                        "provider": "native"
+                    },
+                    {
+                        "type": "text",
+                        "value": "adsadasd",
+                        "src": "",
+                        "caption": ""
+                    },
+                    {
+                        "type": "video",
+                        "value": "",
+                        "src": "images/Kingkiller_Main_Video_Anim.mp4",
+                        "caption": "",
+                        "layout": {
+                            "width": 75,
+                            "x": 12.5,
+                            "top": 0,
+                            "ratio": 1.7777777777777777
+                        },
+                        "provider": "native"
+                    }
+                ],
+                "id": "section-4"
+            },
+            {
+                "title": "Cloth Simulation in Marvelous Designer",
+                "blocks": [
+                    {
+                        "type": "text",
+                        "value": ""
+                    }
+                ],
+                "id": "section-5"
+            },
+            {
+                "title": "Unreal Engine Sequencer",
+                "blocks": [
+                    {
+                        "type": "text",
+                        "value": ""
+                    }
+                ],
+                "id": "section-6"
             }
         ],
         "metadata": "Technical Artist - 2026",
         "thumbnailDescription": "Garage atlas ve bahcesehir universitesinin ortak dersi olan",
         "thumbnailAlt": "",
         "bannerType": "image",
-        "thumbnail": "images/project-518c2c0b-7007-49aa-a4e8-c9805045d75c.png",
+        "thumbnail": "images/Kingkiller_Kapak.png",
         "bannerSrc": "",
         "published": true,
         "showcase": true,
@@ -437,6 +595,6 @@ window.PROJECT_LIBRARY = [
         "intro": "asdsad",
         "facts": [],
         "links": [],
-        "updatedAt": "2026-10-10T11:51:18.887Z"
+        "updatedAt": "2026-10-10T14:54:37.455Z"
     }
 ];

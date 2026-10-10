@@ -4,7 +4,7 @@
     const form = $('#project-form');
     const store = window.PortfolioStore;
     const clone = value => JSON.parse(JSON.stringify(value));
-    let rows = [], current, dirty = false, busy = false, filter = 'all', pendingAction, uploadTarget;
+    let rows = [], current, dirty = false, busy = false, filter = 'all', pendingAction, uploadTarget, draggedBlock;
     const status = message => { $('#save-status').textContent = message; };
     const loginStatus = message => { $('#login-status').textContent = message; };
     const field = name => form.elements.namedItem(name);
@@ -80,22 +80,77 @@
         else if (direction > 0 && node.nextElementSibling) node.nextElementSibling.after(node);
         markDirty();
     }
+    function dragHandle(node, kind) {
+        const handle = button('⠿ Taşı', () => {}, 'block-drag-handle'); handle.draggable = true;
+        handle.title = kind === 'section' ? 'Bölümü sürükleyerek sırala' : 'İçeriği başka bir sıraya veya bölüme sürükle';
+        handle.addEventListener('dragstart', event => {
+            if (busy) { event.preventDefault(); return; }
+            event.stopPropagation(); draggedBlock = { node, kind }; node.classList.add('is-dragging');
+            event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', 'portfolio-content');
+        });
+        handle.addEventListener('dragend', () => {
+            node.classList.remove('is-dragging'); draggedBlock = null;
+            document.querySelectorAll('.drop-before,.drop-after,.drop-inside').forEach(item => item.classList.remove('drop-before', 'drop-after', 'drop-inside'));
+        });
+        node.addEventListener('dragover', event => {
+            if (!draggedBlock || busy || draggedBlock.kind !== kind || draggedBlock.node === node || draggedBlock.node.contains(node) || (node.parentElement.classList.contains('group-items') && draggedBlock.node.dataset.type === 'text')) return;
+            event.preventDefault(); event.stopPropagation(); event.dataTransfer.dropEffect = 'move';
+            const before = event.clientY < node.getBoundingClientRect().top + node.offsetHeight / 2;
+            node.classList.toggle('drop-before', before); node.classList.toggle('drop-after', !before);
+        });
+        node.addEventListener('dragleave', event => { if (!node.contains(event.relatedTarget)) node.classList.remove('drop-before', 'drop-after'); });
+        node.addEventListener('drop', event => {
+            if (!draggedBlock || busy || draggedBlock.kind !== kind || draggedBlock.node === node || draggedBlock.node.contains(node) || (node.parentElement.classList.contains('group-items') && draggedBlock.node.dataset.type === 'text')) return;
+            event.preventDefault(); event.stopPropagation();
+            const before = event.clientY < node.getBoundingClientRect().top + node.offsetHeight / 2;
+            if (before) node.before(draggedBlock.node); else node.after(draggedBlock.node);
+            node.classList.remove('drop-before', 'drop-after'); markDirty();
+        });
+        return handle;
+    }
+    function blockDropZone(container) {
+        container.addEventListener('dragover', event => {
+            const target = event.target.closest('.content-block-editor');
+            if (!draggedBlock || busy || draggedBlock.kind !== 'block' || draggedBlock.node.contains(container) || (target && container.contains(target)) || (container.classList.contains('group-items') && draggedBlock.node.dataset.type === 'text')) return;
+            event.preventDefault(); event.stopPropagation(); container.classList.add('drop-inside');
+        });
+        container.addEventListener('dragleave', event => { if (!container.contains(event.relatedTarget)) container.classList.remove('drop-inside'); });
+        container.addEventListener('drop', event => {
+            const target = event.target.closest('.content-block-editor');
+            if (!draggedBlock || busy || draggedBlock.kind !== 'block' || draggedBlock.node.contains(container) || (target && container.contains(target)) || (container.classList.contains('group-items') && draggedBlock.node.dataset.type === 'text')) return;
+            event.preventDefault(); event.stopPropagation(); container.append(draggedBlock.node); container.classList.remove('drop-inside'); markDirty();
+        });
+    }
     function mediaEditor(block) {
         const node = document.createElement('div'); node.className = 'content-block-editor'; node.dataset.type = block.type;
         node._original = clone(block);
         const heading = document.createElement('div'); heading.className = 'block-heading';
-        const label = document.createElement('strong'); label.textContent = ({ text: 'Metin', image: 'Görsel', video: 'Video', pdf: 'PDF', 'media-group': 'Görsel grubu' })[block.type] || block.type;
+        const label = document.createElement('strong'); label.textContent = ({ text: 'Metin', image: 'Görsel', gif: 'GIF', video: 'Video', pdf: 'PDF', 'media-group': 'Yan yana medya', 'media-board': 'Serbest tuval' })[block.type] || block.type;
         const actions = document.createElement('div'); actions.className = 'block-actions';
-        actions.append(button('↑', () => reorder(node, -1)), button('↓', () => reorder(node, 1)), button('Kaldır', () => { node.remove(); markDirty(); })); heading.append(label, actions); node.appendChild(heading);
-        if (block.type === 'text') {
+        actions.append(dragHandle(node, 'block'), button('↑', () => reorder(node, -1)), button('↓', () => reorder(node, 1)), button('Kaldır', () => { node.remove(); markDirty(); })); heading.append(label, actions); node.appendChild(heading);
+        if (block.type === 'media-board') {
+            window.CanvasBoardEditor.attach(node, block, markDirty, { normalizeSource: videoUrl, hostedVideo: validVideo });
+        } else if (block.type === 'text') {
             const textarea = document.createElement('textarea'); textarea.rows = 5; textarea.setAttribute('aria-label', 'Bölüm metni'); setRichInput(textarea, block.value); node.appendChild(textarea);
         } else if (block.type === 'media-group') {
-            const children = document.createElement('div'); children.className = 'group-items'; (block.items || []).forEach(item => children.appendChild(mediaEditor(item))); node.appendChild(children);
-            node.appendChild(button('+ Görsel', () => { children.appendChild(mediaEditor({ type: 'image', src: '', caption: '' })); markDirty(); }));
+            const columnLabel = document.createElement('label'); columnLabel.textContent = 'Bir satırda';
+            const columns = document.createElement('select'); columns.dataset.groupColumns = 'true';
+            for (const count of [2, 3]) { const option = document.createElement('option'); option.value = count; option.textContent = `${count} medya`; columns.append(option); }
+            columns.value = Number(block.columns) === 3 ? '3' : '2'; columnLabel.append(columns);
+            const hint = document.createElement('p'); hint.className = 'hint'; hint.textContent = 'GIF + PNG gibi farklı medyaları aynı satıra ekle. Mevcut medyaları Taşı tutamacından bu gruba sürükleyebilirsin. Dar ekranlarda alt alta görünür.';
+            const children = document.createElement('div'); children.className = 'group-items'; children.style.setProperty('--group-columns', columns.value);
+            columns.onchange = () => { children.style.setProperty('--group-columns', columns.value); markDirty(); };
+            blockDropZone(children); (block.items || []).forEach(item => children.appendChild(mediaEditor(item)));
+            const tools = document.createElement('div'); tools.className = 'block-tools';
+            for (const [type, name] of [['image', 'Görsel'], ['gif', 'GIF'], ['video', 'Video'], ['pdf', 'PDF']]) {
+                tools.append(button(`+ ${name}`, () => { children.appendChild(mediaEditor({ type, src: '', caption: '' })); markDirty(); }));
+            }
+            node.append(columnLabel, hint, children, tools);
         } else {
-            const source = labeledInput('Kaynak', block.src, block.type === 'video' ? 'YouTube / Vimeo bağlantısı' : 'Dosya yolu veya https://…'); source.querySelector('input').dataset.mediaSrc = 'true';
-            if (['image', 'pdf'].includes(block.type)) source.appendChild(button('Dosya yükle', () => chooseUpload(source.querySelector('input'))));
+            const source = labeledInput('Kaynak', block.src, block.type === 'video' ? 'YouTube / Vimeo bağlantısı veya MP4 / WebM' : 'Dosya yolu veya https://…'); source.querySelector('input').dataset.mediaSrc = 'true';
+            source.appendChild(button('Dosya yükle', () => chooseUpload(source.querySelector('input'), block.type)));
             const caption = labeledInput('Açıklama', block.caption); caption.querySelector('input').dataset.mediaCaption = 'true'; node.append(source, caption);
+            window.MediaEditor.attach(node, block, source.querySelector('input'), markDirty, () => busy);
         }
         return node;
     }
@@ -103,11 +158,23 @@
         const node = document.createElement('div'); node.className = 'section-editor'; node._original = clone(section);
         const top = document.createElement('div'); top.className = 'section-top';
         const title = document.createElement('input'); title.value = section.title || ''; title.placeholder = 'Örn. Main aim / Core loop / My contribution'; title.setAttribute('aria-label', 'Bölüm başlığı'); title.dataset.sectionTitle = 'true';
-        top.append(title, button('↑', () => reorder(node, -1)), button('↓', () => reorder(node, 1)), button('Bölümü kaldır', () => { node.remove(); markDirty(); }));
+        top.append(title, button('Tuvalde düzenle ↗', () => {
+            if (busy) return;
+            const mediaNodes = [...blocks.children].filter(item => item.dataset.type !== 'text');
+            if (mediaNodes.length === 1 && mediaNodes[0].dataset.type === 'media-board') { mediaNodes[0]._openBoard(); return; }
+            const board = window.CanvasBoard.fromMedia(mediaNodes.map(readBlock));
+            window.CanvasBoardEditor.open(board, result => {
+                const boardNode = mediaEditor(result);
+                if (mediaNodes[0]) mediaNodes[0].before(boardNode); else blocks.append(boardNode);
+                mediaNodes.forEach(item => item.remove()); markDirty();
+            }, { normalizeSource: videoUrl, hostedVideo: validVideo });
+        }, 'primary'), dragHandle(node, 'section'), button('↑', () => reorder(node, -1)), button('↓', () => reorder(node, 1)), button('Bölümü kaldır', () => { node.remove(); markDirty(); }));
         const blocks = document.createElement('div'); blocks.className = 'section-blocks';
+        blockDropZone(blocks);
         (section.blocks || (section.content ? [{ type: 'text', value: section.content }] : [])).forEach(block => blocks.appendChild(mediaEditor(block)));
         const tools = document.createElement('div'); tools.className = 'block-tools';
-        [['text', 'Metin'], ['image', 'Görsel'], ['video', 'Video'], ['pdf', 'PDF']].forEach(([type, name]) => tools.appendChild(button(`+ ${name}`, () => { blocks.appendChild(mediaEditor({ type, value: '', src: '', caption: '' })); markDirty(); })));
+        tools.append(button('+ Serbest tuval', () => { const board = mediaEditor({ type: 'media-board', items: [] }); blocks.append(board); markDirty(); board._openBoard(); }, 'primary'));
+        [['text', 'Metin'], ['image', 'Görsel'], ['gif', 'GIF'], ['video', 'Video'], ['pdf', 'PDF'], ['media-group', 'Yan yana medya']].forEach(([type, name]) => tools.appendChild(button(`+ ${name}`, () => { blocks.appendChild(mediaEditor({ type, value: '', src: '', caption: '', ...(type === 'media-group' ? { columns: 2, items: [] } : {}) })); markDirty(); })));
         node.append(top, blocks, tools); $('#sections-editor').appendChild(node);
     }
     function selectProject(row) {
@@ -133,9 +200,10 @@
     }
     function readBlock(node) {
         const block = clone(node._original); block.type = node.dataset.type;
+        if (block.type === 'media-board') return node._getBoard();
         if (block.type === 'text') block.value = getRichInput(node.querySelector('textarea'));
-        else if (block.type === 'media-group') block.items = [...node.querySelector('.group-items').children].map(readBlock);
-        else { block.src = store.safeUrl(videoUrl(node.querySelector('[data-media-src]').value)); block.caption = node.querySelector('[data-media-caption]').value; if (block.type === 'video') block.provider = validVideo(block.src) ? 'youtube' : 'native'; }
+        else if (block.type === 'media-group') { block.items = [...node.querySelector('.group-items').children].map(readBlock); block.columns = Number(node.querySelector('[data-group-columns]').value); }
+        else { block.src = store.safeUrl(videoUrl(node.querySelector('[data-media-src]').value)); block.caption = node.querySelector('[data-media-caption]').value; block.layout = node._getLayout(); if (block.type === 'video') block.provider = validVideo(block.src) ? 'youtube' : 'native'; }
         return block;
     }
     function collect() {
@@ -162,6 +230,8 @@
             section.blocks = [...node.querySelector('.section-blocks').children].map(readBlock); delete section.content; return section;
         });
         if (project.sections.some(section => !section.title && section.blocks.length)) { status('Eklediğin bölüme bir başlık yaz veya boş bölümü kaldır.'); return null; }
+        const missingSource = blocks => blocks.some(block => ['media-group', 'media-board'].includes(block.type) ? missingSource(block.items) : block.type !== 'text' && !block.src);
+        if (project.sections.some(section => missingSource(section.blocks))) { status('Eklediğin görsel, GIF, video veya PDF için bir dosya yükle ya da kaynak bağlantısı yaz.'); return null; }
         project.sections = project.sections.filter(section => section.title);
         return project;
     }
@@ -196,17 +266,18 @@
         let id = 'new-project'; let number = 1; while (rows.some(row => row.id === id)) id = `new-project-${++number}`;
         selectProject({ id, published: false, showcase: false, position: Math.max(-1, ...rows.map(row => row.position || 0)) + 1, data: { id, title: '', category: 'Games & Tools', sections: [] } }); field('title').focus();
     }
-    function chooseUpload(input) {
-        uploadTarget = input; $('#asset-input').value = ''; $('#asset-input').click();
+    function chooseUpload(input, type) {
+        uploadTarget = input; $('#asset-input').value = '';
+        $('#asset-input').accept = ({ gif: 'image/gif', image: 'image/jpeg,image/png,image/webp,image/gif', video: 'video/mp4,video/webm', pdf: 'application/pdf' })[type] || 'image/jpeg,image/png,image/webp,image/gif,application/pdf';
+        $('#asset-input').click();
     }
     $('#asset-input').addEventListener('change', async event => {
         const file = event.target.files[0]; if (!file || !uploadTarget || busy) return;
-        const extensions = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf' };
-        if (!extensions[file.type] || file.size > 20 * 1024 * 1024) { status('JPEG, PNG, WebP, GIF veya PDF seç; dosya en fazla 20 MB olabilir.'); return; }
         setBusy(true); status('Dosya yükleniyor…');
         try {
             uploadTarget.value = await window.LocalProjectFiles.upload(file);
-            markDirty(); updateCover(); status('Dosya images klasörüne eklendi · Projeyi kaydetmeyi unutma');
+            uploadTarget.dispatchEvent(new Event('change', { bubbles: true }));
+            markDirty(); updateCover(); status('Dosya hazır · images klasörüne aynı dosya tekrar kopyalanmaz · Projeyi kaydetmeyi unutma');
         } catch (error) { status(`Dosya yüklenemedi: ${error.message}`); } finally { setBusy(false); }
     });
     $('#new-project').onclick = () => safely(newProject);

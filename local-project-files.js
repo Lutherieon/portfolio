@@ -2,6 +2,7 @@
     'use strict';
     const filename = 'project-library.js';
     let directory, handle, lastSource;
+    let uploadQueue = Promise.resolve();
     const local = location.protocol === 'file:' || ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
     function parse(source) {
         const match = source.replace(/^\uFEFF/, '').match(/^\s*(?:\/\/[^\n]*\n)*window\.PROJECT_LIBRARY\s*=\s*(\[[\s\S]*\])\s*;\s*$/);
@@ -58,16 +59,47 @@
         } catch (error) { try { await writer.abort(); } catch (_) {} throw error; }
         return { backup: `.editor-backups/${backupName}` };
     }
-    async function upload(file) {
+    async function digest(file) {
+        const hash = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
+        return [...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    function assetPath(name) {
+        return 'images/' + encodeURIComponent(name).replace(/[!'()*]/g, character => '%' + character.charCodeAt(0).toString(16).toUpperCase());
+    }
+    async function storeUpload(file) {
         await permission();
-        const extensions = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf' };
+        const extensions = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf', 'video/mp4': 'mp4', 'video/webm': 'webm' };
         const extension = extensions[file.type];
-        if (!extension || file.size > 20 * 1024 * 1024) throw new Error('JPEG, PNG, WebP, GIF veya PDF seç; dosya en fazla 20 MB olabilir.');
+        const limit = file.type.startsWith('video/') || file.type === 'image/gif' ? 100 : 20;
+        if (!extension || file.size > limit * 1024 * 1024) throw new Error('JPEG, PNG, WebP veya PDF en fazla 20 MB; GIF / MP4 / WebM en fazla 100 MB olabilir.');
         const folder = await directory.getDirectoryHandle('images', { create: true });
+        const incomingHash = await digest(file);
+        // Compare bytes, not names: renamed files are reused, changed files stay separate.
+        for await (const [name, entry] of folder.entries()) {
+            const suffix = name.split('.').pop().toLowerCase();
+            if (entry.kind !== 'file' || (suffix !== extension && !(extension === 'jpg' && suffix === 'jpeg'))) continue;
+            let existing;
+            try { existing = await entry.getFile(); }
+            catch (error) { if (error.name === 'NotFoundError') continue; throw error; }
+            if (existing.size === file.size && await digest(existing) === incomingHash) return assetPath(name);
+        }
         const name = `project-${crypto.randomUUID()}.${extension}`;
         const fileHandle = await folder.getFileHandle(name, { create: true });
-        const writer = await fileHandle.createWritable(); await writer.write(file); await writer.close();
-        return `images/${name}`;
+        let writer;
+        try {
+            writer = await fileHandle.createWritable(); await writer.write(file); await writer.close();
+        } catch (error) {
+            try { if (writer) await writer.abort(); } catch (_) {}
+            try { await folder.removeEntry(name); } catch (_) {}
+            throw error;
+        }
+        return assetPath(name);
+    }
+    function upload(file) {
+        // Keep lookup and write together so simultaneous imports cannot create copies.
+        const pending = uploadQueue.then(() => storeUpload(file));
+        uploadQueue = pending.catch(() => {});
+        return pending;
     }
     window.LocalProjectFiles = { local, connect, read, save, upload, parse, serialize };
 })();

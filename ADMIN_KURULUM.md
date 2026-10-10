@@ -20,7 +20,33 @@ Her açılışta klasörü seçmen yeterli. Hesap, e-posta, veritabanı kurulumu
 
 ## Görsel ekleme
 
-**Yükle** ile bilgisayarından JPEG, PNG, WebP, GIF veya PDF seç. Dosya site klasöründeki `images` dizinine benzersiz isimle kopyalanır. Sonra **Kaydet** ile proje bağlantısını kaydet.
+**Yükle** ile bilgisayarından JPEG, PNG, WebP, GIF veya PDF seç. Aynı içerikteki dosya `images` dizininde zaten varsa mevcut dosya kullanılır; adı farklı olsa bile tekrar kopyalanmaz. Yeni veya içeriği değiştirilmiş dosya benzersiz isimle eklenir. Sonra **Kaydet** ile proje bağlantısını kaydet. Kapak, bölüm ve tuval aynı dosyayı paylaşabilir.
+
+Detay bölümlerinde **+ GIF** ile animasyon ekleyebilirsin. **+ Video** hem YouTube / Vimeo bağlantısını hem de bilgisayarından yüklediğin MP4 / WebM dosyasını destekler. JPEG / PNG / WebP ve PDF için sınır 20 MB; GIF ve video için 100 MB'dir.
+
+## Medya boyutu ve yerleşimi
+
+### PureRef tarzı serbest tuval
+
+Her bölümün üstündeki **Tuvalde düzenle ↗** düğmesi o bölümdeki mevcut görsel, GIF, video ve medya gruplarını tek bir serbest tuvale aktarır. Bölümün normal metinleri yerinde kalır. İstersen **+ Serbest tuval** ile boş tuval ekleyebilirsin.
+
+- Dosyaları tuvale sürükleyip bırak veya **+ Dosyalar** ile birden fazlasını birlikte ekle. Kopyaladığın görselleri Ctrl+V ile de yapıştırabilirsin.
+- Medyayı fareyle serbestçe taşı; kenarlara veya satırlara bağlı değilsin. Üst üste yerleştirip **Öne getir / Arkaya gönder** ile katman sırasını ayarla.
+- Seçili medyanın köşesini çekerek oranını koruyarak boyutlandır. **Shift** basılıysa genişlik ve yükseklik ayrı değişir.
+- Tekerlekle zoom yap. Boş alanı, orta fare tuşunu veya **Space + sürükleme** ile tuvali kaydır. **Tümünü göster** bütün içeriği ekrana sığdırır.
+- **Shift + tık** ile çoklu seçim yapıp birlikte taşı. Ok tuşları konumu, Delete silmeyi; **Ctrl+Z / Ctrl+Shift+Z** geri almayı ve yinelemeyi sağlar.
+- **+ Bağlantı** YouTube / Vimeo veya dosya yolu; **+ Not** tuval içinde yazı ekler. Sağdaki panelde kaynak, açıklama ve ölçüler düzenlenir.
+- **Tuvale uygula** değişiklikleri proje formuna aktarır. Sonra **Kaydet** ile site dosyasına yaz. **İptal** tuvaldeki yeni düzenlemeyi bırakır.
+
+Proje sayfasında tuvaldeki konum, boyut ve katman sırası korunur; tüm düzen ekran genişliğine göre birlikte ölçeklenir. Ziyaretçi **Tam ekran** ile daha büyük görüntüleyebilir.
+
+GIF ve PNG gibi içerikleri yan yana koymak için bölümün altındaki **+ Yan yana medya** düğmesine bas. Grubun içindeki **+ GIF** ve **+ Görsel** düğmeleriyle dosyaları ekle ya da mevcut medyaları **⠿ Taşı** tutamacından grubun içine sürükle. **Bir satırda** alanından 2 veya 3 medya seçebilirsin. Videolar da aynı gruba eklenebilir. Soldan sağa sıralamayı tutamaç veya oklarla değiştir. Telefonda dar ekranlarda medya alt alta sıralanır.
+
+- Medya önizlemesini veya **Konum** tutamacını sürükleyerek sağa / sola taşı, üst boşluğunu ayarla.
+- Sağ alt köşedeki **↘** tutamacını çekerek genişliğini ve yüksekliğini değiştir. Görseller kırpılmadan çerçeveye sığar.
+- **Sol / Orta / Sağ** düğmeleri hizalamayı; **Sıfırla** tam genişlik ve doğal oranı geri getirir. Sayısal alanlarla da ayar yapabilirsin.
+- **⠿ Taşı** tutamacından sürükleyerek içerik sırasını değiştir veya içeriği başka bir bölüme taşı. Bölümleri de kendi taşı tutamacıyla sıralayabilirsin.
+- **Önizle** ile proje sayfasını kontrol et, **Kaydet** ile yerleşimi dosyaya yaz. Genişlik ve yatay konum yüzde olarak kaydedilir; farklı ekranlara uyum sağlar.
 
 ## Kayıt ve yedek
 

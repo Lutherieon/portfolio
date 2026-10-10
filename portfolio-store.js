@@ -28,6 +28,11 @@
         clean(template.content);
         return template.innerHTML;
     }
+    function mediaLayout(value = {}) {
+        const number = (input, fallback, min, max) => Number.isFinite(Number(input)) ? Math.min(max, Math.max(min, Number(input))) : fallback;
+        const width = number(value?.width, 100, 10, 100);
+        return { width, x: number(value?.x, 0, 0, 100 - width), top: number(value?.top, 0, 0, 240), ratio: value?.ratio ? number(value.ratio, null, 0.2, 5) : null };
+    }
     function normalize(project) {
         const p = JSON.parse(JSON.stringify(project));
         ['title', 'category', 'metadata', 'thumbnailDescription', 'thumbnailAlt'].forEach(key => { p[key] = String(p[key] || ''); });
@@ -40,7 +45,8 @@
         p.links = (p.links || []).map(link => ({ label: String(link.label || ''), href: safeUrl(link.href) })).filter(link => link.href);
         function media(block) {
             if (block.type === 'text') return { ...block, value: richText(block.value) };
-            return { ...block, src: safeUrl(block.src), caption: escape(block.caption), items: (block.items || []).map(media) };
+            if (block.type === 'media-board') return window.CanvasBoard ? window.CanvasBoard.normalize(block) : block;
+            return { ...block, columns: Number(block.columns) === 3 ? 3 : 2, layout: block.layout ? mediaLayout(block.layout) : undefined, src: safeUrl(block.src), caption: escape(block.caption), items: (block.items || []).map(media) };
         }
         p.mainMedia = p.mainMedia ? media(p.mainMedia) : null;
         p.sections = (p.sections || []).map((section, index) => ({
@@ -54,7 +60,7 @@
         window.PROJECTS = projects.map(normalize);
         window.PORTFOLIO_CATEGORIES = ['All', ...new Set(window.PROJECTS.map(project => project.category))];
     }
-    window.PortfolioStore = { escape, safeUrl, richText, normalize };
+    window.PortfolioStore = { escape, safeUrl, richText, normalize, mediaLayout };
     window.portfolioReady = (async () => {
         if (new URLSearchParams(location.search).get('preview') === '1') {
             try {
