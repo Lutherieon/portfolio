@@ -28,6 +28,7 @@
 .group-items .block-heading, .group-items .block-actions { flex-wrap: wrap; }
 .group-items .media-layout-controls { grid-template-columns: 1fr; }
 @media(max-width:700px) { .group-items { grid-template-columns: 1fr; padding: 8px; } }
+.cover-previews{display:flex;flex-wrap:wrap;gap:24px;margin:16px 0}.cover-previews figure{margin:0;width:260px;max-width:100%}.cover-previews figcaption{font-size:13px;color:var(--muted);margin-bottom:8px}.cover-previews .cover-preview{display:block;width:100%;max-height:none;aspect-ratio:4/4.5;object-fit:cover;background:#1a1a1a;margin:0}.cover-previews .cover-home-preview{aspect-ratio:16/9}#cover-editor{margin-top:18px}#center-cover{margin-top:16px}#cover-editor input[type=range]{padding:0;accent-color:var(--accent)}
 .board-thumbnail { max-height: 260px; overflow: auto; margin-bottom: 14px; border: 1px solid var(--line); border-radius: 8px; background: #111; }
 .board-thumbnail .canvas-board { position: relative; }
 .board-thumbnail .canvas-board-frame { position: relative; width: 100%; }

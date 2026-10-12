@@ -182,6 +182,8 @@
         const project = current.data;
         ['title', 'id', 'category', 'metadata', 'thumbnailDescription', 'thumbnail', 'thumbnailAlt', 'bannerSrc'].forEach(name => { field(name).value = name === 'id' ? current.id : project[name] || ''; });
         field('bannerType').value = project.bannerType || 'image';
+        const cover = store.coverPosition(project.thumbnailPosition);
+        field('coverX').value = cover.x; field('coverY').value = cover.y;
         field('tags').value = (project.tags || []).join(', '); field('contributions').value = (project.contributions || []).join('\n');
         field('published').checked = current.published; field('showcase').checked = current.showcase;
         setRichInput(field('intro'), project.intro);
@@ -195,9 +197,21 @@
         updateCover(); setBusy(false); renderList();
     }
     function updateCover() {
-        const src = store.safeUrl(field('thumbnail').value); const image = $('#cover-preview'); image.hidden = !src;
-        image.onerror = () => { image.hidden = true; }; if (src) image.src = src;
+        const src = store.safeUrl(field('thumbnail').value);
+        $('#cover-editor').hidden = !src;
+        const position = store.coverPosition({ x: field('coverX').value, y: field('coverY').value });
+        $('#cover-x-value').value = position.x + '%'; $('#cover-y-value').value = position.y + '%';
+        for (const image of [$('#cover-preview'), $('#cover-home-preview')]) {
+            image.style.objectPosition = `${position.x}% ${position.y}%`;
+            image.onerror = () => { $('#cover-error').hidden = false; };
+            image.onload = () => { $('#cover-error').hidden = true; };
+            if (src && image.getAttribute('src') !== src) { $('#cover-error').hidden = true; image.src = src; }
+        }
     }
+    $('#center-cover').addEventListener('click', () => {
+        field('coverX').value = 50; field('coverY').value = 50; updateCover(); markDirty();
+    });
+    for (const name of ['coverX', 'coverY']) field(name).addEventListener('input', updateCover);
     function readBlock(node) {
         const block = clone(node._original); block.type = node.dataset.type;
         if (block.type === 'media-board') return node._getBoard();
@@ -212,6 +226,7 @@
         ['title', 'id', 'category', 'metadata', 'thumbnailDescription', 'thumbnailAlt', 'bannerType'].forEach(name => { project[name] = field(name).value.trim(); });
         if (rows.some(row => row.id === project.id && row.id !== current.id)) { status('Bu proje adresi zaten kullanılıyor. Farklı bir ID yaz.'); return null; }
         project.thumbnail = store.safeUrl(field('thumbnail').value);
+        project.thumbnailPosition = store.coverPosition({ x: field('coverX').value, y: field('coverY').value });
         project.bannerSrc = store.safeUrl(videoUrl(field('bannerSrc').value));
         if (project.bannerType === 'none') project.bannerSrc = '';
         if (project.bannerType === 'video' && project.bannerSrc && !validVideo(project.bannerSrc)) { status('Üst video için geçerli bir YouTube veya Vimeo bağlantısı kullan.'); return null; }

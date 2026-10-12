@@ -149,7 +149,7 @@
 						card.href = `project-detail.html?id=${encodeURIComponent(project.id)}`;
 						card.className = "showcase-card";
 						card.innerHTML = `
-							<div class="showcase-image" style="background-image: url('${project.thumbnail}')"></div>
+							<div class="showcase-image" style="background-image: url('${project.thumbnail}'); background-position: ${window.PortfolioStore.coverPosition(project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.thumbnailPosition).y}%"></div>
 							<div class="showcase-content">
 								<h3>${escapeHTML(project.title)}</h3>
 								<p class="showcase-category">${escapeHTML(project.category)}</p>

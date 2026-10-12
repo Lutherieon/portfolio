@@ -33,11 +33,16 @@
         const width = number(value?.width, 100, 10, 100);
         return { width, x: number(value?.x, 0, 0, 100 - width), top: number(value?.top, 0, 0, 240), ratio: value?.ratio ? number(value.ratio, null, 0.2, 5) : null };
     }
+    function coverPosition(value = {}) {
+        const coordinate = input => input !== null && input !== '' && Number.isFinite(Number(input)) ? Math.min(100, Math.max(0, Number(input))) : 50;
+        return { x: coordinate(value?.x), y: coordinate(value?.y) };
+    }
     function normalize(project) {
         const p = JSON.parse(JSON.stringify(project));
         ['title', 'category', 'metadata', 'thumbnailDescription', 'thumbnailAlt'].forEach(key => { p[key] = String(p[key] || ''); });
         p.id = String(p.id || '').replace(/[^a-zA-Z0-9_-]/g, '');
         p.thumbnail = safeUrl(p.thumbnail);
+        p.thumbnailPosition = coverPosition(p.thumbnailPosition);
         p.bannerSrc = safeUrl(p.bannerSrc);
         p.intro = richText(p.intro);
         p.tags = (p.tags || []).map(value => String(value));
@@ -60,7 +65,7 @@
         window.PROJECTS = projects.map(normalize);
         window.PORTFOLIO_CATEGORIES = ['All', ...new Set(window.PROJECTS.map(project => project.category))];
     }
-    window.PortfolioStore = { escape, safeUrl, richText, normalize, mediaLayout };
+    window.PortfolioStore = { escape, safeUrl, richText, normalize, mediaLayout, coverPosition };
     window.portfolioReady = (async () => {
         if (new URLSearchParams(location.search).get('preview') === '1') {
             try {
