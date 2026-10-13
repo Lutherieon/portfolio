@@ -1,7 +1,7 @@
 (() => {
     'use strict';
     const files = window.LocalProjectFiles;
-    const pages = { 'index.html': 'Ana sayfa', 'resume.html': 'Özgeçmiş sayfası', 'featured.html': 'Featured sayfası', 'portfolio.html': 'Portfolyo sayfası', 'project-detail.html': 'Proje sayfası ortak alanları', 'site-content.js': 'Hakkımda, deneyimler ve featured kayıtları' };
+    const pages = { 'index.html': 'Ana sayfa', 'resume.html': 'Özgeçmiş sayfası', 'featured.html': 'Featured sayfası', 'portfolio.html': 'Portfolyo sayfası', 'project-detail.html': 'Proje sayfası ortak alanları', 'site-content.js': 'Hakkımda, deneyimler ve yayınlar' };
     const labels = { HOME_SECTIONS: 'Ana sayfa bölümleri', RESUME_DATA: 'Özgeçmiş', FEATURED_DATA: 'Featured', title: 'Başlık', subtitle: 'Alt başlık', text: 'Metin', id: 'Bölüm adresi', downloadLink: 'CV dosyası', downloadLabel: 'İndirme düğmesi', experience: 'Deneyimler', role: 'Pozisyon', company: 'Şirket', dates: 'Tarihler', bullets: 'Açıklamalar', groups: 'Yıl grupları', year: 'Yıl', image: 'Görsel', floatClass: 'Görsel sınıfı', entries: 'Kayıtlar', link: 'Bağlantı', location: 'Yer', description: 'Açıklama' };
     const templates = { HOME_SECTIONS: { id: 'yeni-bolum', title: 'Yeni bölüm', text: [''] }, experience: { id: 'yeni-deneyim', role: '', company: '', dates: '', bullets: [''] }, groups: { id: 'yeni-yil', year: '2026', image: '', floatClass: '', entries: [] }, entries: { title: '', link: '', location: '', description: '' } };
     let dirty = false, busy = false, source = '', name, doc, data;

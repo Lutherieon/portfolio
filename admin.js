@@ -158,7 +158,7 @@
         const node = document.createElement('div'); node.className = 'section-editor'; node._original = clone(section);
         const top = document.createElement('div'); top.className = 'section-top';
         const title = document.createElement('input'); title.value = section.title || ''; title.placeholder = 'Örn. Main aim / Core loop / My contribution'; title.setAttribute('aria-label', 'Bölüm başlığı'); title.dataset.sectionTitle = 'true';
-        top.append(title, button('Tuvalde düzenle ↗', () => {
+        top.append(title, button('Görselleri yerleştir', () => {
             if (busy) return;
             const mediaNodes = [...blocks.children].filter(item => item.dataset.type !== 'text');
             if (mediaNodes.length === 1 && mediaNodes[0].dataset.type === 'media-board') { mediaNodes[0]._openBoard(); return; }
@@ -235,7 +235,7 @@
         project.tags = field('tags').value.split(',').map(value => value.trim()).filter(Boolean);
         project.contributions = field('contributions').value.split('\n').map(value => value.trim()).filter(Boolean); project.intro = getRichInput(field('intro'));
         project.facts = [...$('#facts-editor').children].map(row => { const inputs = row.querySelectorAll('input'); return { label: inputs[0].value.trim(), value: inputs[1].value.trim() }; });
-        if (project.facts.some(item => Boolean(item.label) !== Boolean(item.value))) { status('Kısa bilgilerde hem başlık hem bilgi yaz; kullanmayacağın satırı kaldır.'); return null; }
+        if (project.facts.some(item => Boolean(item.label) !== Boolean(item.value))) { status('Proje bilgileride hem başlık hem bilgi yaz; kullanmayacağın satırı kaldır.'); return null; }
         project.facts = project.facts.filter(item => item.label);
         project.links = [...$('#links-editor').children].map(row => { const inputs = row.querySelectorAll('input'); return { label: inputs[0].value.trim(), href: store.safeUrl(inputs[1].value), typedUrl: inputs[1].value.trim() }; });
         if (project.links.some(item => (item.label || item.typedUrl) && (!item.label || !item.href))) { status('Bağlantılarda bir ad ve geçerli bir http/https adresi yaz.'); return null; }

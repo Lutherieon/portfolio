@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $taskEditorPath = Join-Path $PSScriptRoot 'admin.html'
 $taskEditorUrl = ([Uri]$taskEditorPath).AbsoluteUri
 $taskBrowserPaths = @(
@@ -8,6 +8,6 @@ $taskBrowserPaths = @(
     (Join-Path $env:LOCALAPPDATA 'Google\Chrome\Application\chrome.exe')
 )
 $taskBrowser = $taskBrowserPaths | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-if (-not $taskBrowser) { throw 'Open admin.html with Chrome or Edge.' }
+if (-not $taskBrowser) { throw 'Editörü Chrome veya Edge ile aç.' }
 # This visible browser is the editor the user explicitly opened.
 Start-Process -FilePath $taskBrowser -ArgumentList @($taskEditorUrl)

@@ -1,9 +1,9 @@
 # İçerik yönetimi
 
-Tüm düzenlemeler için **EDITORU_AC.cmd** dosyasını açıp site klasörünü seç. Ayrıntılı kullanım: [Editör kılavuzu](ADMIN_KURULUM.md).
+Tüm düzenlemeler için **Siteyi_Duzenle.cmd** dosyasını açıp site klasörünü seç. Ayrıntılı kullanım: [Editör kılavuzu](Kullanim_Kilavuzu.md).
 
 - **Projeler:** Proje ekle, görünürlüğünü değiştir, metin ve medya bölümlerini düzenle. Bölüm ekleme düğmesi listenin üstünde ve altında bulunur.
-- **Tüm site:** Ana sayfa, özgeçmiş, featured ve diğer sayfaları bölüm bölüm düzenle. Hakkımda, deneyim ve featured kayıtlarını ekleyebilir, kaldırabilir ve sıralayabilirsin.
+- **Tüm site:** Ana sayfa, özgeçmiş, featured ve diğer sayfaları bölüm bölüm düzenle. Hakkımda, deneyim ve yayın kayıtlarını ekleyebilir, kaldırabilir ve sıralayabilirsin.
 - Metin araçlarında kalın, italik, altı çizili, yazı tipi, boyut, renk, vurgu, hizalama ve listeler bulunur. Aktif biçime tekrar tıklayarak kapat. Geri al/yinele araçları da kullanılabilir.
 - **Kaydet** yerel dosyaları günceller; önceki sürüm `.editor-backups` klasörüne alınır. Canlı siteyi güncellemek için değişen dosyaları ayrıca yayınla.
 

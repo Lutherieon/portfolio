@@ -1,16 +1,16 @@
 # Bilgisayarında site düzenleme
 
-Sol bardaki **Projeler / Tüm site** ile düzenleyiciler arasında geçiş yap. Tüm site ekranında sayfalar bölümlere ayrılır; hakkımda, CV, deneyim ve featured kayıtları da buradan yönetilir. Arama motoru bilgileri **Gelişmiş ayarlar** altındadır.
+Sol bardaki **Projeler / Tüm site** ile düzenleyiciler arasında geçiş yap. Tüm site ekranında sayfalar bölümlere ayrılır; hakkımda, CV, deneyim ve yayın kayıtları da buradan yönetilir. Arama motoru bilgileri **Gelişmiş ayarlar** altındadır.
 
 Metni seçerek kalın, italik, altı çizili, yazı tipi, boyut, renk ve vurgu uygulayabilirsin. Aktif biçime tekrar basarak kapat. Hizalama, liste, biçim temizleme ve geri al/yinele araçları da vardır. **Ctrl+B / Ctrl+I / Ctrl+U** biçimlendirme, **Ctrl+Z** geri alır.
 
-1. **EDITORU_AC.cmd** dosyasına çift tıkla. Editör bilgisayarındaki Chrome veya Edge'de açılır.
+1. **Siteyi_Duzenle.cmd** dosyasına çift tıkla. Editör bilgisayarındaki Chrome veya Edge'de açılır.
 2. **Site klasörünü seç** düğmesine bas ve **Portfolio_site** klasörünü seç. Tarayıcı klasöre yazma izni istediğinde onayla.
 3. Soldan bir proje seç veya **+ Yeni** ile oluştur. Gizli projeler de listede bulunur.
 4. Metinleri ve görselleri düzenle. **Önizle** ile mevcut detay sayfası tasarımında kontrol et.
 5. **Kaydet** düğmesine bas. Bilgiler doğrudan bilgisayarındaki `project-library.js` dosyasına yazılır.
 
-**Başlık** ve **Kart açıklaması** alanlarında Enter ile alt satıra geçebilirsin. Satır kırılımları sitede de korunur. Uzun başlıkları örneğin `The Kingkiller Chronicle` ve alt satırda `Chapter 50: Negotiation` şeklinde yazabilirsin; dar ekranlarda satırlar gerekirse ayrıca sığacak şekilde bölünür.
+**Başlık** ve **Kısa açıklama** alanlarında Enter ile alt satıra geçebilirsin. Satır kırılımları sitede de korunur. Uzun başlıkları örneğin `The Kingkiller Chronicle` ve alt satırda `Chapter 50: Negotiation` şeklinde yazabilirsin; dar ekranlarda satırlar gerekirse ayrıca sığacak şekilde bölünür.
 
 Her açılışta klasörü seçmen yeterli. Hesap, e-posta, veritabanı kurulumu veya anahtar gerekmiyor. Chrome/Edge klasör erişimi sayesinde editör site dosyalarını doğrudan okuyup yazabilir. [Tarayıcı dosya erişimi](https://developer.chrome.com/docs/capabilities/web-apis/file-system-access).
 
@@ -32,7 +32,7 @@ Detay bölümlerinde **+ GIF** ile animasyon ekleyebilirsin. **+ Video** hem You
 
 ### PureRef tarzı serbest tuval
 
-Her bölümün üstündeki **Tuvalde düzenle ↗** düğmesi o bölümdeki mevcut görsel, GIF, video ve medya gruplarını tek bir serbest tuvale aktarır. Bölümün normal metinleri yerinde kalır. İstersen **+ Serbest tuval** ile boş tuval ekleyebilirsin.
+Her bölümün üstündeki **Görselleri yerleştir** düğmesi o bölümdeki mevcut görsel, GIF, video ve medya gruplarını tek bir serbest tuvale aktarır. Bölümün normal metinleri yerinde kalır. İstersen **+ Serbest tuval** ile boş tuval ekleyebilirsin.
 
 - Dosyaları tuvale sürükleyip bırak veya **+ Dosyalar** ile birden fazlasını birlikte ekle. Kopyaladığın görselleri Ctrl+V ile de yapıştırabilirsin.
 - Medyayı fareyle serbestçe taşı; kenarlara veya satırlara bağlı değilsin. Üst üste yerleştirip **Öne getir / Arkaya gönder** ile katman sırasını ayarla.
@@ -66,4 +66,4 @@ Kayıttan sonra **Siteyi aç** ile bilgisayarındaki portfolyoyu aç veya açık
 
 Dosyalar VS Code Live Server gibi bir yerel HTTP sunucusunda da çalışır. Editör yalnızca `file://` veya localhost adreslerinde klasöre bağlanır. İnternetteki admin sayfası bilgisayarına yazma modunu açmaz.
 
-`project-library.js`, görünür ve gizli projelerin ortak kaynağıdır. `projects-data.js` Home, Resume ve Featured içeriğini korur. `drafts-data.js` eski arşiv olarak tutulur; editör güncel gizli projeleri `project-library.js` dosyasından okur. Gizli seçeneği sitede görünürlüğü belirler, kaynak dosyaları için gizlilik koruması sağlamaz.
+`project-library.js` projeleri, `site-content.js` hakkımda, özgeçmiş ve yayın içeriklerini tutar. Gizli proje seçeneği yalnızca sitede görünürlüğü belirler.

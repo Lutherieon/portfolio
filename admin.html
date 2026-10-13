@@ -16,11 +16,11 @@
     <main>
         <section id="login-panel" class="login-panel">
             <p class="eyebrow">BİLGİSAYARINDA DÜZENLE</p>
-            <h1>Tüm siten için tek bir yer.</h1>
+            <h1>Siteyi düzenle</h1>
             <p>Site klasörünü seç; siteni kod yazmadan düzenle. Kaydettiğinde değişiklikler doğrudan bilgisayarındaki site dosyasına yazılır.</p>
             <button id="connect-folder" class="primary" type="button">Site klasörünü seç</button>
             <p class="hint">Portfolio_site klasörünü seç ve tarayıcının klasöre yazma iznini onayla. Chrome veya Edge kullan.</p>
-            <a href="ADMIN_KURULUM.md">Kullanım adımları ↗</a>
+            <a href="Kullanim_Kilavuzu.md">Kullanım adımları ↗</a>
             <p id="login-status" role="status" aria-live="polite"></p>
         </section>
         <div id="workspace" class="workspace" hidden>
@@ -41,7 +41,7 @@
                 <p class="sidebar-note">Gizli projeler portfolyoda görünmez. Göstermek için sağdaki görünürlük ayarını değiştir.</p>
             </aside>
             <section class="editor-area" aria-label="Proje düzenleyici">
-                <div class="notice">Yerel editör · Kaydet, site dosyasını günceller. Her kayıttan önce otomatik yedek alınır.</div>
+                <div class="notice">Kaydettiğinde bilgisayarındaki site güncellenir. Önceki sürüm yedeklenir.</div>
                 <form id="project-form">
                     <div class="editor-header">
                         <div><p class="eyebrow">PROJE DÜZENLE</p><h1 id="editor-title">Proje seç</h1><p id="save-status" role="status" aria-live="polite"></p></div>
@@ -50,10 +50,10 @@
                     <fieldset class="form-card"><legend>Proje bilgileri</legend>
                         <div class="field-grid">
                             <label>Başlık<textarea name="title" required maxlength="180" rows="2" placeholder="Proje adı"></textarea><span class="hint">Enter ile alt satıra geçebilirsin; sitede de aynı yerden bölünür.</span></label>
-                            <label>Proje adresi (ID)<input name="id" required pattern="[a-zA-Z0-9_-]+" maxlength="100" placeholder="proje-adi"><span class="hint">Mevcut projelerin adresi korunur.</span></label>
+                            <label>Proje bağlantı adı<input name="id" required pattern="[a-zA-Z0-9_-]+" maxlength="100" placeholder="proje-adi"><span class="hint">Mevcut projelerin adresi korunur.</span></label>
                             <label>Kategori<input name="category" required list="category-options" placeholder="Games & Tools"><datalist id="category-options"></datalist></label>
-                            <label>Rol ve tarih<input name="metadata" placeholder="Technical Artist · 2026"></label>
-                            <label class="wide">Kart açıklaması<textarea name="thumbnailDescription" rows="3" placeholder="Projenin kısa özeti"></textarea></label>
+                            <label>Görev ve tarih<input name="metadata" placeholder="Technical Artist · 2026"></label>
+                            <label class="wide">Kısa açıklama<textarea name="thumbnailDescription" rows="3" placeholder="Projenin kısa özeti"></textarea></label>
                             <label>Katkıların<textarea name="contributions" rows="3" placeholder="Her satıra bir katkı"></textarea></label>
                             <label>Etiketler<input name="tags" placeholder="Unreal Engine 5, Technical Art"></label>
                         </div>
@@ -62,10 +62,10 @@
                     </fieldset>
                     <fieldset class="form-card"><legend>Kapak ve üst görsel</legend>
                         <div class="field-grid">
-                            <label class="wide">Kart görseli<div class="upload-field"><input name="thumbnail" placeholder="images/proje.jpg veya https://…"><button type="button" data-upload-target="thumbnail">Yükle</button></div></label>
+                            <label class="wide">Kapak görseli<div class="upload-field"><input name="thumbnail" placeholder="images/proje.jpg veya https://…"><button type="button" data-upload-target="thumbnail">Yükle</button></div></label>
                             <label>Görsel açıklaması<input name="thumbnailAlt" placeholder="Görseli tarif et"></label>
-                            <label>Üst alan türü<select name="bannerType"><option value="image">Görsel</option><option value="video">YouTube / Vimeo videosu</option><option value="pdf">PDF</option><option value="none">Boş alan</option></select></label>
-                            <label class="wide">Üst alan kaynağı<div class="upload-field"><input name="bannerSrc" placeholder="Dosya yolu veya video bağlantısı"><button type="button" data-upload-target="bannerSrc">Yükle</button></div></label>
+                            <label>Üst bölümde göster<select name="bannerType"><option value="image">Görsel</option><option value="video">YouTube / Vimeo videosu</option><option value="pdf">PDF</option><option value="none">Boş alan</option></select></label>
+                            <label class="wide">Üst görsel veya dosya<div class="upload-field"><input name="bannerSrc" placeholder="Dosya yolu veya video bağlantısı"><button type="button" data-upload-target="bannerSrc">Yükle</button></div></label>
                         </div>
                         <div id="cover-editor" hidden>
                             <p class="hint">Kaydırıcılarla kapakta görünen alanı ayarla. Çerçeveler sitedeki kapak oranlarını gösterir; üzerine gelince uygulanan yakınlaşma dahil değildir.</p>
@@ -81,16 +81,16 @@
                             <p id="cover-error" class="hint" hidden>Görsel yüklenemedi. Dosya yolunu kontrol et; EXR yerine JPEG, PNG veya WebP kullan.</p>
                         </div>
                     </fieldset>
-                    <fieldset class="form-card"><legend>Projenin hikâyesi</legend>
+                    <fieldset class="form-card"><legend>Proje açıklaması</legend>
                         <label>Giriş metni<textarea name="intro" rows="6" placeholder="Proje neydi, neyi amaçladın ve sen neler yaptın?"></textarea></label>
                         <p class="hint">Metinleri normal şekilde yazabilirsin. Mevcut metinlerin biçimlendirmesi korunur.</p>
-                        <div class="subheading"><h2>Kısa bilgiler</h2><button id="add-fact" type="button">+ Bilgi</button></div>
+                        <div class="subheading"><h2>Proje bilgileri</h2><button id="add-fact" type="button">+ Bilgi</button></div>
                         <div id="facts-editor"></div>
                         <div class="subheading"><h2>Bağlantılar</h2><button id="add-link" type="button">+ Bağlantı</button></div>
                         <div id="links-editor"></div>
                     </fieldset>
                     <section class="form-card sections-card">
-                        <div class="subheading"><div><h2>Detay sayfası bölümleri</h2><p class="hint">Amaç, core loop, mekanikler, görsel stil veya geliştirme süreci: ihtiyacına göre bölüm ekle.</p></div><button id="add-section" type="button">+ Bölüm</button></div>
+                        <div class="subheading"><div><h2>Proje bölümleri</h2><p class="hint">Amaç, core loop, mekanikler, görsel stil veya geliştirme süreci: ihtiyacına göre bölüm ekle.</p></div><button id="add-section" type="button">+ Bölüm</button></div>
                         <div id="sections-editor"></div>
                         <button id="add-section-bottom" type="button">+ Bölüm ekle</button>
                     </section>
