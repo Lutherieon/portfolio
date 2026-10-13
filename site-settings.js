@@ -10,7 +10,7 @@
     if (fonts.includes(theme.headingFont)) root.style.setProperty('--font-headers', `"${theme.headingFont}",sans-serif`);
     const p = s.portfolio || {};
     const style = document.createElement('style');
-    style.textContent = `.portfolio-grid{grid-template-columns:repeat(${Math.round(clamp(p.columns,3,1,4))},minmax(0,1fr));gap:${clamp(p.gap,40,8,100)}px}.card-image-wrapper{aspect-ratio:${clamp(p.ratio,.8889,.4,2)}}.showcase-section{padding-top:${clamp(theme.sectionSpacing,100,20,200)}px}.info-section{padding-top:${clamp(theme.sectionSpacing,100,20,200)}px;padding-bottom:${clamp(theme.sectionSpacing,100,20,200)}px}@media(max-width:700px){.portfolio-grid{grid-template-columns:minmax(0,1fr)}}`;
+    style.textContent = `.hero{min-height:max(280px,var(--hero-height,${clamp(theme.heroHeight,70,40,100)}svh))}.portfolio-grid{grid-template-columns:repeat(${Math.round(clamp(p.columns,3,1,4))},minmax(0,1fr));gap:${clamp(p.gap,40,8,100)}px}.card-image-wrapper{aspect-ratio:${clamp(p.ratio,.8889,.4,2)}}.showcase-section{padding-top:${clamp(theme.sectionSpacing,100,20,200)}px}.info-section{padding-top:${clamp(theme.sectionSpacing,100,20,200)}px;padding-bottom:${clamp(theme.sectionSpacing,100,20,200)}px}@media(max-width:700px){.portfolio-grid{grid-template-columns:minmax(0,1fr)}}`;
     document.head.append(style);
     document.addEventListener('DOMContentLoaded', async () => {
         await window.portfolioReady;

@@ -4,7 +4,7 @@
     const pages = { 'index.html': 'Ana sayfa', 'resume.html': 'Özgeçmiş sayfası', 'featured.html': 'Featured sayfası', 'portfolio.html': 'Portfolyo sayfası', 'project-detail.html': 'Proje sayfası ortak alanları', 'site-content.js': 'Hakkımda, deneyimler ve yayınlar' };
     const labels = { HOME_SECTIONS: 'Ana sayfa bölümleri', RESUME_DATA: 'Özgeçmiş', FEATURED_DATA: 'Featured', title: 'Başlık', subtitle: 'Alt başlık', text: 'Metin', id: 'Bölüm adresi', downloadLink: 'CV dosyası', downloadLabel: 'İndirme düğmesi', experience: 'Deneyimler', role: 'Pozisyon', company: 'Şirket', dates: 'Tarihler', bullets: 'Açıklamalar', groups: 'Yıl grupları', year: 'Yıl', image: 'Görsel', floatClass: 'Görsel sınıfı', entries: 'Kayıtlar', link: 'Bağlantı', location: 'Yer', description: 'Açıklama' };
     const templates = { HOME_SECTIONS: { id: 'yeni-bolum', title: 'Yeni bölüm', text: [''] }, experience: { id: 'yeni-deneyim', role: '', company: '', dates: '', bullets: [''] }, groups: { id: 'yeni-yil', year: '2026', image: '', floatClass: '', entries: [] }, entries: { title: '', link: '', location: '', description: '' } };
-    Object.assign(labels, {SETTINGS:'Site ayarları',theme:'Genel görünüm',background:'Arka plan rengi',accent:'Vurgu rengi',bodyFont:'Metin yazı tipi',headingFont:'Başlık yazı tipi',sectionSpacing:'Bölüm boşluğu (px)',portfolio:'Portfolyo kartları',pageSize:'Sayfa başına proje',columns:'Sütun sayısı',gap:'Kart aralığı (px)',ratio:'Kart genişlik / yükseklik oranı',homeSections:'Ana sayfa bölüm sırası',visible:'Bölümü göster',shared:'Ortak menü ve sosyal hesaplar',enabled:'Bu ayarları tüm sayfalara uygula',logo:'Logo',copyright:'Alt bilgi yazısı',menu:'Menü bağlantıları',social:'Sosyal hesaplar',icon:'Simge adı',messages:'Site mesajları',contributions:'Katkılar başlığı',emptyCategory:'Boş kategori mesajı',pdfUnavailable:'PDF yüklenmedi mesajı',pdfLink:'PDF bağlantısı yazısı'});
+    Object.assign(labels, {SETTINGS:'Site ayarları',theme:'Genel görünüm',background:'Arka plan rengi',accent:'Vurgu rengi',bodyFont:'Metin yazı tipi',headingFont:'Başlık yazı tipi',heroHeight:'Karşılama alanı yüksekliği (ekranın %)',sectionSpacing:'Bölüm boşluğu (px)',portfolio:'Portfolyo kartları',pageSize:'Sayfa başına proje',columns:'Sütun sayısı',gap:'Kart aralığı (px)',ratio:'Kart genişlik / yükseklik oranı',homeSections:'Ana sayfa bölüm sırası',visible:'Bölümü göster',shared:'Ortak menü ve sosyal hesaplar',enabled:'Bu ayarları tüm sayfalara uygula',logo:'Logo',copyright:'Alt bilgi yazısı',menu:'Menü bağlantıları',social:'Sosyal hesaplar',icon:'Simge adı',messages:'Site mesajları',contributions:'Katkılar başlığı',emptyCategory:'Boş kategori mesajı',pdfUnavailable:'PDF yüklenmedi mesajı',pdfLink:'PDF bağlantısı yazısı'});
     Object.assign(templates, {homeSections:{id:'background',visible:true},menu:{title:'Yeni bağlantı',link:'index.html'},social:{title:'GitHub',link:'https://github.com/',icon:'github'}});
     templates.HOME_SECTIONS.image = '';
     let dirty = false, busy = false, source = '', name, doc, data;
@@ -80,9 +80,14 @@
         if (typeof object === 'boolean') { node=document.createElement('input');node.type='checkbox';node.checked=object;node.onchange=()=>{setter(node.checked);changed();}; }
         else if (typeof object === 'number') {
             node=document.createElement('input');node.type='number';node.value=object;
-            const limits={pageSize:[1,48],columns:[1,4],gap:[8,100],ratio:[.4,2],sectionSpacing:[20,200]};
+            const limits={pageSize:[1,48],columns:[1,4],gap:[8,100],ratio:[.4,2],sectionSpacing:[20,200],heroHeight:[40,100]};
             const [min,max]=limits[key]||[0,1000];node.min=min;node.max=max;node.step=key==='ratio'?.01:1;
             node.oninput=()=>{if(node.value!==''&&node.checkValidity()){setter(Number(node.value));changed();}};
+            if(key==='heroHeight') {
+                node.type='range';const output=document.createElement('output');output.textContent=object+'%';
+                node.oninput=()=>{setter(Number(node.value));output.textContent=node.value+'%';changed();};label.append(output);
+                const hint=document.createElement('small');hint.className='hint';hint.textContent='70%: alttaki bölüm de görünür. 100%: karşılama alanı ekranı doldurur.';label.append(hint);
+            }
         } else if (['bodyFont','headingFont'].includes(key)) {
             node=document.createElement('select');['Open Sans','Montserrat','Playfair Display','Arial','Georgia','Verdana','Courier New'].forEach(font=>node.add(new Option(font,font)));node.value=object;node.onchange=()=>{setter(node.value);changed();};
         } else if (['background','accent'].includes(key) || (key==='text' && /^#/.test(object))) {
@@ -182,6 +187,14 @@
         });
         if (name === 'index.html') {
             const hero = doc.querySelector('.hero');
+            const heightLabel = document.createElement('label'); heightLabel.textContent = 'Karşılama alanının yüksekliği';
+            const heightValue = document.createElement('output');
+            const height = document.createElement('input'); height.type = 'range'; height.min = '40'; height.max = '100'; height.step = '1'; height.id = 'hero-height-control';
+            height.value = parseFloat(hero.style.getPropertyValue('--hero-height')) || parseFloat(hero.style.minHeight) || 70;
+            heightValue.textContent = height.value + '%';
+            height.oninput = () => { heightValue.textContent = height.value + '%'; hero.style.setProperty('--hero-height', height.value + 'svh'); changed(); };
+            const heightHint = document.createElement('small'); heightHint.className = 'hint'; heightHint.textContent = 'Düşürürsen sayfanın altındaki bölüm de görünür. 100% ekranı doldurur. Değişiklikten sonra Kaydet.';
+            heightLabel.append(heightValue, height, heightHint); sectionFor(hero).prepend(heightLabel);
             const match = hero.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
             input(sectionFor(hero), 'Arka plan görseli (isteğe bağlı)', match?.[1] || '', value => { hero.style.backgroundImage = value ? `url("${validUrl(value)}")` : ''; }, true);
         }
