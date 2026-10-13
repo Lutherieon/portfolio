@@ -152,14 +152,24 @@ window.PROJECT_LIBRARY = [
                     {
                         "type": "image",
                         "src": "images/no-prayer-preview.jpg",
-                        "caption": "No Prayer in Seaside · Unreal Engine 5 project artwork"
+                        "caption": "No Prayer in Seaside · Unreal Engine 5 project artwork",
+                        "layout": {
+                            "width": 100,
+                            "x": 0,
+                            "top": 0,
+                            "ratio": null
+                        }
                     }
                 ]
             }
         ],
         "published": true,
-        "showcase": true,
-        "updatedAt": "2026-10-10T11:46:38.411Z"
+        "showcase": false,
+        "updatedAt": "2026-10-12T23:38:16.993Z",
+        "thumbnailPosition": {
+            "x": 50,
+            "y": 50
+        }
     },
     {
         "id": "Burden-of-Greed",
@@ -630,7 +640,11 @@ window.PROJECT_LIBRARY = [
                 "href": "https://www.youtube.com/watch?v=rRQ9-88ZNbA"
             }
         ],
-        "updatedAt": "2026-10-10T15:25:53.836Z"
+        "updatedAt": "2026-10-12T23:38:19.211Z",
+        "thumbnailPosition": {
+            "x": 50,
+            "y": 50
+        }
     },
     {
         "id": "procedural-brickify-tool-houdini-digital-asset",
@@ -832,7 +846,7 @@ window.PROJECT_LIBRARY = [
         "thumbnail": "images/project-dc37e98c-a017-4ad4-969b-79cdb8b10127.jpg",
         "bannerSrc": "",
         "published": true,
-        "showcase": false,
+        "showcase": true,
         "tags": [
             "Houdini"
         ],
@@ -845,7 +859,7 @@ window.PROJECT_LIBRARY = [
                 "href": "https://www.sidefx.com/tutorials/foundations-205-nodes-networks-assets/"
             }
         ],
-        "updatedAt": "2026-10-12T00:26:22.191Z",
+        "updatedAt": "2026-10-12T23:38:13.687Z",
         "thumbnailPosition": {
             "x": 64,
             "y": 50
