@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Proje yönetimi | Yekta Demirci</title>
+    <title>Site yönetimi | Yekta Demirci</title>
     <link rel="icon" href="images/LOGO.png">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <header class="admin-topbar">
-        <a class="brand" href="index.html"><img src="images/LOGO.png" alt="">YEKTA DEMIRCI <span>Proje yönetimi</span></a>
+        <a class="brand" href="index.html"><img src="images/LOGO.png" alt="">YEKTA DEMIRCI <span>Site yönetimi</span></a>
         <div class="top-actions"><span id="folder-name" class="hint"></span><a href="portfolio.html" target="_blank" rel="noopener">Siteyi aç ↗</a><button id="change-folder" hidden>Klasörü değiştir</button></div>
     </header>
     <main>
         <section id="login-panel" class="login-panel">
             <p class="eyebrow">BİLGİSAYARINDA DÜZENLE</p>
-            <h1>Projelerin için tek bir yer.</h1>
-            <p>Site klasörünü seç; projelerini kod yazmadan düzenle. Kaydettiğinde değişiklikler doğrudan bilgisayarındaki site dosyasına yazılır.</p>
+            <h1>Tüm siten için tek bir yer.</h1>
+            <p>Site klasörünü seç; siteni kod yazmadan düzenle. Kaydettiğinde değişiklikler doğrudan bilgisayarındaki site dosyasına yazılır.</p>
             <button id="connect-folder" class="primary" type="button">Site klasörünü seç</button>
             <p class="hint">Portfolio_site klasörünü seç ve tarayıcının klasöre yazma iznini onayla. Chrome veya Edge kullan.</p>
             <a href="ADMIN_KURULUM.md">Kullanım adımları ↗</a>
@@ -25,6 +25,10 @@
         </section>
         <div id="workspace" class="workspace" hidden>
             <aside class="sidebar" aria-label="Proje listesi">
+                <nav class="editor-mode-bar" aria-label="Düzenleyici seçimi">
+                    <button id="mode-projects" type="button" aria-pressed="true">Projeler</button>
+                    <button id="mode-site" type="button" aria-pressed="false">Tüm site</button>
+                </nav>
                 <div class="sidebar-heading"><h2>Projeler</h2><button id="new-project" class="primary" type="button">+ Yeni</button></div>
                 <label class="search-label">Proje ara<input id="project-search" type="search" placeholder="Başlık veya kategori"></label>
                 <div class="list-filters" aria-label="Görünürlük filtresi">
@@ -88,6 +92,7 @@
                     <section class="form-card sections-card">
                         <div class="subheading"><div><h2>Detay sayfası bölümleri</h2><p class="hint">Amaç, core loop, mekanikler, görsel stil veya geliştirme süreci: ihtiyacına göre bölüm ekle.</p></div><button id="add-section" type="button">+ Bölüm</button></div>
                         <div id="sections-editor"></div>
+                        <button id="add-section-bottom" type="button">+ Bölüm ekle</button>
                     </section>
                     <div class="editor-footer"><p class="hint">Kaydettiğinde bilgisayarındaki site güncellenir. Canlı site için dosyaları ayrıca yayınlaman gerekir.</p><button class="primary" type="submit">Kaydet</button></div>
                 </form>
@@ -105,6 +110,8 @@
     <script src="media-editor.js"></script>
     <script src="canvas-board.js"></script>
     <script src="canvas-board-editor.js"></script>
+    <script src="text-editor.js"></script>
     <script src="admin.js"></script>
+    <script src="site-editor.js"></script>
 </body>
 </html>

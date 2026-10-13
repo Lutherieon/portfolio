@@ -32,7 +32,7 @@
         template.content.querySelectorAll('p,li').forEach(node => node.append('\n'));
         return template.content.textContent.trim();
     }
-    function setRichInput(node, html) { node.value = plainText(html || ''); node.dataset.originalText = node.value; node.dataset.originalHtml = html || ''; }
+    function setRichInput(node, html) { node.value = plainText(html || ''); node.dataset.originalText = node.value; node.dataset.originalHtml = html || ''; if (node.isConnected) window.TextEditor.attach(node, html || '', markDirty); else queueMicrotask(() => { if (node.isConnected) window.TextEditor.attach(node, html || '', markDirty); }); }
     function getRichInput(node) { return node.value === node.dataset.originalText ? node.dataset.originalHtml : store.escape(node.value).replace(/\r?\n/g, '<br>'); }
     function slug(value) { return value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'new-project'; }
     function videoUrl(value) {
@@ -300,7 +300,16 @@
     document.querySelectorAll('[data-filter]').forEach(node => { node.onclick = () => { filter = node.dataset.filter; document.querySelectorAll('[data-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === node))); renderList(); }; });
     $('#add-fact').onclick = () => { addPair($('#facts-editor'), {}, 'fact'); markDirty(); };
     $('#add-link').onclick = () => { addPair($('#links-editor'), {}, 'link'); markDirty(); };
-    $('#add-section').onclick = () => { addSection({ title: '', blocks: [{ type: 'text', value: '' }] }); markDirty(); };
+    const createSection = () => {
+        if (busy) return;
+        addSection({ title: '', blocks: [{ type: 'text', value: '' }] });
+        markDirty();
+        const section = $('#sections-editor').lastElementChild;
+        section.scrollIntoView({ block: 'start', behavior: 'auto' });
+        section.querySelector('[data-section-title]').focus({ preventScroll: true });
+    };
+    $('#add-section').onclick = createSection;
+    $('#add-section-bottom').onclick = createSection;
     document.querySelectorAll('[data-upload-target]').forEach(node => { node.onclick = () => chooseUpload(field(node.dataset.uploadTarget)); });
     form.addEventListener('input', event => { markDirty(); if (event.target === field('thumbnail')) updateCover(); if (event.target === field('title') && !current.persisted) field('id').value = slug(field('title').value); });
     form.addEventListener('change', markDirty); form.addEventListener('submit', save);
@@ -320,6 +329,7 @@
             $('#login-panel').hidden = true; $('#workspace').hidden = false; $('#change-folder').hidden = false;
             if (rows.length) selectProject(rows[0]); else newProject();
             loginStatus('');
+            window.dispatchEvent(new Event('site-folder-connected'));
         } catch (error) {
             const message = error.name === 'AbortError' ? 'Klasör seçimi iptal edildi. Hazır olduğunda tekrar seçebilirsin.' : error.message;
             loginStatus(message); if (!$('#workspace').hidden) status(message);
@@ -327,6 +337,7 @@
     }
     $('#connect-folder').onclick = connectFolder;
     $('#change-folder').onclick = () => safely(connectFolder);
+    window.ProjectEditorNavigate = safely;
     if (!window.LocalProjectFiles.local || !window.showDirectoryPicker) {
         $('#connect-folder').disabled = true;
         loginStatus('Editörü bilgisayarında Chrome veya Edge ile aç. Site klasörünü seçtikten sonra doğrudan dosyalara kayıt yapabilirsin.');

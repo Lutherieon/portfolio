@@ -101,5 +101,25 @@
         uploadQueue = pending.catch(() => {});
         return pending;
     }
-    window.LocalProjectFiles = { local, connect, read, save, upload, parse, serialize };
+    async function readSiteFile(name) {
+        await permission();
+        if (!/^(index|resume|featured|portfolio|project-detail)\.html$|^site-content\.js$/.test(name)) throw new Error('Geçersiz site dosyası.');
+        return (await (await directory.getFileHandle(name)).getFile()).text();
+    }
+    async function saveSiteFile(name, source, original) {
+        const previous = await readSiteFile(name);
+        if (previous !== original) throw new Error('Dosya başka bir yerde değişmiş. Önce yeniden yükle.');
+        const backups = await directory.getDirectoryHandle('.editor-backups', { create: true });
+        const backup = await backups.getFileHandle(`${name}-${Date.now()}-${crypto.randomUUID()}.bak`, { create: true });
+        const backupWriter = await backup.createWritable();
+        await backupWriter.write(previous); await backupWriter.close();
+        const target = await directory.getFileHandle(name);
+        const writer = await target.createWritable();
+        try {
+            await writer.write(source);
+            if (await readSiteFile(name) !== original) throw new Error('Kayıt sırasında dosya değişti. Yeniden yükle.');
+            await writer.close();
+        } catch (error) { try { await writer.abort(); } catch (_) {} throw error; }
+    }
+    window.LocalProjectFiles = { local, connect, read, save, upload, parse, serialize, readSiteFile, saveSiteFile };
 })();

@@ -307,19 +307,16 @@ ul {
     position: relative;
     display: flex;
     flex-direction: column;
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
     text-decoration: none;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    background: transparent;
+    border: 0;
     transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .showcase-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(64, 224, 208, 0.2);
-    border-color: rgba(64, 224, 208, 0.3);
+    transform: translateY(-3px);
 }
 
 .showcase-image {
@@ -335,11 +332,12 @@ ul {
 }
 
 .showcase-content {
-    padding: 25px 20px;
+    padding: 22px 0 20px;
     position: relative;
     z-index: 2;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
-    margin-top: -80px;
+    background: transparent;
+    margin-top: 0;
+    border-bottom: 1px solid #ffffff26;
     /* Overlap image slightly */
     height: auto;
     min-height: 80px;
@@ -354,7 +352,7 @@ ul {
     font-weight: 600;
     color: #ffffff;
     margin-bottom: 5px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: none;
 }
 
 .showcase-roles {

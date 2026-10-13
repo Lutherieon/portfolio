@@ -12,7 +12,7 @@
     function richText(value) {
         const template = document.createElement('template');
         template.innerHTML = String(value || '');
-        const allowed = new Set(['B', 'STRONG', 'I', 'EM', 'BR', 'P', 'UL', 'OL', 'LI', 'A']);
+        const allowed = new Set(['B', 'STRONG', 'I', 'EM', 'U', 'SPAN', 'DIV', 'BR', 'P', 'UL', 'OL', 'LI', 'A']);
         function clean(parent) {
             [...parent.childNodes].forEach(node => {
                 if (node.nodeType === Node.COMMENT_NODE) { node.remove(); return; }
@@ -21,7 +21,18 @@
                 clean(node);
                 if (!allowed.has(node.tagName)) { node.replaceWith(...node.childNodes); return; }
                 const href = node.tagName === 'A' ? safeUrl(node.getAttribute('href')) : '';
+                const styles = {};
+                if (node.tagName === 'SPAN') {
+                    const choices = {fontFamily:['inherit','Arial','Georgia','Verdana','"Courier New"','Courier New'],fontSize:['0.875em','1em','1.25em','1.5em','x-small','small','medium','large','x-large','xx-large','xxx-large'],fontWeight:['700','bold','normal','400'],fontStyle:['italic','normal'],textDecoration:['underline','line-through','none','underline line-through']};
+                    Object.entries(choices).forEach(([key, values]) => { if (values.includes(node.style[key])) styles[key] = node.style[key]; });
+                    for (const key of ['color','backgroundColor']) {
+                        const value = node.style[key];
+                        if (/^(#[\da-f]{3,8}|rgba?\([\d.,% ]+\)|transparent|inherit)$/i.test(value)) styles[key] = value;
+                    }
+                }
+                if (['P','DIV'].includes(node.tagName) && ['left','center','right','justify'].includes(node.style.textAlign)) styles.textAlign = node.style.textAlign;
                 [...node.attributes].forEach(attribute => node.removeAttribute(attribute.name));
+                Object.assign(node.style, styles);
                 if (href) { node.setAttribute('href', href); node.setAttribute('target', '_blank'); node.setAttribute('rel', 'noopener noreferrer'); }
             });
         }

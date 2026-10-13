@@ -1,4 +1,8 @@
-# Bilgisayarında proje düzenleme
+# Bilgisayarında site düzenleme
+
+Sol bardaki **Projeler / Tüm site** ile düzenleyiciler arasında geçiş yap. Tüm site ekranında sayfalar bölümlere ayrılır; hakkımda, CV, deneyim ve featured kayıtları da buradan yönetilir. Arama motoru bilgileri **Gelişmiş ayarlar** altındadır.
+
+Metni seçerek kalın, italik, altı çizili, yazı tipi, boyut, renk ve vurgu uygulayabilirsin. Aktif biçime tekrar basarak kapat. Hizalama, liste, biçim temizleme ve geri al/yinele araçları da vardır. **Ctrl+B / Ctrl+I / Ctrl+U** biçimlendirme, **Ctrl+Z** geri alır.
 
 1. **EDITORU_AC.cmd** dosyasına çift tıkla. Editör bilgisayarındaki Chrome veya Edge'de açılır.
 2. **Site klasörünü seç** düğmesine bas ve **Portfolio_site** klasörünü seç. Tarayıcı klasöre yazma izni istediğinde onayla.
