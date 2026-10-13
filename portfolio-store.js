@@ -23,7 +23,7 @@
                 const href = node.tagName === 'A' ? safeUrl(node.getAttribute('href')) : '';
                 const styles = {};
                 if (node.tagName === 'SPAN') {
-                    const choices = {fontFamily:['inherit','Arial','Georgia','Verdana','"Courier New"','Courier New'],fontSize:['0.875em','1em','1.25em','1.5em','x-small','small','medium','large','x-large','xx-large','xxx-large'],fontWeight:['700','bold','normal','400'],fontStyle:['italic','normal'],textDecoration:['underline','line-through','none','underline line-through']};
+                    const choices = {fontFamily:['Montserrat','Playfair Display','"Playfair Display"','Open Sans','"Open Sans"','inherit','Arial','Georgia','Verdana','"Courier New"','Courier New'],fontSize:['0.875em','1em','1.25em','1.5em','x-small','small','medium','large','x-large','xx-large','xxx-large'],fontWeight:['700','bold','normal','400'],fontStyle:['italic','normal'],textDecoration:['underline','line-through','none','underline line-through']};
                     Object.entries(choices).forEach(([key, values]) => { if (values.includes(node.style[key])) styles[key] = node.style[key]; });
                     for (const key of ['color','backgroundColor']) {
                         const value = node.style[key];
@@ -42,11 +42,11 @@
     function mediaLayout(value = {}) {
         const number = (input, fallback, min, max) => Number.isFinite(Number(input)) ? Math.min(max, Math.max(min, Number(input))) : fallback;
         const width = number(value?.width, 100, 10, 100);
-        return { width, x: number(value?.x, 0, 0, 100 - width), top: number(value?.top, 0, 0, 240), ratio: value?.ratio ? number(value.ratio, null, 0.2, 5) : null };
+        return { width, x: number(value?.x, 0, 0, 100 - width), top: number(value?.top, 0, 0, 240), ratio: value?.ratio ? number(value.ratio, null, 0.2, 5) : null, zoom: number(value?.zoom, 1, 1, 4), cropX: number(value?.cropX ?? 50, 50, 0, 100), cropY: number(value?.cropY ?? 50, 50, 0, 100) };
     }
     function coverPosition(value = {}) {
         const coordinate = input => input !== null && input !== '' && Number.isFinite(Number(input)) ? Math.min(100, Math.max(0, Number(input))) : 50;
-        return { x: coordinate(value?.x), y: coordinate(value?.y) };
+        return { x: coordinate(value?.x), y: coordinate(value?.y), zoom: Math.min(4, Math.max(1, Number(value?.zoom) || 1)), fit: value?.fit === 'contain' ? 'contain' : 'cover' };
     }
     function normalize(project) {
         const p = JSON.parse(JSON.stringify(project));
@@ -54,6 +54,7 @@
         p.id = String(p.id || '').replace(/[^a-zA-Z0-9_-]/g, '');
         p.thumbnail = safeUrl(p.thumbnail);
         p.thumbnailPosition = coverPosition(p.thumbnailPosition);
+        p.homeThumbnailPosition = coverPosition(p.homeThumbnailPosition || p.thumbnailPosition);
         p.bannerSrc = safeUrl(p.bannerSrc);
         p.intro = richText(p.intro);
         p.tags = (p.tags || []).map(value => String(value));

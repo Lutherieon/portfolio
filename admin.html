@@ -37,6 +37,7 @@
                     <button type="button" data-filter="hidden" aria-pressed="false">Gizli</button>
                 </div>
                 <p id="project-total" class="hint"></p>
+                <p class="hint">↑ ↓ ile proje sırasını değiştir. Sıralama otomatik kaydedilir.</p>
                 <nav id="project-list" aria-label="Düzenlenecek projeyi seç"></nav>
                 <p class="sidebar-note">Gizli projeler portfolyoda görünmez. Göstermek için sağdaki görünürlük ayarını değiştir.</p>
             </aside>
@@ -68,16 +69,27 @@
                             <label class="wide">Üst görsel veya dosya<div class="upload-field"><input name="bannerSrc" placeholder="Dosya yolu veya video bağlantısı"><button type="button" data-upload-target="bannerSrc">Yükle</button></div></label>
                         </div>
                         <div id="cover-editor" hidden>
-                            <p class="hint">Kaydırıcılarla kapakta görünen alanı ayarla. Çerçeveler sitedeki kapak oranlarını gösterir; üzerine gelince uygulanan yakınlaşma dahil değildir.</p>
+                            <p class="hint">İki kart aynı görseli kullanır. Portfolyo kartı dikey, ana sayfa kartı yataydır. Her kartın yakınlaştırma ve konumunu ayrı ayarlayabilirsin.</p>
                             <div class="cover-previews">
                                 <figure><figcaption>Portfolyo kartı · 4:4.5</figcaption><img id="cover-preview" class="cover-preview" alt="Portfolyo kartı kırpma önizlemesi"></figure>
                                 <figure><figcaption>Ana sayfa · 16:9</figcaption><img id="cover-home-preview" class="cover-preview cover-home-preview" alt="Ana sayfa kırpma önizlemesi"></figure>
                             </div>
-                            <div class="field-grid">
+                            <h3>Portfolyo kartı</h3>
+                            <label>Görselin görünümü<select name="coverFit"><option value="cover">Kartı doldur (kenarlar kesilebilir)</option><option value="contain">Görselin tamamını göster</option></select><span class="hint">Görselin içinde yazı varsa tamamını göster seçeneğini kullan. Yakınlaştırırsan kenarlar tekrar kesilebilir.</span></label>
+                            <div class="field-grid cover-controls">
+                                <label class="wide">Yakınlaştırma <output id="cover-zoom-value">100%</output><input type="range" name="coverZoom" min="1" max="4" step="0.05" value="1"></label>
                                 <label>Yatay konum <output id="cover-x-value">50%</output><input type="range" name="coverX" min="0" max="100" value="50"></label>
                                 <label>Dikey konum <output id="cover-y-value">50%</output><input type="range" name="coverY" min="0" max="100" value="50"></label>
                             </div>
                             <button type="button" id="center-cover">Ortala</button>
+                            <h3>Ana sayfa kartı</h3>
+                            <label>Görselin görünümü<select name="homeCoverFit"><option value="cover">Kartı doldur (kenarlar kesilebilir)</option><option value="contain">Görselin tamamını göster</option></select></label>
+                            <div class="field-grid cover-controls">
+                                <label class="wide">Yakınlaştırma <output id="home-cover-zoom-value">100%</output><input type="range" name="homeCoverZoom" min="1" max="4" step="0.05" value="1"></label>
+                                <label>Yatay konum <output id="home-cover-x-value">50%</output><input type="range" name="homeCoverX" min="0" max="100" value="50"></label>
+                                <label>Dikey konum <output id="home-cover-y-value">50%</output><input type="range" name="homeCoverY" min="0" max="100" value="50"></label>
+                            </div>
+                            <button type="button" id="center-home-cover">Ortala</button>
                             <p id="cover-error" class="hint" hidden>Görsel yüklenemedi. Dosya yolunu kontrol et; EXR yerine JPEG, PNG veya WebP kullan.</p>
                         </div>
                     </fieldset>
@@ -97,6 +109,7 @@
                     <div class="editor-footer"><p class="hint">Kaydettiğinde bilgisayarındaki site güncellenir. Canlı site için dosyaları ayrıca yayınlaman gerekir.</p><button class="primary" type="submit">Kaydet</button></div>
                 </form>
                 <button id="reload-projects" type="button">Dosyadan yeniden yükle</button>
+                <button id="delete-project" type="button">Projeyi sil</button>
             </section>
         </div>
     </main>

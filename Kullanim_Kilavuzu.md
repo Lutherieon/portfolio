@@ -67,3 +67,11 @@ Kayıttan sonra **Siteyi aç** ile bilgisayarındaki portfolyoyu aç veya açık
 Dosyalar VS Code Live Server gibi bir yerel HTTP sunucusunda da çalışır. Editör yalnızca `file://` veya localhost adreslerinde klasöre bağlanır. İnternetteki admin sayfası bilgisayarına yazma modunu açmaz.
 
 `project-library.js` projeleri, `site-content.js` hakkımda, özgeçmiş ve yayın içeriklerini tutar. Gizli proje seçeneği yalnızca sitede görünürlüğü belirler.
+
+## Proje sırası
+Soldaki proje listesindeki ↑ ve ↓ düğmeleriyle projeleri sırala. Sıra otomatik kaydedilir; portfolyo ve ana sayfadaki proje kartları bu sırayı kullanır. Filtre açıksa o filtrede görünen projeler birbirleriyle yer değiştirir.
+
+## Site ayarları
+Tüm site ekranından **Hakkımda, deneyimler ve yayınlar** alanını seç ve **Site ayarları** bölümünü aç. Sayfa başına proje sayısını, kart sütunlarını/oranını/aralığını, site renklerini, genel yazı tiplerini ve bölüm boşluklarını değiştirebilirsin. Ana sayfa bölümlerini oklarla sırala; Bölümü göster seçeneğiyle gizle.
+Ortak menü ve sosyal hesaplar için **Bu ayarları tüm sayfalara uygula** seçeneğini aç. Site mesajları da bu bölümde düzenlenir. Kaydettiğinde ayarlar tüm ziyaretçi sayfalarına yansır. Hakkımda kayıtlarındaki Görsel alanından görsel yükleyebilirsin.
+Projeleri kaldırmak için proje editörünün altındaki **Projeyi sil** düğmesini kullan. Onaydan sonra proje kaydı silinir, medya dosyaları korunur ve önceki kayıt yedeklenir.

@@ -170,10 +170,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const url = pdfContainer.getAttribute('data-pdf-url');
         const showPdfFallback = () => {
             const message = document.createElement('p');
-            message.textContent = 'The preview is unavailable. ';
+            message.textContent = window.SETTINGS?.messages?.pdfUnavailable || 'The preview is unavailable. ';
             const link = document.createElement('a');
             link.href = url;
-            link.textContent = 'Open the analysis (PDF)';
+            link.textContent = window.SETTINGS?.messages?.pdfLink || 'Open the analysis (PDF)';
             link.style.color = 'var(--accent-teal)';
             message.appendChild(link);
             pdfContainer.replaceChildren(message);

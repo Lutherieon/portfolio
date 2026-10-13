@@ -1,11 +1,12 @@
 (() => {
     'use strict';
-    function attach(textarea, html, onChange = () => {}) {
+    function attach(textarea, html, onChange = () => {}, baseFont = '') {
         if (textarea._richEditor) { textarea._richEditor.innerHTML = window.PortfolioStore.richText(html); return; }
         const box = document.createElement('div'); box.className = 'text-editor';
         const toolbar = document.createElement('div'); toolbar.className = 'text-toolbar'; toolbar.setAttribute('role', 'group'); toolbar.setAttribute('aria-label', 'Metin biçimlendirme');
         const editor = document.createElement('div'); editor.className = 'text-surface'; editor.contentEditable = 'true'; editor.setAttribute('role', 'textbox'); editor.setAttribute('aria-multiline', 'true'); editor.setAttribute('aria-label', textarea.getAttribute('aria-label') || textarea.closest('label')?.firstChild?.textContent || 'Metin');
         editor.innerHTML = window.PortfolioStore.richText(html); textarea._richEditor = editor; textarea.hidden = true;
+        if (baseFont) editor.style.fontFamily = baseFont;
         let selection;
         const toggles = [];
         function remember() {
@@ -41,7 +42,7 @@
             options.forEach(([title, value]) => select.add(new Option(title, value)));
             select.onmousedown = remember; select.onchange = () => { if(select.value) action(select.value); }; toolbar.append(select); return select;
         }
-        const fonts = choice('Yazı tipi', [['Sitenin yazı tipi','inherit'],['Arial','Arial'],['Georgia','Georgia'],['Verdana','Verdana'],['Courier New','Courier New']], value => command('fontName',value));
+        const fonts = choice('Yazı tipi', [['Sitenin yazı tipi','inherit'],['Montserrat','Montserrat'],['Playfair Display','Playfair Display'],['Open Sans','Open Sans'],['Arial','Arial'],['Georgia','Georgia'],['Verdana','Verdana'],['Courier New','Courier New']], value => command('fontName',value));
         const sizes = choice('Yazı boyutu', [['Küçük · 10','1'],['Normal · 12','2'],['Orta · 14','3'],['Büyük · 18','4'],['Başlık · 24','5'],['Büyük başlık · 36','6']], value => command('fontSize',value));
         function color(label, cmd, initial) {
             const wrap=document.createElement('label'); wrap.className='text-color-control'; wrap.append(document.createTextNode(label));
@@ -57,7 +58,11 @@
         tool('Geri al',()=>command('undo')); tool('Yinele',()=>command('redo'));
         function state() {
             toggles.forEach(([b,cmd])=>b.setAttribute('aria-pressed',String(document.queryCommandState(cmd))));
-            const font=String(document.queryCommandValue('fontName')).replace(/["']/g,''); fonts.value=[...fonts.options].some(o=>o.value===font)?font:'';
+            const anchor = getSelection()?.anchorNode;
+            const element = anchor && editor.contains(anchor) ? (anchor.nodeType === Node.ELEMENT_NODE ? anchor : anchor.parentElement) : editor;
+            const font = getComputedStyle(element).fontFamily.split(',')[0].trim().replace(/["']/g,'');
+            if (font && ![...fonts.options].some(o => o.value.toLowerCase() === font.toLowerCase())) fonts.add(new Option(font, font));
+            fonts.value = [...fonts.options].find(o => o.value.toLowerCase() === font.toLowerCase())?.value || '';
             sizes.value=String(document.queryCommandValue('fontSize'));
         }
         editor.addEventListener('keyup',remember); editor.addEventListener('mouseup',remember);
@@ -69,6 +74,7 @@
         editor.onpaste=e=>{ e.preventDefault(); command('insertText',e.clipboardData.getData('text/plain')); };
         const hint=document.createElement('small'); hint.className='hint'; hint.textContent='Yazıyı seçerek biçimlendir. Aktif düğmeye tekrar basarak kapatabilirsin. Ctrl+B / I / U · Ctrl+Z geri al.';
         box.append(toolbar,editor,hint); textarea.after(box);
+        state();
         new MutationObserver(()=>{editor.contentEditable=String(!textarea.disabled);toolbar.querySelectorAll('button,select,input').forEach(n=>{n.disabled=textarea.disabled;});}).observe(textarea,{attributes:true,attributeFilter:['disabled']});
     }
     window.TextEditor={attach};

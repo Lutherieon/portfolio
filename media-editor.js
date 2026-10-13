@@ -22,6 +22,13 @@
             inputs[key] = input; label.append(input); controls.append(label);
         }
         const presets = document.createElement('div'); presets.className = 'media-layout-presets';
+        if (['image', 'gif'].includes(block.type)) {
+            for (const [key, title, min, max, step] of [['zoom','Yakınlaştırma',1,4,0.05],['cropX','Görselde yatay konum',0,100,1],['cropY','Görselde dikey konum',0,100,1]]) {
+                const label = document.createElement('label'); label.textContent = title;
+                const input = document.createElement('input'); input.type = 'range'; input.min = min; input.max = max; input.step = step; input.dataset.layoutField = key;
+                input.oninput = () => { layout[key] = Number(input.value); paint(); changed(); }; inputs[key] = input; label.append(input); controls.append(label);
+            }
+        }
         for (const [text, action] of [
             ['Sol', () => { layout.x = 0; }], ['Orta', () => { layout.x = (100 - layout.width) / 2; }], ['Sağ', () => { layout.x = 100 - layout.width; }],
             ['Sıfırla', () => { layout = window.PortfolioStore.mediaLayout(); }]
@@ -36,6 +43,8 @@
             stage.style.height = Math.max(150, stage.clientWidth * layout.width / 100 / (layout.ratio || naturalRatio) + layout.top + 20) + 'px';
             for (const key of Object.keys(inputs)) if (document.activeElement !== inputs[key]) inputs[key].value = round(layout[key]);
             inputs.x.max = round(100 - layout.width);
+            const image = media.querySelector('img');
+            if (image) { image.style.transform = `scale(${layout.zoom})`; image.style.transformOrigin = `${layout.cropX}% ${layout.cropY}%`; }
         }
         function updateSource() {
             media.replaceChildren();

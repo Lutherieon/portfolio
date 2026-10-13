@@ -123,6 +123,7 @@
     <script src="projects-data.js"></script>
     <script src="site-content.js"></script>
     <script src="portfolio-store.js"></script>
+    <script src="site-settings.js"></script>
 	<script src="script.js"></script>
 
 	<!-- Simple JS to add solid background to nav on scroll + Dynamic Sections -->
@@ -150,7 +151,7 @@
 						card.href = `project-detail.html?id=${encodeURIComponent(project.id)}`;
 						card.className = "showcase-card";
 						card.innerHTML = `
-							<div class="showcase-image" style="background-image: url('${project.thumbnail}'); background-position: ${window.PortfolioStore.coverPosition(project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.thumbnailPosition).y}%"></div>
+							<div class="showcase-image ${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).fit === 'contain' ? 'show-entire-image' : ''}" style="background-image: url('${project.thumbnail}'); background-position: ${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).y}%; --image-zoom:${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).zoom}; background-size:${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).fit}; background-repeat:no-repeat; transform-origin:${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition).y}%"></div>
 							<div class="showcase-content">
 								<h3>${escapeHTML(project.title)}</h3>
 								<p class="showcase-category">${escapeHTML(project.category)}</p>

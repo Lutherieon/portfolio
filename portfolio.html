@@ -15,6 +15,7 @@
     <script src="projects-data.js"></script>
     <script src="site-content.js"></script>
     <script src="portfolio-store.js"></script>
+    <script src="site-settings.js"></script>
     <meta name="description"
         content="Portfolio of Yekta Demirci - A collection of game development, UI/UX design, and creative projects.">
     <link rel="canonical" href="https://www.yektademirci.com/portfolio.html">
@@ -85,7 +86,7 @@
                 const grid = document.getElementById('portfolio-grid');
                 const pagination = document.getElementById('pagination');
                 const filtersContainer = document.getElementById('portfolio-filters');
-                const itemsPerPage = 9;
+                const itemsPerPage = Math.min(48, Math.max(1, Math.round(Number(window.SETTINGS?.portfolio?.pageSize) || 9)));
                 let currentPage = 1;
                 let currentCategory = 'All';
                 let filteredProjects = [];
@@ -153,7 +154,7 @@
 
                             card.innerHTML = `
                                 <div class="card-image-wrapper">
-                                    <div class="card-image" style="background-image: url('${project.thumbnail}'); background-position: ${window.PortfolioStore.coverPosition(project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.thumbnailPosition).y}%;"></div>
+                                    <div class="card-image ${window.PortfolioStore.coverPosition(project.thumbnailPosition).fit === 'contain' ? 'show-entire-image' : ''}" style="background-image: url('${project.thumbnail}'); background-position: ${window.PortfolioStore.coverPosition(project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.thumbnailPosition).y}%; --image-zoom:${window.PortfolioStore.coverPosition(project.thumbnailPosition).zoom}; background-size:${window.PortfolioStore.coverPosition(project.thumbnailPosition).fit}; background-repeat:no-repeat; transform-origin:${window.PortfolioStore.coverPosition(project.thumbnailPosition).x}% ${window.PortfolioStore.coverPosition(project.thumbnailPosition).y}%;"></div>
                                     <div class="card-title-overlay">
                                         <h3>${escapeHTML(project.title)}</h3>
                                         ${project.contributions && project.contributions.length > 0 ? `
@@ -170,7 +171,7 @@
                                     ${project.thumbnailDescription ? `<p class="card-description">${escapeHTML(project.thumbnailDescription)}</p>` : ''}
                                     ${project.contributions && project.contributions.length > 0 ? `
                                         <div class="card-contributions">
-                                            <h4 class="contributions-title">My contributions:</h4>
+                                            <h4 class="contributions-title">${escapeHTML(window.SETTINGS?.messages?.contributions || 'My contributions:')}</h4>
                                             <ul class="contributions-list">
                                                 ${[...new Set(project.contributions)].map(c => `<li><i class="fas fa-check"></i> ${escapeHTML(c)}</li>`).join('')}
                                             </ul>
@@ -194,7 +195,7 @@
                         if (!filteredProjects.length) {
                             const message = document.createElement('p');
                             message.className = 'text-center';
-                            message.textContent = 'No projects in this category. Choose All to browse the portfolio.';
+                            message.textContent = window.SETTINGS?.messages?.emptyCategory || 'No projects in this category. Choose All to browse the portfolio.';
                             grid.appendChild(message);
                         }
                         // Scroll to top of grid when page changes (only if it wasn't the first load)

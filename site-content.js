@@ -6,7 +6,8 @@ window.SITE_CONTENT = {
                               "text":  [
                                            "I am a Digital Game Designer who focuses on the balance between creative vision and technical implementation. I approach game design as a holistic process, where compelling mechanics meet optimized technical workflows and a deep understanding of player psychology.",
                                            "Currently studying Digital Game Design at Bahçeşehir University, I have spent my academic journey mastering Unreal Engine 5 and exploring the structural foundations of successful game titles. My work ranges from developing VR prototypes and complex enemy AI systems to conducting in-depth UX and cognitive research."
-                                       ]
+                                       ],
+                              "image":  ""
                           }
                       ],
     "RESUME_DATA":  {
@@ -35,6 +36,95 @@ window.SITE_CONTENT = {
                           "groups":  [
 
                                      ]
-                      }
+                      },
+    "SETTINGS":  {
+                     "theme":  {
+                                   "background":  "#000000",
+                                   "text":  "#ffffff",
+                                   "accent":  "#40e0d0",
+                                   "bodyFont":  "Open Sans",
+                                   "headingFont":  "Montserrat",
+                                   "sectionSpacing":  100
+                               },
+                     "portfolio":  {
+                                       "pageSize":  9,
+                                       "columns":  3,
+                                       "gap":  40,
+                                       "ratio":  0.8889
+                                   },
+                     "homeSections":  [
+                                          {
+                                              "id":  "top",
+                                              "visible":  true
+                                          },
+                                          {
+                                              "id":  "showcase",
+                                              "visible":  true
+                                          },
+                                          {
+                                              "id":  "background",
+                                              "visible":  true
+                                          },
+                                          {
+                                              "id":  "contact",
+                                              "visible":  true
+                                          }
+                                      ],
+                     "shared":  {
+                                    "enabled":  false,
+                                    "logo":  "images/LOGO.png",
+                                    "copyright":  "© 2026 by Yekta Demirci",
+                                    "menu":  [
+                                                 {
+                                                     "link":  "index.html",
+                                                     "title":  "HOME"
+                                                 },
+                                                 {
+                                                     "link":  "portfolio.html",
+                                                     "title":  "PORTFOLIO"
+                                                 },
+                                                 {
+                                                     "link":  "resume.html",
+                                                     "title":  "RESUME"
+                                                 },
+                                                 {
+                                                     "link":  "featured.html",
+                                                     "title":  "FEATURED"
+                                                 },
+                                                 {
+                                                     "link":  "index.html#contact",
+                                                     "title":  "CONTACT"
+                                                 }
+                                             ],
+                                    "social":  [
+                                                   {
+                                                       "title":  "LinkedIn",
+                                                       "link":  "https://www.linkedin.com/in/yekta-demirci",
+                                                       "icon":  "linkedin-in"
+                                                   },
+                                                   {
+                                                       "title":  "Itch.io",
+                                                       "link":  "https://yekta-demirci.itch.io/",
+                                                       "icon":  "itch-io"
+                                                   },
+                                                   {
+                                                       "title":  "GitHub",
+                                                       "link":  "https://github.com/Lutherieon",
+                                                       "icon":  "github"
+                                                   },
+                                                   {
+                                                       "title":  "ArtStation",
+                                                       "link":  "https://www.artstation.com/devletsanatcisi",
+                                                       "icon":  "artstation"
+                                                   }
+                                               ]
+                                },
+                     "messages":  {
+                                      "contributions":  "My contributions:",
+                                      "emptyCategory":  "No projects in this category. Choose All to browse the portfolio.",
+                                      "pdfUnavailable":  "The preview is unavailable. ",
+                                      "pdfLink":  "Open the analysis (PDF)"
+                                  }
+                 }
 };
 Object.assign(window, window.SITE_CONTENT);

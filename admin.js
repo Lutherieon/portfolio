@@ -53,17 +53,43 @@
         const matches = rows.filter(row => (filter === 'all' || row.published === (filter === 'published')) && `${row.data.title} ${row.data.category}`.toLocaleLowerCase('tr').includes(search));
         $('#project-total').textContent = `${rows.length} proje · ${rows.filter(row => row.published).length} görünür · ${rows.filter(row => !row.published).length} gizli`;
         const list = $('#project-list'); list.replaceChildren();
-        matches.forEach(row => {
+        matches.forEach((row, matchIndex) => {
             const choice = button('', () => safely(() => selectProject(row)), 'project-choice');
             choice.setAttribute('aria-current', String(current?.id === row.id));
             const title = document.createElement('strong'); title.textContent = row.data.title || 'İsimsiz proje';
             const caption = document.createElement('small');
             const badge = document.createElement('span'); badge.className = `badge ${row.published ? 'published' : ''}`; badge.textContent = row.published ? 'Görünen' : 'Gizli';
             caption.append(badge, document.createTextNode(row.data.category || 'Kategori yok'));
-            choice.append(title, caption); list.appendChild(choice);
+            choice.append(title, caption);
+            const item = document.createElement('div'); item.className = 'project-list-item';
+            const actions = document.createElement('div'); actions.className = 'project-order-actions';
+            for (const [direction, label] of [[-1, 'Yukarı taşı'], [1, 'Aşağı taşı']]) {
+                const neighbor = matches[matchIndex + direction];
+                const move = button(direction < 0 ? '↑' : '↓', () => safely(() => moveProject(row.id, neighbor?.id)));
+                move.setAttribute('aria-label', `${row.data.title}: ${label}`); move.title = label; move.disabled = busy || !neighbor;
+                actions.append(move);
+            }
+            item.append(choice, actions); list.appendChild(item);
         });
         if (!matches.length) { const message = document.createElement('p'); message.className = 'hint'; message.textContent = 'Bu filtrede proje yok.'; list.appendChild(message); }
         $('#category-options').replaceChildren(...[...new Set(rows.map(row => row.data.category).filter(Boolean))].map(category => { const option = document.createElement('option'); option.value = category; return option; }));
+    }
+    async function moveProject(id, neighborId) {
+        if (busy || !neighborId) return;
+        const next = clone(rows);
+        const from = next.findIndex(row => row.id === id), to = next.findIndex(row => row.id === neighborId);
+        if (from < 0 || to < 0) return;
+        [next[from], next[to]] = [next[to], next[from]];
+        next.forEach((row, index) => { row.position = index; });
+        setBusy(true); renderList(); status('Proje sırası kaydediliyor…');
+        try {
+            await window.LocalProjectFiles.save(next.map(row => row.data));
+            rows = next;
+            const selected = rows.find(row => row.id === current?.id);
+            if (selected) selectProject(selected); else newProject();
+            status('Proje sırası kaydedildi · Portfolyo ve ana sayfa bu sırayı kullanır');
+        } catch (error) { status(`Sıralama kaydedilemedi: ${error.message}`); }
+        finally { setBusy(false); renderList(); }
     }
     function labeledInput(text, value, placeholder = '') {
         const label = document.createElement('label'); label.textContent = text;
@@ -184,6 +210,11 @@
         field('bannerType').value = project.bannerType || 'image';
         const cover = store.coverPosition(project.thumbnailPosition);
         field('coverX').value = cover.x; field('coverY').value = cover.y;
+        field('coverZoom').value = cover.zoom;
+        field('coverFit').value = cover.fit;
+        const homeCover = store.coverPosition(project.homeThumbnailPosition || project.thumbnailPosition);
+        field('homeCoverX').value = homeCover.x; field('homeCoverY').value = homeCover.y; field('homeCoverZoom').value = homeCover.zoom;
+        field('homeCoverFit').value = homeCover.fit;
         field('tags').value = (project.tags || []).join(', '); field('contributions').value = (project.contributions || []).join('\n');
         field('published').checked = current.published; field('showcase').checked = current.showcase;
         setRichInput(field('intro'), project.intro);
@@ -199,10 +230,17 @@
     function updateCover() {
         const src = store.safeUrl(field('thumbnail').value);
         $('#cover-editor').hidden = !src;
-        const position = store.coverPosition({ x: field('coverX').value, y: field('coverY').value });
+        const position = store.coverPosition({ x: field('coverX').value, y: field('coverY').value, zoom: field('coverZoom').value });
+        $('#cover-zoom-value').value = Math.round(position.zoom * 100) + '%';
         $('#cover-x-value').value = position.x + '%'; $('#cover-y-value').value = position.y + '%';
+        const homePosition = store.coverPosition({ x: field('homeCoverX').value, y: field('homeCoverY').value, zoom: field('homeCoverZoom').value });
+        $('#home-cover-x-value').value = homePosition.x + '%'; $('#home-cover-y-value').value = homePosition.y + '%'; $('#home-cover-zoom-value').value = Math.round(homePosition.zoom * 100) + '%';
         for (const image of [$('#cover-preview'), $('#cover-home-preview')]) {
-            image.style.objectPosition = `${position.x}% ${position.y}%`;
+            const crop = image.id === 'cover-home-preview' ? homePosition : position;
+            image.style.objectPosition = `${crop.x}% ${crop.y}%`;
+            image.style.objectFit = image.id === 'cover-home-preview' ? field('homeCoverFit').value : field('coverFit').value;
+            image.style.transform = `scale(${crop.zoom})`;
+            image.style.transformOrigin = `${crop.x}% ${crop.y}%`;
             image.onerror = () => { $('#cover-error').hidden = false; };
             image.onload = () => { $('#cover-error').hidden = true; };
             if (src && image.getAttribute('src') !== src) { $('#cover-error').hidden = true; image.src = src; }
@@ -211,7 +249,10 @@
     $('#center-cover').addEventListener('click', () => {
         field('coverX').value = 50; field('coverY').value = 50; updateCover(); markDirty();
     });
-    for (const name of ['coverX', 'coverY']) field(name).addEventListener('input', updateCover);
+    $('#center-home-cover').onclick = () => { field('homeCoverX').value = 50; field('homeCoverY').value = 50; updateCover(); markDirty(); };
+    for (const name of ['coverX', 'coverY', 'coverZoom', 'homeCoverX', 'homeCoverY', 'homeCoverZoom']) field(name).addEventListener('input', updateCover);
+    for (const name of ['coverFit', 'homeCoverFit']) field(name).addEventListener('change', updateCover);
+    for (const image of [$('#cover-preview'), $('#cover-home-preview')]) { const frame = document.createElement('div'); frame.className = 'cover-crop-frame'; image.before(frame); frame.append(image); }
     function readBlock(node) {
         const block = clone(node._original); block.type = node.dataset.type;
         if (block.type === 'media-board') return node._getBoard();
@@ -226,7 +267,10 @@
         ['title', 'id', 'category', 'metadata', 'thumbnailDescription', 'thumbnailAlt', 'bannerType'].forEach(name => { project[name] = field(name).value.trim(); });
         if (rows.some(row => row.id === project.id && row.id !== current.id)) { status('Bu proje adresi zaten kullanılıyor. Farklı bir ID yaz.'); return null; }
         project.thumbnail = store.safeUrl(field('thumbnail').value);
-        project.thumbnailPosition = store.coverPosition({ x: field('coverX').value, y: field('coverY').value });
+        project.thumbnailPosition = store.coverPosition({ x: field('coverX').value, y: field('coverY').value, zoom: field('coverZoom').value });
+        project.homeThumbnailPosition = store.coverPosition({ x: field('homeCoverX').value, y: field('homeCoverY').value, zoom: field('homeCoverZoom').value });
+        project.thumbnailPosition.fit = field('coverFit').value;
+        project.homeThumbnailPosition.fit = field('homeCoverFit').value;
         project.bannerSrc = store.safeUrl(videoUrl(field('bannerSrc').value));
         if (project.bannerType === 'none') project.bannerSrc = '';
         if (project.bannerType === 'video' && project.bannerSrc && !validVideo(project.bannerSrc)) { status('Üst video için geçerli bir YouTube veya Vimeo bağlantısı kullan.'); return null; }
@@ -296,6 +340,15 @@
         } catch (error) { status(`Dosya yüklenemedi: ${error.message}`); } finally { setBusy(false); }
     });
     $('#new-project').onclick = () => safely(newProject);
+    $('#delete-project').onclick = () => safely(() => {
+        if (!current?.persisted || busy) { status('Bu proje henüz kaydedilmedi.'); return; }
+        const dialog=document.createElement('dialog');const text=document.createElement('p');text.textContent=`“${current.data.title}” silinsin mi? Proje kaydı kaldırılır. Medya dosyaları korunur ve önceki kayıt yedeklenir.`;
+        dialog.append(text,button('İptal',()=>{dialog.close();dialog.remove();}),button('Projeyi sil',async()=>{
+            const id=current.id; dialog.close();dialog.remove();setBusy(true);
+            try {const next=rows.filter(row=>row.id!==id);await window.LocalProjectFiles.save(next.map(row=>row.data));rows=toRows(next.map(row=>row.data));if(rows.length)selectProject(rows[0]);else newProject();status('Proje silindi · Önceki kayıt yedeklendi');}
+            catch(error){status(`Proje silinemedi: ${error.message}`);}finally{setBusy(false);}
+        }));document.body.append(dialog);dialog.showModal();dialog.addEventListener('cancel',()=>dialog.remove());
+    });
     $('#project-search').oninput = renderList;
     document.querySelectorAll('[data-filter]').forEach(node => { node.onclick = () => { filter = node.dataset.filter; document.querySelectorAll('[data-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === node))); renderList(); }; });
     $('#add-fact').onclick = () => { addPair($('#facts-editor'), {}, 'fact'); markDirty(); };

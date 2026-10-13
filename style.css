@@ -1881,3 +1881,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-teal); o
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .js .fade-in-section:not(.is-visible) { opacity: 1; transform: none; }
 }
+
+.image-crop { overflow: hidden; }
+.showcase-image, .card-image { transform: scale(var(--image-zoom, 1)); }
+.showcase-card:hover .showcase-image, .project-card:hover .card-image { transform: scale(calc(var(--image-zoom, 1) * 1.05)); }
+
+.project-card:hover .card-image.show-entire-image, .showcase-card:hover .showcase-image.show-entire-image { transform: scale(var(--image-zoom, 1)); }

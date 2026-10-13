@@ -15,6 +15,7 @@
     <script src="video-preview.js"></script>
     <script src="canvas-board.js"></script>
     <script src="portfolio-store.js"></script>
+    <script src="site-settings.js"></script>
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta name="description" content="Project details and case study for Yekta Demirci's game design work.">
@@ -188,7 +189,8 @@
                         };
                         const caption = media.caption ? `<p class="media-caption">${media.caption}</p>` : '';
                         if (media.type === 'image' || media.type === 'gif') {
-                            return place(`<div class="media-block fade-in-section"><img src="${media.src}" alt="${media.caption || escapeHTML(project.title)}" loading="lazy" decoding="async">${caption}</div>`);
+                            const crop = window.PortfolioStore.mediaLayout(media.layout);
+                            return place(`<div class="media-block fade-in-section"><div class="image-crop"><img style="transform:scale(${crop.zoom});transform-origin:${crop.cropX}% ${crop.cropY}%" src="${media.src}" alt="${media.caption || escapeHTML(project.title)}" loading="lazy" decoding="async"></div>${caption}</div>`);
                         } else if (media.type === 'video') {
                             const videoHTML = media.provider === 'youtube' ?
                                 `<iframe title="${media.caption || escapeHTML(project.title)} video" src="${media.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` :
